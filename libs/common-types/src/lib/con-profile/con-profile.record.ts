@@ -55,12 +55,12 @@ export class ConProfileRecord extends Record<ConProfileRecordProps> {
       'Place_of_Employment__c',
       'Profile_First_Approved_At__c',
       'Profile_Status__c',
-      'ReDI_Course__c',
       'ReDI_Location__c',
       'Study_Name__c',
       'Study_Place__c',
       'Work_Place__c',
       'total_mentee_capacity__c',
+      'Partnership_Mentor__c',
 
       'Active_Mentorship_Matches_Mentee__c',
       'Active_Mentorship_Matches_Mentor__c',

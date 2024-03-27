@@ -1,18 +1,19 @@
 import { Injectable } from '@nestjs/common'
 import {
   AccountContactRecord,
-  AccountContactRecordProps,
+  AccountRecord,
   ContactRecord,
   ContactRecordProps,
   TpCompanyProfileEntity,
   TpCompanyProfileMapper,
   TpCompanyRepresentativeRelationshipStatus,
 } from '@talent-connect/common-types'
-import { TpCompanyProfileSignUpOperationType } from 'apps/nestjs-api/src/tp-company-profiles/use-cases/tp-company-profile-sign-up/tp-company-profile-sign-up-operation-type.enum'
 import { CurrentUserInfo } from '../../../auth/current-user.interface'
 import { EmailService } from '../../../email/email.service'
 import { SfApiTpCompanyProfilesService } from '../../../salesforce-api/sf-api-tp-company-profiles.service'
+import { SfApiRepository } from '../../../salesforce-api/sf-api.repository'
 import { TpCompanyProfilesService } from '../../tp-company-profiles.service'
+import { TpCompanyProfileSignUpOperationType } from './tp-company-profile-sign-up-operation-type.enum'
 import {
   TpCompanyProfileSignUpMutationInputDto,
   TpCompanyProfileSignUpMutationOutputDto,
@@ -23,11 +24,12 @@ export class TpCompanyProfileSignUpUseCase {
   constructor(
     private readonly mapper: TpCompanyProfileMapper,
     private readonly sfService: SfApiTpCompanyProfilesService,
-    private readonly tpCompanyProfilesSerivce: TpCompanyProfilesService,
-    private readonly emailService: EmailService
+    private readonly tpCompanyProfilesService: TpCompanyProfilesService,
+    private readonly emailService: EmailService,
+    private readonly sfApi: SfApiRepository
   ) {}
 
-  // TODO: use a mapper here for more elegnat conversion
+  // TODO: use a mapper here for more elegant conversion
 
   // TOOD: ugh, this whole TpCompanyProfile module, related Contact, Account
   // and AccountContact are all messy. I need to review all again, and cleanly model
@@ -40,15 +42,17 @@ export class TpCompanyProfileSignUpUseCase {
     const [companyEntity, contactRecord] = await Promise.all([
       this.findOrCreateCompanyByName(
         input.companyIdOrName,
-        input.operationType
+        input.operationType,
+        input.isMicrosoftPartner
       ),
       this.updateCurrentUserContact(input, currentUser),
     ])
 
-    await this.createAccountContactRelationship(
+    await this.upsertAccountContactRelationship(
       input,
       companyEntity,
-      currentUser
+      currentUser,
+      contactRecord
     )
 
     switch (input.operationType) {
@@ -73,7 +77,8 @@ export class TpCompanyProfileSignUpUseCase {
 
   async findOrCreateCompanyByName(
     companyIdOrName: string,
-    operationType: TpCompanyProfileSignUpOperationType
+    operationType: TpCompanyProfileSignUpOperationType,
+    isMicrosoftPartner: boolean
   ): Promise<TpCompanyProfileEntity> {
     let companyEntity: TpCompanyProfileEntity
 
@@ -85,7 +90,7 @@ export class TpCompanyProfileSignUpUseCase {
     if (
       operationType === TpCompanyProfileSignUpOperationType.EXISTING_COMPANY
     ) {
-      companyEntity = await this.tpCompanyProfilesSerivce.findOneById(
+      companyEntity = await this.tpCompanyProfilesService.findOneById(
         companyIdOrName
       )
 
@@ -95,8 +100,9 @@ export class TpCompanyProfileSignUpUseCase {
         companyEntity.props.id
       )
     } else {
-      const accountRecord = await this.sfService.createAccountWithName(
-        companyIdOrName
+      const accountRecord = await this.sfService.createAccount(
+        companyIdOrName,
+        isMicrosoftPartner
       )
       companyEntity = this.mapper.fromPersistence(accountRecord)
       console.log(
@@ -115,8 +121,6 @@ export class TpCompanyProfileSignUpUseCase {
   ) {
     const contactRecordProps = new ContactRecordProps()
     contactRecordProps.Id = currentUser.userId
-    contactRecordProps.FirstName = input.firstName
-    contactRecordProps.LastName = input.lastName
     contactRecordProps.ReDI_First_Point_of_Contact_Other_TP__c =
       input.firstPointOfContactOther
     contactRecordProps.ReDI_First_Point_of_Contact_Talent_Pool__c =
@@ -142,29 +146,88 @@ export class TpCompanyProfileSignUpUseCase {
     return contactRecord
   }
 
-  async createAccountContactRelationship(
+  async upsertAccountContactRelationship(
     input: TpCompanyProfileSignUpMutationInputDto,
     companyEntity: TpCompanyProfileEntity,
-    currentUser: CurrentUserInfo
+    currentUser: CurrentUserInfo,
+    contactRecord: ContactRecord
   ) {
-    const accountContactRecordProps = new AccountContactRecordProps()
-    accountContactRecordProps.AccountId = companyEntity.props.id
-    accountContactRecordProps.ContactId = currentUser.userId
-    accountContactRecordProps.Roles = 'TALENT_POOL_COMPANY_REPRESENTATIVE'
-    accountContactRecordProps.ReDI_Company_Representative_Status__c =
-      input.operationType ===
-      TpCompanyProfileSignUpOperationType.EXISTING_COMPANY
-        ? TpCompanyRepresentativeRelationshipStatus.PENDING
-        : TpCompanyRepresentativeRelationshipStatus.APPROVED
+    console.log('stop here')
+    const accountContactRecords = await this.sfApi.findRecordsOfObject({
+      objectName: AccountContactRecord.metadata.SALESFORCE_OBJECT_NAME,
+      objectFields: AccountContactRecord.metadata.SALESFORCE_OBJECT_FIELDS,
+      filter: {
+        AccountId: companyEntity.props.id,
+        ContactId: currentUser.userId,
+      },
+    })
 
-    const accountContactRecordCreationResult =
-      await this.sfService.createAccountContactRelationship(
-        AccountContactRecord.create(accountContactRecordProps)
+    if (accountContactRecords.length === 0) {
+      const createAccountContactResult = await this.sfApi.createRecord(
+        AccountContactRecord.metadata.SALESFORCE_OBJECT_NAME,
+        {
+          AccountId: companyEntity.props.id,
+          ContactId: currentUser.userId,
+          Roles: 'TALENT_POOL_COMPANY_REPRESENTATIVE',
+          ReDI_Company_Representative_Status__c:
+            input.operationType ===
+            TpCompanyProfileSignUpOperationType.EXISTING_COMPANY
+              ? TpCompanyRepresentativeRelationshipStatus.PENDING
+              : TpCompanyRepresentativeRelationshipStatus.APPROVED,
+        }
       )
+      console.log(
+        '[TpCompanyProfileSignUpUseCase]',
+        'created accountcontact record',
+        createAccountContactResult.id
+      )
+    } else {
+      const accountContactRecord = accountContactRecords[0]
+      await this.sfApi.updateRecord(
+        AccountContactRecord.metadata.SALESFORCE_OBJECT_NAME,
+        {
+          Id: accountContactRecord.Id,
+          Roles: 'TALENT_POOL_COMPANY_REPRESENTATIVE',
+          ReDI_Company_Representative_Status__c:
+            input.operationType ===
+            TpCompanyProfileSignUpOperationType.EXISTING_COMPANY
+              ? TpCompanyRepresentativeRelationshipStatus.PENDING
+              : TpCompanyRepresentativeRelationshipStatus.APPROVED,
+        }
+      )
+      console.log(
+        '[TpCompanyProfileSignUpUseCase]',
+        'updated accountcontact record',
+        accountContactRecord.Id
+      )
+    }
+
+    /**
+     * Updating the contact's Account from Household account to the Company account
+     * and deleting the unassigned Household account
+     */
+    const householdAccountIdToBeDeleted = contactRecord.props.AccountId
+
+    const newContactRecordProps = new ContactRecordProps()
+    newContactRecordProps.Id = currentUser.userId
+    newContactRecordProps.AccountId = companyEntity.props.id
+
+    await this.sfService.updateContact(
+      ContactRecord.create(newContactRecordProps)
+    )
+    await this.cleanUpUnassignedHouseholdAccount(householdAccountIdToBeDeleted)
+  }
+
+  async cleanUpUnassignedHouseholdAccount(recordId: string) {
+    await this.sfApi.deleteRecord(
+      AccountRecord.metadata.SALESFORCE_OBJECT_NAME,
+      recordId
+    )
+
     console.log(
       '[TpCompanyProfileSignUpUseCase]',
-      'created accountcontact record',
-      accountContactRecordCreationResult.id
+      'deleted household account record',
+      recordId
     )
   }
 }

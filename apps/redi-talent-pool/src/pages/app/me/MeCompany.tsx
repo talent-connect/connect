@@ -1,7 +1,8 @@
-import { Tooltip } from '@material-ui/core'
+import { Tooltip } from '@mui/material'
 import {
   CompanyTalentPoolState,
   MyTpDataQuery,
+  TpJobListingStatus,
   useMyTpDataQuery,
   usePatchTpCompanyProfileMutation,
 } from '@talent-connect/data-access'
@@ -11,8 +12,9 @@ import {
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
 import { AllTpCompanyProfileFieldsFragment } from 'libs/data-access/src/lib/tp/company-profiles/tp-company-profile.fragment.generated'
-import { useState } from 'react'
 import { Columns, Content, Notification } from 'react-bulma-components'
+import CareerPartnerBanner from '../../../components/organisms/CareerPartnerBanner'
+import { ExpiredJobListings } from '../../../components/organisms/ExpiredJobListings'
 import { EditableAbout } from '../../../components/organisms/company-profile-editables/EditableAbout'
 import { EditableContact } from '../../../components/organisms/company-profile-editables/EditableContact'
 import { EditableDetails } from '../../../components/organisms/company-profile-editables/EditableDetails'
@@ -28,14 +30,19 @@ export function MeCompany() {
 
   const mutation = usePatchTpCompanyProfileMutation()
 
-  const [isJobPostingFormOpen, setIsJobPostingFormOpen] = useState(false)
-
   const {
     companyRepresentativeRelationship: representativeRelationship,
     representedCompany: companyProfile,
     jobListings,
     userContact,
   } = myData.data.tpCurrentUserDataGet
+
+  const activeJobListings = jobListings?.filter(
+    (jobListing) => jobListing.status === TpJobListingStatus.Active
+  )
+  const expiredJobListings = jobListings?.filter(
+    (jobListing) => jobListing.status === TpJobListingStatus.Expired
+  )
 
   const onHideFromJobseekersCheckboxChange = async () => {
     await mutation.mutateAsync({
@@ -47,11 +54,11 @@ export function MeCompany() {
     queryClient.invalidateQueries()
   }
 
-  // const onJobFairJuly2023ParticipateChange = async () => {
+  // Hidden until the new date announced
+  // const onMunich24SummerJobFairParticipateChange = async () => {
   //   await mutation.mutateAsync({
   //     input: {
-  //       id: companyProfile.id,
-  //       isJobFairJuly2023Participant: !companyProfile.isJobFairJuly2023Participant,
+  //       joinsMunich24SummerJobFair: !companyProfile.joinsMunich24SummerJobFair,
   //     },
   //   })
   //   queryClient.invalidateQueries()
@@ -73,7 +80,6 @@ export function MeCompany() {
           <Content size="small">
             <strong>Great, your profile is approved!</strong> You can now{' '}
             <span
-              onClick={() => setIsJobPostingFormOpen(true)}
               style={{
                 textDecoration: 'underline',
                 fontWeight: 800,
@@ -89,16 +95,22 @@ export function MeCompany() {
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <EditableNamePhotoLocation companyProfile={companyProfile} />
-          {/* Hidden until the next Job Fair date announced */}
-          {/* <div style={{ marginBottom: '1.5rem' }}>
-            <Checkbox
-              checked={companyProfile.isJobFairJuly2023Participant}
-              customOnChange={onJobFairJuly2023ParticipateChange}
+          <div style={{ marginBottom: '1.5rem' }}>
+            {/* Hidden until the next Job Fair date announced */}
+            {/* <Checkbox
+              checked={companyProfile.joinsMunich24SummerJobFair}
+              customOnChange={onMunich24SummerJobFairParticipateChange}
             >
-              My company will attend the <strong>ReDI Job Fair</strong>{' '}
-              happening on <strong>15/02/2023</strong>.
-            </Checkbox>
-          </div> */}
+              My company will attend the <b>ReDI Winter Job Fair in Munich</b>{' '}
+              on <b>22/02/2024</b>.
+            </Checkbox> */}
+          </div>
+          {companyProfile.isCareerPartner ? (
+            <CareerPartnerBanner
+              partnerSince={new Date(2024, 0, 1)} // Passing a date in 2024. The Day and Month are ignored
+              jobsPosted={jobListings?.length ?? 0}
+            />
+          ) : null}
           <EditableAbout companyProfile={companyProfile} />
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
@@ -130,10 +142,10 @@ export function MeCompany() {
           </Checkbox>
         </Columns.Column>
       </Columns>
-      <EditableJobPostings
-        isJobPostingFormOpen={isJobPostingFormOpen}
-        setIsJobPostingFormOpen={setIsJobPostingFormOpen}
-      />
+      <EditableJobPostings jobListings={activeJobListings} />
+      {expiredJobListings?.length > 0 && (
+        <ExpiredJobListings jobListings={expiredJobListings} />
+      )}
     </LoggedIn>
   )
 }
@@ -165,6 +177,7 @@ function SendProfileForReviewButton() {
   const mutation = usePatchTpCompanyProfileMutation()
 
   const enabled =
+    !isBusy &&
     companyProfile?.state === CompanyTalentPoolState.DraftingProfile &&
     isProfileComplete(companyProfile, userContact) &&
     jobListings?.length > 0
@@ -184,7 +197,7 @@ function SendProfileForReviewButton() {
       return
 
     // TODO: we should have a use case for this change instead of this patch
-    await mutation.mutate({
+    await mutation.mutateAsync({
       input: {
         state: CompanyTalentPoolState.SubmittedForReview,
       },

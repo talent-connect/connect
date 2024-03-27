@@ -54,14 +54,15 @@ export const sendEmailFactory = (to, subject, body, rediLocation) => {
     },
   })
 }
-export const sendMjmlEmailFactory = ({ to, subject, html }) => {
+export const sendMjmlEmailFactory = ({ sender, to, subject, html }) => {
   let toSanitized = isProductionOrDemonstration() ? to : ''
+
   if (process.env.NX_DEV_MODE_EMAIL_RECIPIENT) {
     toSanitized = process.env.NX_DEV_MODE_EMAIL_RECIPIENT
   }
-  let sender = 'career@redi-school.org'
+
   return sendMjmlEmail({
-    from: sender,
+    from: sender ?? 'career@redi-school.org',
     to: toSanitized,
     bcc: ['career@redi-school.org'],
     subject: buildSubjectLine(subject, process.env.NODE_ENV),
@@ -170,19 +171,20 @@ export const sendMenteePendingReviewAcceptedEmail = ({
   firstName,
   rediLocation,
 }) => {
-  const homePageUrl = `${buildFrontendUrl(
+  const loginPageUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
   )}/front/login/`
-  const sendMenteePendingReviewAcceptedEmailParsed = convertTemplateToHtml(
-    null,
-    'welcome-to-redi-mentee'
-  )
-  const html = sendMenteePendingReviewAcceptedEmailParsed
+  const faqPageUrl = `${buildFrontendUrl(
+    process.env.NODE_ENV,
+    rediLocation
+  )}/faq/`
+
+  const html = convertTemplateToHtml(rediLocation, 'welcome-to-redi-mentee')
     .replace(/\${firstName}/g, firstName)
-    .replace(/\${mentorOrMentee}/g, 'mentee')
-    .replace(/\${mentorOrMenteeOpposite}/g, 'mentor')
-    .replace(/\${homePageUrl}/g, homePageUrl)
+    .replace(/\${loginPageUrl}/g, loginPageUrl)
+    .replace(/\${faqPageUrl}/g, faqPageUrl)
+
 
   return sendMjmlEmailFactory({
     to: recipient,
@@ -196,19 +198,19 @@ export const sendMentorPendingReviewAcceptedEmail = ({
   firstName,
   rediLocation,
 }) => {
-  const homePageUrl = `${buildFrontendUrl(
+  const loginPageUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
   )}/front/login/`
   const sendMentorPendingReviewAcceptedEmailParsed = convertTemplateToHtml(
-    rediLocation,
+    null,
     'welcome-to-redi-mentor'
   )
   const html = sendMentorPendingReviewAcceptedEmailParsed
     .replace(/\${firstName}/g, firstName)
     .replace(/\${mentorOrMentee}/g, 'mentor')
     .replace(/\${mentorOrMenteeOpposite}/g, 'mentee')
-    .replace(/\${homePageUrl}/g, homePageUrl)
+    .replace(/\${loginPageUrl}/g, loginPageUrl)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Your ReDI Connect profile is now activated!',
@@ -216,124 +218,19 @@ export const sendMentorPendingReviewAcceptedEmail = ({
   })
 }
 
-/**
- * These two functions were used to send a "congratulations you're verified"
- * emails following successful email veriification. They were commetned out
- * when we migrated to Salesforce and decided to deactivate email verification
- * to save time. We might want to reactivate it in the future.
- */
-
-// export const sendMenteeRequestAppointmentEmail = ({
-//   recipient,
-//   firstName,
-//   rediLocation,
-// }) => {
-//   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(
-//     null,
-//     'validate-email-address-successful-mentee'
-//   )
-//   const html = sendMenteeRequestAppointmentEmailParsed.replace(
-//     /\${firstName}/g,
-//     firstName
-//   )
-//   return sendMjmlEmailFactory({
-//     to: recipient,
-//     subject: 'Your email has been verified for ReDI Connect',
-//     html: html,
-//   })
-// }
-
-// export const sendMentorRequestAppointmentEmail = ({
-//   recipient,
-//   firstName,
-//   rediLocation,
-// }) => {
-//   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(
-//     null,
-//     'validate-email-address-successful-mentor'
-//   )
-//   const html = sendMenteeRequestAppointmentEmailParsed.replace(
-//     /\${firstName}/g,
-//     firstName
-//   )
-//   return sendMjmlEmailFactory({
-//     to: recipient,
-//     subject: 'Your email has been verified for ReDI Connect',
-//     html: html,
-//   })
-// }
-
-export const sendEmailToUserWithTpJobseekerProfileSigningUpToCon = ({
+export const sendMenteeSignupCompleteEmail = ({
   recipient,
   firstName,
   rediLocation,
 }) => {
-  const templateFile = rediLocation === 'CYBERSPACE' 
-  ? 'schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee-cyberspace' 
-  : 'schedule-onboarding-call-for-tp-jobseeker-signed-up-as-mentee'
+  const loginPageUrl = `${buildFrontendUrl(
+    process.env.NODE_ENV,
+    rediLocation
+  )}/front/login/`
 
-  const html = convertTemplateToHtml(null, templateFile).replace(
-    /\${firstName}/g, 
-    firstName
-  )
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'Thanks for signing up to ReDI Connect!',
-    html: html,
-  })
-}
-
-/**
- * This function was used for email verification. It was commented out when we
- * migrated to Salesforce and decided to deactivate email verification to save
- * time. We might want to reactivate it in the future.
- */
-
-// export const sendVerificationEmail = ({
-//   recipient,
-//   redUserId,
-//   firstName,
-//   userType: signupType,
-//   verificationToken,
-//   rediLocation,
-// }) => {
-//   const userType = {
-//     'public-sign-up-mentor-pending-review': 'mentor',
-//     'public-sign-up-mentee-pending-review': 'mentee',
-//   }[signupType]
-//   const verificationSuccessPageUrl = `${buildFrontendUrl(
-//     process.env.NODE_ENV,
-//     rediLocation
-//   )}/front/signup-complete/${signupType}`
-//   const verificationUrl = `${buildBackendUrl(
-//     process.env.NODE_ENV
-//   )}/api/redUsers/confirm?uid=${redUserId}&token=${verificationToken}&redirect=${encodeURI(
-//     verificationSuccessPageUrl
-//   )}`
-//   const sendMenteeRequestAppointmentEmailParsed = convertTemplateToHtml(
-//     null,
-//     `validate-email-address-${userType}`
-//   )
-//   const html = sendMenteeRequestAppointmentEmailParsed
-//     .replace(/\${firstName}/g, firstName)
-//     .replace(/\${mentorOrMentee}/g, userType)
-//     .replace(/\${verificationUrl}/g, verificationUrl)
-//   return sendMjmlEmailFactory({
-//     to: recipient,
-//     subject: 'Verify your email address!',
-//     html: html,
-//   })
-// }
-
-export const sendMenteeSignupCompleteEmail = ({ recipient, firstName, rediLocation }) => {
-  const templateFile = rediLocation === 'CYBERSPACE' 
-  ? 'signup-complete-mentee-cyberspace' 
-  : 'signup-complete-mentee'
-  
-  const html = convertTemplateToHtml(null, templateFile).replace(
-    /\${firstName}/g,
-    firstName
-  )
+  const html = convertTemplateToHtml(null, 'signup-complete-mentee')
+    .replace(/\${firstName}/g, firstName)
+    .replace(/\${loginPageUrl}/g, loginPageUrl)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Sign-up complete!',
@@ -341,11 +238,25 @@ export const sendMenteeSignupCompleteEmail = ({ recipient, firstName, rediLocati
   })
 }
 
-export const sendMentorSignupCompleteEmail = ({ recipient, firstName }) => {
-  const html = convertTemplateToHtml(null, 'signup-complete-mentor').replace(
-    /\${firstName}/g,
-    firstName
-  )
+export const sendMentorSignupCompleteEmail = ({
+  recipient,
+  firstName,
+  isPartnershipMentor,
+  rediLocation,
+}) => {
+  const loginPageUrl = `${buildFrontendUrl(
+    process.env.NODE_ENV,
+    rediLocation
+  )}/front/login/`
+
+  const templateFile =
+    isPartnershipMentor === true
+      ? 'signup-complete-mentor-partnership'
+      : 'signup-complete-mentor'
+
+  const html = convertTemplateToHtml(null, templateFile)
+    .replace(/\${firstName}/g, firstName)
+    .replace(/\${loginPageUrl}/g, loginPageUrl)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: 'Sign-up complete!',
@@ -383,25 +294,29 @@ export const sendMentoringSessionLoggedEmail = ({
   })
 }
 
-export const sendMenteeReminderToApplyToMentorEmail = ({
-  recipient,
-  menteeFirstName,
-  rediLocation
-}) => {
-  const templateFile = rediLocation === 'CYBERSPACE' 
-  ? 'apply-to-mentor-reminder-for-mentee-cyberspace' 
-  : 'apply-to-mentor-reminder-for-mentee'
+/* The code for sending this reminder wasn't re-implemented when we migrated to Salesforce. 
+It should be re-implemented in Salesforce and then removed. */
 
-  const html = convertTemplateToHtml(null,templateFile).replace(
-    /\${menteeFirstName}/g,
-    menteeFirstName
-  )
-  return sendMjmlEmailFactory({
-    to: recipient,
-    subject: 'Have you checked out or amazing mentors yet?',
-    html: html,
-  })
-}
+// export const sendMenteeReminderToApplyToMentorEmail = ({
+//   recipient,
+//   menteeFirstName,
+//   rediLocation,
+// }) => {
+//   const templateFile =
+//     rediLocation === 'CYBERSPACE'
+//       ? 'apply-to-mentor-reminder-for-mentee-cyberspace'
+//       : 'apply-to-mentor-reminder-for-mentee'
+
+//   const html = convertTemplateToHtml(null, templateFile).replace(
+//     /\${menteeFirstName}/g,
+//     menteeFirstName
+//   )
+//   return sendMjmlEmailFactory({
+//     to: recipient,
+//     subject: 'Have you checked out or amazing mentors yet?',
+//     html: html,
+//   })
+// }
 
 export const sendMentorCancelledMentorshipNotificationEmail = ({
   recipient,

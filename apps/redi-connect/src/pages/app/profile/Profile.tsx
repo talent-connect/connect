@@ -19,7 +19,6 @@ import {
   ReadMentoringTopics,
   ReadOccupation,
   ReadPersonalDetail,
-  ReadRediClass,
   ReadSocialMedia,
 } from '../../../components/molecules'
 import {
@@ -133,7 +132,7 @@ function Profile() {
               <Avatar profile={profile} />
             </Columns.Column>
             <Columns.Column size={9}>
-              <Heading>{profile.fullName}</Heading>
+              <Heading size="medium">{profile.fullName}</Heading>
               <Element className="location-tag">
                 <Icon icon="mapPin" className="icon-align" />
                 <Content size="medium" renderAs="p">
@@ -205,14 +204,17 @@ function Profile() {
                   </Columns.Column>
                 )}
                 <Columns.Column>
-                  <ReadRediClass.Some profile={profile} />
+                  {/* Commented until we implement it using the data available in Salesforce */}
+                  {/* <ReadRediClass.Some profile={profile} /> */}
+                  <ReadOccupation.Some profile={profile} />
                 </Columns.Column>
               </Columns>
             </Element>
           )}
 
-          {(profile.mentor_occupation ||
-            profile.mentee_occupationCategoryId) && (
+          {profile.mentor_occupation && (
+            // When ReDI course is re-implemented, uncomment this & remove ReadOccupation component above
+            // || profile.mentee_occupationCategoryId)
             <Element className="block-separator">
               <Columns>
                 <Columns.Column>

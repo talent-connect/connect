@@ -33,13 +33,18 @@ export const queryClient = new QueryClient({
   },
 })
 
-export const signUpLoopback = async (email: string, password: string) => {
+export const signUpLoopback = async (
+  email: string,
+  password: string,
+  extraData: { [key: string]: string }
+) => {
   email = email.toLowerCase()
   const userResponse = await http(`${API_URL}/redUsers`, {
     method: 'post',
     data: {
       email,
       password,
+      ...extraData,
     },
   })
   const accessToken = await login(email, password)
@@ -143,7 +148,6 @@ export interface TpJobseekerProfileFilters {
   employmentTypes: string[]
   skills: string[]
   federalStates: string[]
-  isJobFair2023Participant: boolean
 }
 
 export async function fetchAllTpJobseekerProfiles({
@@ -153,7 +157,6 @@ export async function fetchAllTpJobseekerProfiles({
   employmentTypes,
   skills: topSkills,
   federalStates,
-  isJobFair2023Participant,
 }: TpJobseekerProfileFilters): Promise<Array<Partial<TpJobseekerProfile>>> {
   const filterDesiredPositions =
     desiredPositions && desiredPositions.length !== 0
@@ -172,10 +175,6 @@ export async function fetchAllTpJobseekerProfiles({
     federalStates && federalStates.length !== 0
       ? { inq: federalStates }
       : undefined
-
-  const filterJobFair2023Participant = isJobFair2023Participant
-    ? { isJobFair2023Participant: true }
-    : undefined
 
   return http(
     `${API_URL}/tpJobseekerProfiles?filter=${JSON.stringify({
@@ -202,7 +201,6 @@ export async function fetchAllTpJobseekerProfiles({
               { willingToRelocate: true },
             ],
           },
-          { ...filterJobFair2023Participant },
         ],
       },
       order: 'createdAt DESC',
@@ -326,7 +324,6 @@ export interface TpJobListingFilters {
   employmentType: string[]
   federalStates: string[]
   isRemotePossible: boolean
-  isJobFair2023Participant: boolean
 }
 
 export async function fetchAllTpJobListingsUsingFilters({
@@ -335,7 +332,6 @@ export async function fetchAllTpJobListingsUsingFilters({
   employmentType,
   federalStates,
   isRemotePossible,
-  isJobFair2023Participant,
 }: TpJobListingFilters): Promise<Array<TpJobListing>> {
   const filterRelatedPositions =
     relatedPositions && relatedPositions.length !== 0
@@ -383,15 +379,6 @@ export async function fetchAllTpJobListingsUsingFilters({
           listing.tpCompanyProfile?.isProfileVisibleToJobseekers &&
           listing.tpCompanyProfile.state === 'profile-approved'
       )
-      .filter((listing) => {
-        if (isJobFair2023Participant) {
-          const isPostedByCompanyJobFair2023Participant =
-            listing.tpCompanyProfile?.isJobFair2023Participant
-
-          return isPostedByCompanyJobFair2023Participant
-        }
-        return true
-      })
   )
 }
 

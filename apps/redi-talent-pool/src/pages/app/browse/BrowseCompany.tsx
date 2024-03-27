@@ -1,19 +1,17 @@
 import {
-  ArrayParam,
-  BooleanParam,
-  StringParam,
-  useQueryParams,
-  withDefault,
-} from 'use-query-params'
-
+  FederalState,
+  Language,
+  TpDesiredPosition,
+  TpEmploymentType,
+  TpTechnicalSkill,
+  useTpJobseekerDirectoryEntriesFindAllVisibleQuery,
+} from '@talent-connect/data-access'
 import {
   Checkbox,
   FilterDropdown,
   Icon,
   SearchField,
 } from '@talent-connect/shared-atomic-design-components'
-import { Columns, Element, Tag } from 'react-bulma-components'
-
 import { LANGUAGES } from '@talent-connect/shared-config'
 import {
   desiredPositions,
@@ -25,16 +23,15 @@ import {
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
-
-import {
-  FederalState,
-  Language,
-  TpDesiredPosition,
-  TpEmploymentType,
-  TpTechnicalSkill,
-  useTpJobseekerDirectoryEntriesFindAllVisibleQuery,
-} from '@talent-connect/data-access'
+import { Columns, Element, Tag } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
+import {
+  ArrayParam,
+  BooleanParam,
+  StringParam,
+  useQueryParams,
+  withDefault,
+} from 'use-query-params'
 import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
 import { LoggedIn } from '../../../components/templates'
 import {
@@ -61,7 +58,7 @@ export function BrowseCompany() {
     skills: withDefault(ArrayParam, []),
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
-    // isJobFairJuly2023Participant: withDefault(BooleanParam, undefined),
+    // joinsMunich24SummerJobFair: withDefault(BooleanParam, undefined),
   })
   const name = query.name
   const desiredLanguages = query.desiredLanguages as Language[]
@@ -70,7 +67,7 @@ export function BrowseCompany() {
   const skills = query.skills as TpTechnicalSkill[]
   const federalStates = query.federalStates as FederalState[]
   const onlyFavorites = query.onlyFavorites
-  // const isJobFairJuly2023Participant = query.isJobFairJuly2023Participant
+  // const joinsMunich24SummerJobFair = query.joinsMunich24SummerJobFair
 
   const jobseekerProfilesQuery =
     useTpJobseekerDirectoryEntriesFindAllVisibleQuery({
@@ -81,7 +78,7 @@ export function BrowseCompany() {
         employmentTypes,
         skills,
         federalStates,
-        // isJobFairJuly2023Participant,
+        // joinsMunich24SummerJobFair,
       },
     })
   const jobseekerProfiles =
@@ -125,11 +122,11 @@ export function BrowseCompany() {
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  // const toggleJobFairJuly2023Filter = () =>
+  // const toggleMunich24SummerJobFairFilter = () =>
   //   setQuery((latestQuery) => ({
   //     ...latestQuery,
-  //     isJobFairJuly2023Participant:
-  //       isJobFairJuly2023Participant === undefined ? true : undefined,
+  //     joinsMunich24SummerJobFair:
+  //       joinsMunich24SummerJobFair === undefined ? true : undefined,
   //   }))
 
   const setName = (value) => {
@@ -144,7 +141,7 @@ export function BrowseCompany() {
       desiredPositions: [],
       employmentTypes: [],
       federalStates: [],
-      // isJobFairJuly2023Participant: undefined,
+      // joinsMunich24SummerJobFair: undefined,
     }))
   }
 
@@ -154,7 +151,7 @@ export function BrowseCompany() {
     desiredPositions.length !== 0 ||
     federalStates.length !== 0 ||
     employmentTypes.length !== 0
-  //  || isJobFairJuly2023Participant
+  // || joinsMunich24SummerJobFair
 
   return (
     <LoggedIn>
@@ -166,6 +163,7 @@ export function BrowseCompany() {
         style={{ flexGrow: 1 }}
       >
         Browse our Talent Pool
+        {jobseekerProfiles?.length ? ` (${jobseekerProfiles.length})` : ''}
       </Element>
       <Element
         renderAs="p"
@@ -240,16 +238,6 @@ export function BrowseCompany() {
         </div>
       </div>
       <div className="filters">
-        {/* Hidden until the next Job Fair date announced */}
-        {/* <div className="filters-inner">
-          <Checkbox
-            name="isJobFairJuly2023Participant"
-            checked={isJobFairJuly2023Participant || false}
-            handleChange={toggleJobFairJuly2023Filter}
-          >
-            Attending ReDI Job Fair 2023
-          </Checkbox>
-        </div> */}
         <div className="filters-inner filter-favourites">
           <Checkbox
             name="onlyFavorites"
@@ -264,7 +252,19 @@ export function BrowseCompany() {
             size="small"
           />
         </div>
+        <div className="filters-inner"></div>
+        {/* Hidden until the next Job Fair date announced */}
+        {/* <div className="filters-inner">
+          <Checkbox
+            name="joinsMunich24SummerJobFair"
+            checked={joinsMunich24SummerJobFair || false}
+            handleChange={toggleMunich24SummerJobFairFilter}
+          >
+            ReDI Munich Winter Job Fair 2024
+          </Checkbox>
+        </div> */}
       </div>
+
       <div className="active-filters">
         {shouldShowFilters && (
           <>
@@ -316,12 +316,12 @@ export function BrowseCompany() {
                 }
               />
             ))}
-            {/* {isJobFairJuly2023Participant && (
+            {/* {joinsMunich24SummerJobFair && (
               <FilterTag
-                key="redi-job-fair-2022-filter"
-                id="redi-job-fair-2022-filter"
-                label="Attending ReDI Job Fair 2023"
-                onClickHandler={toggleJobFairJuly2023Filter}
+                key="redi-munich-winter-job-fair-2024-filter"
+                id="redi-munich-winter-job-fair-2024-filter"
+                label="ReDI Munich Winter Job Fair 2024"
+                onClickHandler={toggleMunich24SummerJobFairFilter}
               />
             )} */}
             <span className="active-filters__clear-all" onClick={clearFilters}>

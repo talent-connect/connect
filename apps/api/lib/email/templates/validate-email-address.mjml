@@ -1,0 +1,42 @@
+<mjml>
+  <mj-include path="./head.mjml" />
+  <mj-body mj-class="body">
+    <mj-wrapper background-color="#F0F0F0">
+      <mj-section />
+      <mj-section css-class="section">
+        <mj-column>
+          <mj-text mj-class="headline">Verify your email address!</mj-text>
+          <mj-divider mj-class="divider-top" css-class="divider" />
+
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Hi ${firstName},</mj-text
+          >
+          <mj-text mj-class="text paragraph"
+            >Thank you for signing up on ReDI Connect!</mj-text
+          >
+          <mj-text mj-class="text paragraph"
+            >Please verify your email address by clicking on the button below.
+            After successfully verifying, we’ll send you an email with the next
+            steps!</mj-text
+          >
+          <mj-image
+            src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/verify.png"
+            align="left"
+            padding="10px 0 30px 0"
+            target="_blank"
+            width="353px"
+            href="${verificationUrl}"
+          />
+
+          <mj-text mj-class="text paragraph"
+            >We are excited to get to know you soon!</mj-text
+          >
+
+          <mj-text mj-class="text">All the best,</mj-text>
+          <mj-text mj-class="text">Your ReDI Talent Success Team</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section />
+    </mj-wrapper>
+  </mj-body>
+</mjml>

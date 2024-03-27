@@ -31,12 +31,12 @@ export class ConProfileRecordProps implements RecordProps {
   @Type(() => Date)
   Profile_First_Approved_At__c?: Date
   Profile_Status__c?: PicklistValue
-  ReDI_Course__c?: PicklistValue
   ReDI_Location__c: PicklistValue
   Study_Name__c?: string
   Study_Place__c?: string
   Work_Place__c?: string
   total_mentee_capacity__c?: number
+  Partnership_Mentor__c?: boolean
 
   Active_Mentorship_Matches_Mentee__c: number
   Active_Mentorship_Matches_Mentor__c: number

@@ -2,12 +2,7 @@ import { Field, ID, Int, ObjectType } from '@nestjs/graphql'
 import { EntityProps } from '../base-interfaces-types-classes'
 import { Language, RediLocation } from '../common-objects'
 import { Gender } from '../common-objects/contact/enums/gender.enum'
-import {
-  EducationLevel,
-  OccupationCategory,
-  RediCourse,
-  UserType,
-} from './enums'
+import { EducationLevel, OccupationCategory, UserType } from './enums'
 import { ConnectProfileStatus } from './enums/connect-profile-status.enum'
 import { MentoringTopic } from './enums/mentoring-topic.enum'
 
@@ -23,6 +18,7 @@ export class ConProfileEntityProps implements EntityProps {
   rediLocation: RediLocation
   mentor_occupation?: string
   mentor_workPlace?: string
+  mentor_isPartnershipMentor?: boolean
   expectations?: string
   @Field((type) => OccupationCategory)
   mentee_occupationCategoryId?: OccupationCategory
@@ -34,8 +30,6 @@ export class ConProfileEntityProps implements EntityProps {
   mentee_occupationOther_description?: string
   @Field((type) => EducationLevel)
   mentee_highestEducationLevel?: EducationLevel
-  @Field((type) => RediCourse)
-  mentee_currentlyEnrolledInCourse?: RediCourse
   profileAvatarImageS3Key?: string
   firstName: string
   lastName: string

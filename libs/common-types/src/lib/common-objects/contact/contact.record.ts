@@ -36,6 +36,7 @@ export class ContactRecord extends Record<ContactRecordProps> {
       'CON_TP_Mailing_Address__c',
       'CreatedDate',
       'LastModifiedDate',
+      'AccountId',
     ],
   }
 }

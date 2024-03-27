@@ -26,4 +26,5 @@ class FindAllVisibleTpJobListingsArgsFilter {
   federalStates?: FederalState[]
 
   isRemotePossible?: boolean
+  joinsMunich24SummerJobFair?: boolean
 }

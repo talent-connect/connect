@@ -8,7 +8,6 @@ import {
   TpEmploymentType,
   TpTechnicalSkill,
 } from '../../common-objects'
-import { RediCourse } from '../../con-profile'
 import { TpAvailabilityOption } from '../../tp-common-objects'
 import { JobseekerProfileStatus } from '../enums'
 
@@ -21,8 +20,6 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
 
   @Field(() => RediLocation)
   rediLocation?: string
-  @Field(() => RediCourse)
-  currentlyEnrolledInCourse?: string
   profileAvatarImageS3Key?: string
   @Field((type) => [TpDesiredPosition])
   desiredPositions?: Array<TpDesiredPosition>
@@ -36,8 +33,7 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
   topSkills?: Array<TpTechnicalSkill>
   @Field((type) => JobseekerProfileStatus)
   state: JobseekerProfileStatus
-  isJobFair2022Participant: boolean
-  isJobFair2023Participant: boolean
+  joinsMunich24SummerJobFair?: boolean
   isProfileVisibleToCompanies: boolean
   isHired: boolean
   @Field((type) => FederalState)

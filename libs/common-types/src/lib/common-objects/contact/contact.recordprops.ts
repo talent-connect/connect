@@ -33,6 +33,8 @@ export class ContactRecordProps implements RecordProps {
   @Type(() => Date)
   LastModifiedDate: Date
 
+  AccountId?: string
+
   // Only computed fields below
   Name: string // full name
 

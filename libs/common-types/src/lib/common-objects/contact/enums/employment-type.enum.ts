@@ -11,6 +11,7 @@ export enum TpEmploymentType {
   traineeship = 'traineeship',
   dualStudyBachelor = 'dualStudyBachelor',
   dualStudyMaster = 'dualStudyMaster',
+  projectBased = 'projectBased',
 }
 
 registerEnumType(TpEmploymentType, { name: 'TpEmploymentType' })

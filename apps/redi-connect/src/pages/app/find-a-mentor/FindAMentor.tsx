@@ -25,6 +25,7 @@ import { objectKeys } from '@talent-connect/typescript-utilities'
 import { useEffect, useState } from 'react'
 import { Columns, Content, Tag } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
+import { useHistory } from 'react-router-dom'
 import {
   ArrayParam,
   BooleanParam,
@@ -32,7 +33,8 @@ import {
   useQueryParams,
   withDefault,
 } from 'use-query-params'
-import { ProfileCard } from '../../../components/organisms'
+
+import { MentorProfileCard } from '../../../components/organisms/MentorProfileCard'
 import { LoggedIn } from '../../../components/templates'
 import { useLoading } from '../../../hooks/WithLoading'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
@@ -77,6 +79,8 @@ const FindAMentor = () => {
   const unfavoriteMentorMutation = useUnfavoriteMentorMutation()
 
   const { Loading, isLoading } = useLoading()
+  const history = useHistory()
+  const profile = myProfileQuery.data?.conProfile
 
   const [showFavorites, setShowFavorites] = useState<boolean>(false)
   const [query, setQuery] = useQueryParams({
@@ -105,11 +109,7 @@ const FindAMentor = () => {
       locations.length > 0 ||
       Boolean(name) ||
       onlyFavorites
-    setQuery(
-      hasQuery
-        ? query
-        : { ...query, topics: myProfileQuery.data?.conProfile.categories ?? [] }
-    )
+    setQuery(hasQuery ? query : { ...query, topics: profile?.categories ?? [] })
   }, [myProfileQuery.data])
 
   const toggleFilters = (filtersArr, filterName, item) => {
@@ -161,19 +161,25 @@ const FindAMentor = () => {
     })
   )
 
-  if (
-    myProfileQuery.data?.conProfile &&
-    myProfileQuery.data?.conProfile?.profileStatus !==
-      ConnectProfileStatus.Approved
-  )
+  if (profile && profile?.profileStatus !== ConnectProfileStatus.Approved)
     return <LoggedIn />
+
+  const menteeHasAnActiveMatch =
+    profile?.userType === 'MENTEE' &&
+    profile?.mentorshipMatches.length > 0 &&
+    profile?.mentorshipMatches?.[0].status === 'ACCEPTED'
+
+  if (menteeHasAnActiveMatch) {
+    const matchId = profile?.mentorshipMatches?.[0].id
+    history.replace(`/app/mentorships/${matchId}`)
+  }
 
   // This logic filters away mentors that have have opted out of being
   // receiving application form mentees from other locations
   const mentors = mentorsQuery.data?.conProfilesAvailableMentors.filter(
     (mentor) =>
       !mentor.optOutOfMenteesFromOtherRediLocation ||
-      mentor.rediLocation === myProfileQuery.data?.conProfile?.rediLocation
+      mentor.rediLocation === profile?.rediLocation
   )
 
   return (
@@ -286,9 +292,14 @@ const FindAMentor = () => {
           if (!isFavorite && showFavorites) return
 
           return (
-            <Columns.Column size={4} key={mentor.id}>
-              <ProfileCard
-                profile={mentor}
+            <Columns.Column
+              mobile={{ size: 12 }}
+              tablet={{ size: 6 }}
+              desktop={{ size: 4 }}
+              key={mentor.id}
+            >
+              <MentorProfileCard
+                mentorProfile={mentor}
                 linkTo={`/app/find-a-mentor/profile/${mentor.id}`}
                 toggleFavorite={() => toggleFavorite(mentor.id)}
                 isFavorite={isFavorite}

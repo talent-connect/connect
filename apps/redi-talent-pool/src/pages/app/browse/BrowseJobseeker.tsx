@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import { Columns, Element, Tag } from 'react-bulma-components'
 import {
-  ArrayParam,
-  BooleanParam,
-  useQueryParams,
-  withDefault,
-} from 'use-query-params'
-
+  FederalState,
+  JobseekerProfileStatus,
+  TpDesiredPosition,
+  TpEmploymentType,
+  TpTechnicalSkill,
+  useMyTpDataQuery,
+  useTpJobListingFindAllVisibleQuery,
+} from '@talent-connect/data-access'
 import {
   Checkbox,
   FilterDropdown,
@@ -22,21 +22,21 @@ import {
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-
-import {
-  FederalState,
-  JobseekerProfileStatus,
-  TpDesiredPosition,
-  TpEmploymentType,
-  TpTechnicalSkill,
-  useMyTpDataQuery,
-  useTpJobListingFindAllVisibleQuery,
-} from '@talent-connect/data-access'
 import { objectEntries } from '@talent-connect/typescript-utilities'
+import { formatDistance } from 'date-fns'
+import { useState } from 'react'
+import { Columns, Element, Tag } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import { Redirect } from 'react-router-dom'
+import {
+  ArrayParam,
+  BooleanParam,
+  useQueryParams,
+  withDefault,
+} from 'use-query-params'
 import { JobListingCard } from '../../../components/organisms/JobListingCard'
 import { LoggedIn } from '../../../components/templates'
+import { careerPartnerSortFn } from '../../../utils/sort-job-listings'
 import {
   useTpJobListingMarkAsFavouriteMutation,
   useTpJobListingUnfavouriteMutation,
@@ -61,7 +61,7 @@ export function BrowseJobseeker() {
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
     isRemotePossible: withDefault(BooleanParam, undefined),
-    // isJobFairJuly2023Participant: withDefault(BooleanParam, undefined),
+    // joinsMunich24SummerJobFair: withDefault(BooleanParam, undefined),
   })
   const relatedPositions = query.relatedPositions as TpDesiredPosition[]
   const idealTechnicalSkills = query.idealTechnicalSkills as TpTechnicalSkill[]
@@ -69,6 +69,7 @@ export function BrowseJobseeker() {
   const federalStates = query.federalStates as FederalState[]
   const onlyFavorites = query.onlyFavorites
   const isRemotePossible = query.isRemotePossible
+  // const joinsMunich24SummerJobFair = query.joinsMunich24SummerJobFair
 
   const jobListingsQuery = useTpJobListingFindAllVisibleQuery({
     input: {
@@ -77,9 +78,17 @@ export function BrowseJobseeker() {
       employmentTypes: employmentType,
       federalStates,
       isRemotePossible,
+      // joinsMunich24SummerJobFair,
     },
   })
-  const jobListings = jobListingsQuery.data?.tpJobListings
+
+  /**
+   * This sorting has to be done here because of several reasons:
+   * - Backend currently supports only sorting by one field, which is used for sorting by date
+   * - All fetch job listing queries are using one findAll query, which means this sort would have unexpected side effects
+   */
+  const jobListings =
+    jobListingsQuery.data?.tpJobListings.sort(careerPartnerSortFn)
 
   const handleFavoriteJobListing = async (tpJobListingId: string) => {
     const isFavorite =
@@ -119,22 +128,33 @@ export function BrowseJobseeker() {
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  // const toggleJobFairJuly2023Filter = () =>
+  // Hidden until the new date announced
+  // const toggleMunich24SummerJobFairFilter = () =>
   //   setQuery((latestQuery) => ({
   //     ...latestQuery,
-  //     isJobFairJuly2023Participant:
-  //       isJobFairJuly2023Participant === undefined ? true : undefined,
+  //     joinsMunich24SummerJobFair:
+  //       joinsMunich24SummerJobFair === undefined ? true : undefined,
   //   }))
 
   const clearFilters = () => {
     setQuery((latestQuery) => ({
       ...latestQuery,
+      relatedPositions: [],
       idealTechnicalSkills: [],
       employmentType: [],
       federalStates: [],
-      // isJobFairJuly2023Participant: undefined,
+      isRemotePossible: undefined,
+      // joinsMunich24SummerJobFair: undefined,
     }))
   }
+
+  const shouldShowFilters =
+    relatedPositions.length !== 0 ||
+    idealTechnicalSkills.length !== 0 ||
+    employmentType.length !== 0 ||
+    federalStates.length !== 0 ||
+    isRemotePossible
+  // || joinsMunich24SummerJobFair
 
   // Redirect to homepage if user is not supposed to be browsing yet
   if (
@@ -142,6 +162,22 @@ export function BrowseJobseeker() {
     currentJobseekerProfile?.state !== JobseekerProfileStatus.ProfileApproved
   ) {
     return <Redirect to="/" />
+  }
+
+  const renderFavoriteCTA = (joblistingId, isFavorite) => {
+    const handleFavoriteClick = (e: React.MouseEvent) => {
+      e.preventDefault()
+      handleFavoriteJobListing(joblistingId)
+    }
+
+    return (
+      <div className="job-posting-card__favorite" onClick={handleFavoriteClick}>
+        <Icon
+          icon={isFavorite ? 'heartFilled' : 'heart'}
+          className="job-posting-card__favorite__icon"
+        />
+      </div>
+    )
   }
 
   return (
@@ -153,7 +189,8 @@ export function BrowseJobseeker() {
         className="is-flex-grow-1"
         style={{ flexGrow: 1 }}
       >
-        Browse open Job Listings
+        Browse open Job Listings{' '}
+        {jobListings?.length ? `(${jobListings.length})` : ''}
       </Element>
       <Element
         renderAs="p"
@@ -244,22 +281,24 @@ export function BrowseJobseeker() {
             size="small"
           />
         </div>
-        <div className="filters-inner">
-          {/* Hidden until the next Job Fair date announced */}
-          {/* <Checkbox
-            name="isJobFairJuly2023Participant"
-            checked={isJobFairJuly2023Participant || false}
-            handleChange={toggleJobFairJuly2023Filter}
-          >
-            Attending ReDI Job Fair 2023
-          </Checkbox> */}
-        </div>
+        {/* Next Div is to keep three filters sizing for two checkboxes. Remove if necessary */}
+        <div className="filters-inner"></div>
       </div>
+      {/* Hidden until the next Job Fair date announced */}
+      {/* <div className="filters"> */}
+      {/* <div className="filters-inner"> */}
+      {/* <Checkbox
+            name="joinsMuich24WinterJobFair"
+            checked={joinsMunich24SummerJobFair || false}
+            handleChange={toggleMunich24SummerJobFairFilter}
+          >
+            ReDI Munich Winter Job Fair 2024
+          </Checkbox> */}
+      {/* </div> */}
+      {/* </div> */}
+
       <div className="active-filters">
-        {(relatedPositions.length !== 0 ||
-          idealTechnicalSkills.length !== 0 ||
-          employmentType.length !== 0 ||
-          federalStates.length !== 0) && (
+        {shouldShowFilters && (
           <>
             {(relatedPositions as string[]).map((catId) => (
               <FilterTag
@@ -305,12 +344,20 @@ export function BrowseJobseeker() {
                 }
               />
             ))}
-            {/* {isJobFairJuly2023Participant && (
+            {isRemotePossible && (
               <FilterTag
-                key="redi-job-fair-2022-filter"
-                id="redi-job-fair-2022-filter"
-                label="Attending ReDI Job Fair 2023"
-                onClickHandler={toggleJobFairJuly2023Filter}
+                key="remote-working-possible"
+                id="remote-working-possible"
+                label="Remote Working Possible"
+                onClickHandler={toggleRemoteAvailableFilter}
+              />
+            )}
+            {/* {joinsMunich24SummerJobFair && (
+              <FilterTag
+                key="redi-munich-winter-job-fair-2024-filter"
+                id="redi-munich-winter-job-fair-2024-filter"
+                label="ReDI Munich Winter Job Fair 2024"
+                onClickHandler={toggleMunich24SummerJobFairFilter}
               />
             )} */}
             <span className="active-filters__clear-all" onClick={clearFilters}>
@@ -344,13 +391,18 @@ export function BrowseJobseeker() {
             if (!isFavorite && onlyFavorites) return
 
             return (
-              <Columns.Column mobile={{ size: 12 }} tablet={{ size: 6 }}>
+              <Columns.Column key={jobListing.id} size={12}>
                 <JobListingCard
-                  key={jobListing.id}
-                  jobListing={jobListing as unknown as any}
-                  toggleFavorite={handleFavoriteJobListing}
-                  isFavorite={isFavorite}
+                  jobListing={jobListing}
                   linkTo={`/app/job-listing/${jobListing.id}`}
+                  renderCTA={() => renderFavoriteCTA(jobListing.id, isFavorite)}
+                  timestamp={`Last updated ${formatDistance(
+                    new Date(jobListing.updatedAt),
+                    new Date(),
+                    {
+                      addSuffix: true,
+                    }
+                  )}`}
                 />
               </Columns.Column>
             )

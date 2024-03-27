@@ -19,16 +19,17 @@
               >Talent Pool</a
             >
             and work on your profile. Once it's complete, you will be able to
-            send it to me for review.
+            send it to us for review.
           </mj-text>
           <mj-text mj-class="text paragraph"
-            >I am excited to get to know you soon!</mj-text
-          >
-          <mj-text mj-class="text">Best,</mj-text>
-          <mj-text mj-class="text">Paulina</mj-text>
+            >We are excited to get to know you soon!</mj-text
+            >
+            
+          <mj-text mj-class="text">All the best,</mj-text>
+          <mj-text mj-class="text">ReDI Talent Success Team</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="../templates/footer.berlin.paulina.mjml" />
+      <mj-include path="../templates/footer.career.support.team-tp.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

@@ -121,7 +121,6 @@ type ConProfile {
   linkedInProfileUrl: String
   loopbackUserId: String!
   menteeCountCapacity: Int
-  mentee_currentlyEnrolledInCourse: RediCourse
   mentee_highestEducationLevel: EducationLevel
   mentee_occupationCategoryId: OccupationCategory
   mentee_occupationJob_placeOfEmployment: String
@@ -130,6 +129,7 @@ type ConProfile {
   mentee_occupationOther_description: String
   mentee_occupationStudent_studyName: String
   mentee_occupationStudent_studyPlace: String
+  mentor_isPartnershipMentor: Boolean
   mentor_occupation: String
   mentor_workPlace: String
   mentoringSessions: [ConMentoringSession!]!
@@ -149,9 +149,8 @@ type ConProfile {
 
 input ConProfileSignUpInput {
   email: String!
-  firstName: String!
-  lastName: String!
-  mentee_currentlyEnrolledInCourse: RediCourse
+  mentor_isPartnershipMentor: Boolean
+  mentor_workPlace: String
   rediLocation: RediLocation!
   userType: UserType!
 }
@@ -159,8 +158,9 @@ input ConProfileSignUpInput {
 enum ConnectProfileStatus {
   APPROVED
   DEACTIVATED
-  PENDING
+  DRAFTING_PROFILE
   REJECTED
+  SUBMITTED_FOR_REVIEW
 }
 
 input CreateConMentoringSessionInput {
@@ -220,6 +220,7 @@ input FindAllVisibleTpJobListingsArgsFilter {
   employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
   isRemotePossible: Boolean
+  joinsMunich24SummerJobFair: Boolean
   relatesToPositions: [TpDesiredPosition!]
   skills: [TpTechnicalSkill!]
 }
@@ -229,8 +230,7 @@ input FindAllVisibleTpJobseekerDirectoryEntriesFilter {
   desiredPositions: [TpDesiredPosition!]
   employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
-  isJobFair2022Participant: Boolean
-  isJobFair2023Participant: Boolean
+  joinsMunich24SummerJobFair: Boolean
   name: String
   skills: [TpTechnicalSkill!]
 }
@@ -516,6 +516,7 @@ type Mutation {
   conMentorshipMatchesDeclineMentorship(input: ConMentorshipMatchesDeclineMentorshipInputDto!): ConMentorshipMatchesDeclineMentorshipOutputDto!
   conProblemReportCreate(input: CreateConProblemReportInput!): OkResponseMutationOutputDto!
   conProfileSignUp(input: ConProfileSignUpInput!): OkIdResponseMutationOutputDto!
+  conProfileSubmitForReview: ConProfile!
   createConMentoringSession(createConMentoringSessionInput: CreateConMentoringSessionInput!): ConMentoringSession!
   patchConProfile(patchConProfileInput: UpdateConProfileInput!): ConProfile!
   tpCompanyFavoritedJobseekerProfileCreate(input: TpCompanyFavoritedJobseekerProfileCreateMutationInputDto!): TpCompanyFavoritedJobseekerProfileCreateMutationOutputDto!
@@ -598,64 +599,6 @@ type Query {
   tpJobseekerProfileLanguageRecords: [TpJobseekerProfileLanguageRecord!]!
 }
 
-enum RediCourse {
-  BERLIN_ALUMNI
-  BERLIN_DATA_ANALYTICS
-  BERLIN_DATA_CIRCLE
-  BERLIN_DIGITAL_LITERACY_PROGRAM
-  BERLIN_HTML_CSS
-  BERLIN_INTRO_TO_COMPUTER_SCIENCE
-  BERLIN_INTRO_TO_JAVA
-  BERLIN_JAVASCRIPT
-  BERLIN_JAVA_CIRCLE
-  BERLIN_PYTHON_FOUNDATION
-  BERLIN_REACT
-  BERLIN_SALESFORCE_FUNDAMENTALS
-  CYBERSPACE_ALUMNI
-  CYBERSPACE_CYBERSECURITY_ADVANCED
-  CYBERSPACE_CYBERSECURITY_BEGINNERS
-  CYBERSPACE_CYBERSECURITY_INTERMEDIATE
-  CYBERSPACE_DATA_ANALYTICS
-  CYBERSPACE_PYTHON_FOUNDATION
-  CYBERSPACE_UX_UI_BASICS
-  HAMBURG_ALUMNI
-  HAMBURG_CLOUD_COMPUTING
-  HAMBURG_HTML_CSS
-  HAMBURG_INTRO_TO_COMPUTER_SCIENCE
-  HAMBURG_JAVASCRIPT
-  HAMBURG_PYTHON_INTERMEDIATE
-  HAMBURG_UX_UI_DESIGN_BASICS
-  HAMBURG_UX_UI_DESIGN_INTERMEDIATE
-  MUNICH_ALUMNI
-  MUNICH_BACK_END_DEVELOPMENT
-  MUNICH_DATA_ANALYTICS
-  MUNICH_DATA_STRUCTURE_AND_ALGORITHMS
-  MUNICH_DIGITAL_LITERACY_PROGRAM
-  MUNICH_FRONT_END_DEVELOPMENT_HTML_CSS
-  MUNICH_FRONT_END_DEVELOPMENT_JAVASCRIPT
-  MUNICH_FRONT_END_DEVELOPMENT_REACT
-  MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_HYBRID
-  MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_ONLINE
-  MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_UKR
-  MUNICH_PYTHON_INTERMEDIATE_HYBRID
-  MUNICH_PYTHON_INTERMEDIATE_ONLINE
-  MUNICH_PYTHON_INTERMEDIATE_UKR
-  MUNICH_UX_UI_DESIGN_BASICS
-  MUNICH_UX_UI_DESIGN_INTERMEDIATE
-  NRW_ALUMNI
-  NRW_CLOUD_COMPUTING
-  NRW_DATA_ANALYTICS
-  NRW_HTML_AND_CSS
-  NRW_INFRASTRUCTURE_BASICS
-  NRW_INTERNET_OF_THINGS
-  NRW_INTRODUCTION_TO_PYTHON
-  NRW_JAVASCRIPT
-  NRW_MACHINE_LEARNING
-  NRW_REACT
-  NRW_UX_UI_DESIGN_BASICS
-  NRW_UX_UI_DESIGN_INTERMEDIATE
-}
-
 enum RediLocation {
   BERLIN
   CYBERSPACE
@@ -703,8 +646,9 @@ type TpCompanyProfile {
   createdAt: DateTime!
   id: ID!
   industry: String
-  isJobFair2023Participant: Boolean!
+  isCareerPartner: Boolean!
   isProfileVisibleToJobseekers: Boolean!
+  joinsMunich24SummerJobFair: Boolean
   linkedInUrl: String
   location: String
   profileAvatarImageS3Key: String
@@ -719,8 +663,8 @@ input TpCompanyProfilePatchInput {
   about: String
   companyName: String
   industry: String
-  isJobFair2023Participant: Boolean
   isProfileVisibleToJobseekers: Boolean
+  joinsMunich24SummerJobFair: Boolean
   linkedInUrl: String
   location: String
   profileAvatarImageS3Key: String
@@ -732,10 +676,9 @@ input TpCompanyProfilePatchInput {
 
 input TpCompanyProfileSignUpInputDto {
   companyIdOrName: String!
-  firstName: String!
   firstPointOfContact: FirstPointOfTpContactOption!
   firstPointOfContactOther: String
-  lastName: String!
+  isMicrosoftPartner: Boolean!
   operationType: TpCompanyProfileSignUpOperationType!
 }
 
@@ -839,6 +782,7 @@ enum TpEmploymentType {
   freelance
   fullTime
   partTime
+  projectBased
   traineeship
   werkstudium
 }
@@ -847,23 +791,34 @@ type TpJobListing {
   companyName: String!
   companyProfile: TpCompanyProfile!
   companyProfileId: ID!
+  contactEmailAddress: String
+  contactFirstName: String
+  contactLastName: String
+  contactPhoneNumber: String
   createdAt: DateTime!
   employmentType: TpEmploymentType
+  expiresAt: DateTime
   federalState: FederalState
   id: ID!
   idealTechnicalSkills: [TpTechnicalSkill!]
+  isFromCareerPartner: Boolean!
   isRemotePossible: Boolean
   languageRequirements: String
   location: String
   profileAvatarImageS3Key: String
   relatesToPositions: [TpDesiredPosition!]
   salaryRange: String
+  status: TpJobListingStatus
   summary: String
   title: String
   updatedAt: DateTime!
 }
 
 input TpJobListingCreateInput {
+  contactEmailAddress: String
+  contactFirstName: String
+  contactLastName: String
+  contactPhoneNumber: String
   employmentType: TpEmploymentType
   federalState: FederalState
   idealTechnicalSkills: [TpTechnicalSkill!]
@@ -881,7 +836,12 @@ input TpJobListingDeleteInput {
 }
 
 input TpJobListingPatchInput {
+  contactEmailAddress: String
+  contactFirstName: String
+  contactLastName: String
+  contactPhoneNumber: String
   employmentType: TpEmploymentType
+  expiresAt: DateTime
   federalState: FederalState
   id: ID!
   idealTechnicalSkills: [TpTechnicalSkill!]
@@ -892,6 +852,11 @@ input TpJobListingPatchInput {
   salaryRange: String
   summary: String
   title: String
+}
+
+enum TpJobListingStatus {
+  ACTIVE
+  EXPIRED
 }
 
 type TpJobseekerCv {
@@ -1109,7 +1074,6 @@ type TpJobseekerDirectoryEntry {
   availability: TpAvailabilityOption
   behanceUrl: String
   createdAt: DateTime!
-  currentlyEnrolledInCourse: RediCourse
   desiredEmploymentType: [TpEmploymentType!]
   desiredPositions: [TpDesiredPosition!]
   dribbbleUrl: String
@@ -1125,9 +1089,8 @@ type TpJobseekerDirectoryEntry {
   ifAvailabilityIsDate_date: DateTime
   immigrationStatus: ImmigrationStatus
   isHired: Boolean!
-  isJobFair2022Participant: Boolean!
-  isJobFair2023Participant: Boolean!
   isProfileVisibleToCompanies: Boolean!
+  joinsMunich24SummerJobFair: Boolean
   lastName: String!
   linkedInUrl: String
   location: String
@@ -1175,7 +1138,6 @@ type TpJobseekerProfile {
   aboutYourself: String
   availability: TpAvailabilityOption
   createdAt: DateTime!
-  currentlyEnrolledInCourse: RediCourse
   desiredEmploymentType: [TpEmploymentType!]
   desiredPositions: [TpDesiredPosition!]
   federalState: FederalState
@@ -1183,9 +1145,8 @@ type TpJobseekerProfile {
   ifAvailabilityIsDate_date: DateTime
   immigrationStatus: ImmigrationStatus
   isHired: Boolean!
-  isJobFair2022Participant: Boolean!
-  isJobFair2023Participant: Boolean!
   isProfileVisibleToCompanies: Boolean!
+  joinsMunich24SummerJobFair: Boolean
   location: String
   profileAvatarImageS3Key: String
   rediLocation: RediLocation
@@ -1328,16 +1289,14 @@ input TpJobseekerProfileLanguageRecordPatchInput {
 input TpJobseekerProfilePatchInput {
   aboutYourself: String
   availability: TpAvailabilityOption
-  currentlyEnrolledInCourse: RediCourse
   desiredEmploymentType: [TpEmploymentType!]
   desiredPositions: [TpDesiredPosition!]
   federalState: FederalState
   ifAvailabilityIsDate_date: DateTime
   immigrationStatus: ImmigrationStatus
   isHired: Boolean
-  isJobFair2022Participant: Boolean
-  isJobFair2023Participant: Boolean
   isProfileVisibleToCompanies: Boolean
+  joinsMunich24SummerJobFair: Boolean
   location: String
   profileAvatarImageS3Key: String
   rediLocation: RediLocation
@@ -1347,9 +1306,6 @@ input TpJobseekerProfilePatchInput {
 }
 
 input TpJobseekerProfileSignUpDto {
-  currentlyEnrolledInCourse: RediCourse!
-  firstName: String!
-  lastName: String!
   rediLocation: RediLocation!
 }
 
@@ -1475,7 +1431,6 @@ input UpdateConProfileInput {
   lastName: String
   linkedInProfileUrl: String
   menteeCountCapacity: Int
-  mentee_currentlyEnrolledInCourse: RediCourse
   mentee_highestEducationLevel: EducationLevel
   mentee_occupationCategoryId: OccupationCategory
   mentee_occupationJob_placeOfEmployment: String
@@ -1484,6 +1439,7 @@ input UpdateConProfileInput {
   mentee_occupationOther_description: String
   mentee_occupationStudent_studyName: String
   mentee_occupationStudent_studyPlace: String
+  mentor_isPartnershipMentor: Boolean
   mentor_occupation: String
   mentor_workPlace: String
   optOutOfMenteesFromOtherRediLocation: Boolean

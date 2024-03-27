@@ -1,15 +1,15 @@
 import classnames from 'clsx'
 import { Element } from 'react-bulma-components'
 
-import { ReactComponent as ChecklistActiveImage } from './checklist-item-active.svg'
-import { ReactComponent as ChecklistImage } from './checklist-item.svg'
-import { ReactComponent as CheckmarkBorderOnlyImage } from './checkmark-border-only.svg'
-import { ReactComponent as CheckmarkImage } from './checkmark.svg'
-import { ReactComponent as StepPendingImage } from './pending.svg'
+import { ReactComponent as ChecklistActiveImage } from '../../../assets/checklist-item-active.svg'
+import { ReactComponent as ChecklistImage } from '../../../assets/checklist-item.svg'
+import { ReactComponent as CheckmarkBorderOnlyImage } from '../../../assets/checkmark-border-only.svg'
+import { ReactComponent as CheckmarkImage } from '../../../assets/checkmark.svg'
+import { ReactComponent as StepPendingImage } from '../../../assets/pending.svg'
 
 import { CompanyTalentPoolState } from '@talent-connect/data-access'
 import { TpCompanyProfileOnboardigStepsProfilePropFragment } from './TpCompanyProfileOnboardingSteps.generated'
-
+import './TpCompanyProfileOnboardingSteps.scss'
 const steps = [
   { number: 1, label: 'Complete your profile' },
   { number: 2, label: 'Post a job' },
@@ -53,8 +53,8 @@ export function OnboardingSteps({
   )
 
   return (
-    <div className="onboarding-steps">
-      <div className="onboarding-steps--header">
+    <div className="company-onboarding-steps">
+      <div className="company-onboarding-steps--header">
         <Element
           renderAs="h4"
           textAlignment="centered"
@@ -68,7 +68,7 @@ export function OnboardingSteps({
       {steps.map((step, index) => (
         <div
           key={index}
-          className={classnames('onboarding-steps--item', {
+          className={classnames('company-onboarding-steps--item', {
             'current-step': step.number === currentStep[0],
             'completed-step': step.number < currentStep[0],
           })}

@@ -148,7 +148,6 @@ export type ConProfile = {
   linkedInProfileUrl?: Maybe<Scalars['String']>;
   loopbackUserId: Scalars['String'];
   menteeCountCapacity?: Maybe<Scalars['Int']>;
-  mentee_currentlyEnrolledInCourse?: Maybe<RediCourse>;
   mentee_highestEducationLevel?: Maybe<EducationLevel>;
   mentee_occupationCategoryId?: Maybe<OccupationCategory>;
   mentee_occupationJob_placeOfEmployment?: Maybe<Scalars['String']>;
@@ -157,6 +156,7 @@ export type ConProfile = {
   mentee_occupationOther_description?: Maybe<Scalars['String']>;
   mentee_occupationStudent_studyName?: Maybe<Scalars['String']>;
   mentee_occupationStudent_studyPlace?: Maybe<Scalars['String']>;
+  mentor_isPartnershipMentor?: Maybe<Scalars['Boolean']>;
   mentor_occupation?: Maybe<Scalars['String']>;
   mentor_workPlace?: Maybe<Scalars['String']>;
   mentoringSessions: Array<ConMentoringSession>;
@@ -176,9 +176,8 @@ export type ConProfile = {
 
 export type ConProfileSignUpInput = {
   email: Scalars['String'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  mentee_currentlyEnrolledInCourse?: InputMaybe<RediCourse>;
+  mentor_isPartnershipMentor?: InputMaybe<Scalars['Boolean']>;
+  mentor_workPlace?: InputMaybe<Scalars['String']>;
   rediLocation: RediLocation;
   userType: UserType;
 };
@@ -186,8 +185,9 @@ export type ConProfileSignUpInput = {
 export enum ConnectProfileStatus {
   Approved = 'APPROVED',
   Deactivated = 'DEACTIVATED',
-  Pending = 'PENDING',
-  Rejected = 'REJECTED'
+  DraftingProfile = 'DRAFTING_PROFILE',
+  Rejected = 'REJECTED',
+  SubmittedForReview = 'SUBMITTED_FOR_REVIEW'
 }
 
 export type CreateConMentoringSessionInput = {
@@ -242,6 +242,7 @@ export type FindAllVisibleTpJobListingsArgsFilter = {
   employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
   federalStates?: InputMaybe<Array<FederalState>>;
   isRemotePossible?: InputMaybe<Scalars['Boolean']>;
+  joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   relatesToPositions?: InputMaybe<Array<TpDesiredPosition>>;
   skills?: InputMaybe<Array<TpTechnicalSkill>>;
 };
@@ -251,8 +252,7 @@ export type FindAllVisibleTpJobseekerDirectoryEntriesFilter = {
   desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
   employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
   federalStates?: InputMaybe<Array<FederalState>>;
-  isJobFair2022Participant?: InputMaybe<Scalars['Boolean']>;
-  isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
+  joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   skills?: InputMaybe<Array<TpTechnicalSkill>>;
 };
@@ -539,6 +539,7 @@ export type Mutation = {
   conMentorshipMatchesDeclineMentorship: ConMentorshipMatchesDeclineMentorshipOutputDto;
   conProblemReportCreate: OkResponseMutationOutputDto;
   conProfileSignUp: OkIdResponseMutationOutputDto;
+  conProfileSubmitForReview: ConProfile;
   createConMentoringSession: ConMentoringSession;
   patchConProfile: ConProfile;
   tpCompanyFavoritedJobseekerProfileCreate: TpCompanyFavoritedJobseekerProfileCreateMutationOutputDto;
@@ -920,64 +921,6 @@ export type QueryTpJobseekerProfileArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
-export enum RediCourse {
-  BerlinAlumni = 'BERLIN_ALUMNI',
-  BerlinDataAnalytics = 'BERLIN_DATA_ANALYTICS',
-  BerlinDataCircle = 'BERLIN_DATA_CIRCLE',
-  BerlinDigitalLiteracyProgram = 'BERLIN_DIGITAL_LITERACY_PROGRAM',
-  BerlinHtmlCss = 'BERLIN_HTML_CSS',
-  BerlinIntroToComputerScience = 'BERLIN_INTRO_TO_COMPUTER_SCIENCE',
-  BerlinIntroToJava = 'BERLIN_INTRO_TO_JAVA',
-  BerlinJavascript = 'BERLIN_JAVASCRIPT',
-  BerlinJavaCircle = 'BERLIN_JAVA_CIRCLE',
-  BerlinPythonFoundation = 'BERLIN_PYTHON_FOUNDATION',
-  BerlinReact = 'BERLIN_REACT',
-  BerlinSalesforceFundamentals = 'BERLIN_SALESFORCE_FUNDAMENTALS',
-  CyberspaceAlumni = 'CYBERSPACE_ALUMNI',
-  CyberspaceCybersecurityAdvanced = 'CYBERSPACE_CYBERSECURITY_ADVANCED',
-  CyberspaceCybersecurityBeginners = 'CYBERSPACE_CYBERSECURITY_BEGINNERS',
-  CyberspaceCybersecurityIntermediate = 'CYBERSPACE_CYBERSECURITY_INTERMEDIATE',
-  CyberspaceDataAnalytics = 'CYBERSPACE_DATA_ANALYTICS',
-  CyberspacePythonFoundation = 'CYBERSPACE_PYTHON_FOUNDATION',
-  CyberspaceUxUiBasics = 'CYBERSPACE_UX_UI_BASICS',
-  HamburgAlumni = 'HAMBURG_ALUMNI',
-  HamburgCloudComputing = 'HAMBURG_CLOUD_COMPUTING',
-  HamburgHtmlCss = 'HAMBURG_HTML_CSS',
-  HamburgIntroToComputerScience = 'HAMBURG_INTRO_TO_COMPUTER_SCIENCE',
-  HamburgJavascript = 'HAMBURG_JAVASCRIPT',
-  HamburgPythonIntermediate = 'HAMBURG_PYTHON_INTERMEDIATE',
-  HamburgUxUiDesignBasics = 'HAMBURG_UX_UI_DESIGN_BASICS',
-  HamburgUxUiDesignIntermediate = 'HAMBURG_UX_UI_DESIGN_INTERMEDIATE',
-  MunichAlumni = 'MUNICH_ALUMNI',
-  MunichBackEndDevelopment = 'MUNICH_BACK_END_DEVELOPMENT',
-  MunichDataAnalytics = 'MUNICH_DATA_ANALYTICS',
-  MunichDataStructureAndAlgorithms = 'MUNICH_DATA_STRUCTURE_AND_ALGORITHMS',
-  MunichDigitalLiteracyProgram = 'MUNICH_DIGITAL_LITERACY_PROGRAM',
-  MunichFrontEndDevelopmentHtmlCss = 'MUNICH_FRONT_END_DEVELOPMENT_HTML_CSS',
-  MunichFrontEndDevelopmentJavascript = 'MUNICH_FRONT_END_DEVELOPMENT_JAVASCRIPT',
-  MunichFrontEndDevelopmentReact = 'MUNICH_FRONT_END_DEVELOPMENT_REACT',
-  MunichIntroductionToComputerScienceHybrid = 'MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_HYBRID',
-  MunichIntroductionToComputerScienceOnline = 'MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_ONLINE',
-  MunichIntroductionToComputerScienceUkr = 'MUNICH_INTRODUCTION_TO_COMPUTER_SCIENCE_UKR',
-  MunichPythonIntermediateHybrid = 'MUNICH_PYTHON_INTERMEDIATE_HYBRID',
-  MunichPythonIntermediateOnline = 'MUNICH_PYTHON_INTERMEDIATE_ONLINE',
-  MunichPythonIntermediateUkr = 'MUNICH_PYTHON_INTERMEDIATE_UKR',
-  MunichUxUiDesignBasics = 'MUNICH_UX_UI_DESIGN_BASICS',
-  MunichUxUiDesignIntermediate = 'MUNICH_UX_UI_DESIGN_INTERMEDIATE',
-  NrwAlumni = 'NRW_ALUMNI',
-  NrwCloudComputing = 'NRW_CLOUD_COMPUTING',
-  NrwDataAnalytics = 'NRW_DATA_ANALYTICS',
-  NrwHtmlAndCss = 'NRW_HTML_AND_CSS',
-  NrwInfrastructureBasics = 'NRW_INFRASTRUCTURE_BASICS',
-  NrwInternetOfThings = 'NRW_INTERNET_OF_THINGS',
-  NrwIntroductionToPython = 'NRW_INTRODUCTION_TO_PYTHON',
-  NrwJavascript = 'NRW_JAVASCRIPT',
-  NrwMachineLearning = 'NRW_MACHINE_LEARNING',
-  NrwReact = 'NRW_REACT',
-  NrwUxUiDesignBasics = 'NRW_UX_UI_DESIGN_BASICS',
-  NrwUxUiDesignIntermediate = 'NRW_UX_UI_DESIGN_INTERMEDIATE'
-}
-
 export enum RediLocation {
   Berlin = 'BERLIN',
   Cyberspace = 'CYBERSPACE',
@@ -1029,8 +972,9 @@ export type TpCompanyProfile = {
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   industry?: Maybe<Scalars['String']>;
-  isJobFair2023Participant: Scalars['Boolean'];
+  isCareerPartner: Scalars['Boolean'];
   isProfileVisibleToJobseekers: Scalars['Boolean'];
+  joinsMunich24SummerJobFair?: Maybe<Scalars['Boolean']>;
   linkedInUrl?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
@@ -1045,8 +989,8 @@ export type TpCompanyProfilePatchInput = {
   about?: InputMaybe<Scalars['String']>;
   companyName?: InputMaybe<Scalars['String']>;
   industry?: InputMaybe<Scalars['String']>;
-  isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
   isProfileVisibleToJobseekers?: InputMaybe<Scalars['Boolean']>;
+  joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   linkedInUrl?: InputMaybe<Scalars['String']>;
   location?: InputMaybe<Scalars['String']>;
   profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
@@ -1058,10 +1002,9 @@ export type TpCompanyProfilePatchInput = {
 
 export type TpCompanyProfileSignUpInputDto = {
   companyIdOrName: Scalars['String'];
-  firstName: Scalars['String'];
   firstPointOfContact: FirstPointOfTpContactOption;
   firstPointOfContactOther?: InputMaybe<Scalars['String']>;
-  lastName: Scalars['String'];
+  isMicrosoftPartner: Scalars['Boolean'];
   operationType: TpCompanyProfileSignUpOperationType;
 };
 
@@ -1168,6 +1111,7 @@ export enum TpEmploymentType {
   Freelance = 'freelance',
   FullTime = 'fullTime',
   PartTime = 'partTime',
+  ProjectBased = 'projectBased',
   Traineeship = 'traineeship',
   Werkstudium = 'werkstudium'
 }
@@ -1177,23 +1121,34 @@ export type TpJobListing = {
   companyName: Scalars['String'];
   companyProfile: TpCompanyProfile;
   companyProfileId: Scalars['ID'];
+  contactEmailAddress?: Maybe<Scalars['String']>;
+  contactFirstName?: Maybe<Scalars['String']>;
+  contactLastName?: Maybe<Scalars['String']>;
+  contactPhoneNumber?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   employmentType?: Maybe<TpEmploymentType>;
+  expiresAt?: Maybe<Scalars['DateTime']>;
   federalState?: Maybe<FederalState>;
   id: Scalars['ID'];
   idealTechnicalSkills?: Maybe<Array<TpTechnicalSkill>>;
+  isFromCareerPartner: Scalars['Boolean'];
   isRemotePossible?: Maybe<Scalars['Boolean']>;
   languageRequirements?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
   relatesToPositions?: Maybe<Array<TpDesiredPosition>>;
   salaryRange?: Maybe<Scalars['String']>;
+  status?: Maybe<TpJobListingStatus>;
   summary?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
 };
 
 export type TpJobListingCreateInput = {
+  contactEmailAddress?: InputMaybe<Scalars['String']>;
+  contactFirstName?: InputMaybe<Scalars['String']>;
+  contactLastName?: InputMaybe<Scalars['String']>;
+  contactPhoneNumber?: InputMaybe<Scalars['String']>;
   employmentType?: InputMaybe<TpEmploymentType>;
   federalState?: InputMaybe<FederalState>;
   idealTechnicalSkills?: InputMaybe<Array<TpTechnicalSkill>>;
@@ -1211,7 +1166,12 @@ export type TpJobListingDeleteInput = {
 };
 
 export type TpJobListingPatchInput = {
+  contactEmailAddress?: InputMaybe<Scalars['String']>;
+  contactFirstName?: InputMaybe<Scalars['String']>;
+  contactLastName?: InputMaybe<Scalars['String']>;
+  contactPhoneNumber?: InputMaybe<Scalars['String']>;
   employmentType?: InputMaybe<TpEmploymentType>;
+  expiresAt?: InputMaybe<Scalars['DateTime']>;
   federalState?: InputMaybe<FederalState>;
   id: Scalars['ID'];
   idealTechnicalSkills?: InputMaybe<Array<TpTechnicalSkill>>;
@@ -1223,6 +1183,11 @@ export type TpJobListingPatchInput = {
   summary?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
 };
+
+export enum TpJobListingStatus {
+  Active = 'ACTIVE',
+  Expired = 'EXPIRED'
+}
 
 export type TpJobseekerCv = {
   __typename?: 'TpJobseekerCv';
@@ -1444,7 +1409,6 @@ export type TpJobseekerDirectoryEntry = {
   availability?: Maybe<TpAvailabilityOption>;
   behanceUrl?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
-  currentlyEnrolledInCourse?: Maybe<RediCourse>;
   desiredEmploymentType?: Maybe<Array<TpEmploymentType>>;
   desiredPositions?: Maybe<Array<TpDesiredPosition>>;
   dribbbleUrl?: Maybe<Scalars['String']>;
@@ -1460,9 +1424,8 @@ export type TpJobseekerDirectoryEntry = {
   ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
   immigrationStatus?: Maybe<ImmigrationStatus>;
   isHired: Scalars['Boolean'];
-  isJobFair2022Participant: Scalars['Boolean'];
-  isJobFair2023Participant: Scalars['Boolean'];
   isProfileVisibleToCompanies: Scalars['Boolean'];
+  joinsMunich24SummerJobFair?: Maybe<Scalars['Boolean']>;
   lastName: Scalars['String'];
   linkedInUrl?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
@@ -1514,7 +1477,6 @@ export type TpJobseekerProfile = {
   aboutYourself?: Maybe<Scalars['String']>;
   availability?: Maybe<TpAvailabilityOption>;
   createdAt: Scalars['DateTime'];
-  currentlyEnrolledInCourse?: Maybe<RediCourse>;
   desiredEmploymentType?: Maybe<Array<TpEmploymentType>>;
   desiredPositions?: Maybe<Array<TpDesiredPosition>>;
   federalState?: Maybe<FederalState>;
@@ -1522,9 +1484,8 @@ export type TpJobseekerProfile = {
   ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
   immigrationStatus?: Maybe<ImmigrationStatus>;
   isHired: Scalars['Boolean'];
-  isJobFair2022Participant: Scalars['Boolean'];
-  isJobFair2023Participant: Scalars['Boolean'];
   isProfileVisibleToCompanies: Scalars['Boolean'];
+  joinsMunich24SummerJobFair?: Maybe<Scalars['Boolean']>;
   location?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
   rediLocation?: Maybe<RediLocation>;
@@ -1670,16 +1631,14 @@ export type TpJobseekerProfileLanguageRecordPatchInput = {
 export type TpJobseekerProfilePatchInput = {
   aboutYourself?: InputMaybe<Scalars['String']>;
   availability?: InputMaybe<TpAvailabilityOption>;
-  currentlyEnrolledInCourse?: InputMaybe<RediCourse>;
   desiredEmploymentType?: InputMaybe<Array<TpEmploymentType>>;
   desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
   federalState?: InputMaybe<FederalState>;
   ifAvailabilityIsDate_date?: InputMaybe<Scalars['DateTime']>;
   immigrationStatus?: InputMaybe<ImmigrationStatus>;
   isHired?: InputMaybe<Scalars['Boolean']>;
-  isJobFair2022Participant?: InputMaybe<Scalars['Boolean']>;
-  isJobFair2023Participant?: InputMaybe<Scalars['Boolean']>;
   isProfileVisibleToCompanies?: InputMaybe<Scalars['Boolean']>;
+  joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   location?: InputMaybe<Scalars['String']>;
   profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
   rediLocation?: InputMaybe<RediLocation>;
@@ -1689,9 +1648,6 @@ export type TpJobseekerProfilePatchInput = {
 };
 
 export type TpJobseekerProfileSignUpDto = {
-  currentlyEnrolledInCourse: RediCourse;
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
   rediLocation: RediLocation;
 };
 
@@ -1817,7 +1773,6 @@ export type UpdateConProfileInput = {
   lastName?: InputMaybe<Scalars['String']>;
   linkedInProfileUrl?: InputMaybe<Scalars['String']>;
   menteeCountCapacity?: InputMaybe<Scalars['Int']>;
-  mentee_currentlyEnrolledInCourse?: InputMaybe<RediCourse>;
   mentee_highestEducationLevel?: InputMaybe<EducationLevel>;
   mentee_occupationCategoryId?: InputMaybe<OccupationCategory>;
   mentee_occupationJob_placeOfEmployment?: InputMaybe<Scalars['String']>;
@@ -1826,6 +1781,7 @@ export type UpdateConProfileInput = {
   mentee_occupationOther_description?: InputMaybe<Scalars['String']>;
   mentee_occupationStudent_studyName?: InputMaybe<Scalars['String']>;
   mentee_occupationStudent_studyPlace?: InputMaybe<Scalars['String']>;
+  mentor_isPartnershipMentor?: InputMaybe<Scalars['Boolean']>;
   mentor_occupation?: InputMaybe<Scalars['String']>;
   mentor_workPlace?: InputMaybe<Scalars['String']>;
   optOutOfMenteesFromOtherRediLocation?: InputMaybe<Scalars['Boolean']>;

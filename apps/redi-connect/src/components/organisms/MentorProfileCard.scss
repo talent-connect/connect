@@ -1,0 +1,10 @@
+@import '_variables.scss';
+@import '~bulma/sass/utilities/_all';
+
+.mentor-profile-card-wrapper {
+  height: 464px;
+
+  @include mobile() {
+    height: 361px;
+  }
+}

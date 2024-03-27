@@ -1,86 +1,88 @@
-import React from 'react'
-import { Card, Element } from 'react-bulma-components'
-import { NavLink } from 'react-router-dom'
-
-import { CardTags, Icon } from '@talent-connect/shared-atomic-design-components'
+import { CardTags } from '@talent-connect/shared-atomic-design-components'
 import { topSkillsIdToLabelMap } from '@talent-connect/talent-pool/config'
-// import placeholderImage from '../../assets/images/img-placeholder.png'
+import React from 'react'
+import { Card } from 'react-bulma-components'
+import { NavLink } from 'react-router-dom'
+import placeholderImage from '../../assets/images/company-placeholder-img.svg'
 import './JobListingCard.scss'
 import { JobListingCardJobListingPropFragment } from './jobseeker-profile-editables/JobListingCard.generated'
+import CardLocation from '../../../../../libs/shared-atomic-design-components/src/lib/atoms/CardLocation'
 
 interface JobListingCardProps {
   jobListing: JobListingCardJobListingPropFragment
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
   linkTo?: string
+  timestamp?: string
+  renderCTA?: () => React.ReactNode
+
   onClick?: (e: React.MouseEvent) => void
 }
 
 export function JobListingCard({
   jobListing,
-  toggleFavorite,
-  isFavorite,
-  linkTo = '#',
+  linkTo,
   onClick,
+  timestamp,
+  renderCTA,
 }: JobListingCardProps) {
-  const jobTitle = jobListing?.title
-  const idealTechnicalSkills = jobListing?.idealTechnicalSkills
+  const {
+    title: jobTitle,
+    idealTechnicalSkills,
+    companyName,
+    location,
+    isRemotePossible: remote,
+    profileAvatarImageS3Key: companyAvatarImage,
+  } = jobListing
 
-  const companyName = jobListing?.companyName
-  const companyAvatarImage = jobListing?.profileAvatarImageS3Key
+  const imgSrc = companyAvatarImage ? companyAvatarImage : placeholderImage
 
-  const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    toggleFavorite && toggleFavorite(jobListing.id)
-  }
-
-  const imgSrc = companyAvatarImage ? companyAvatarImage : null
-
-  return (
-    <NavLink to={linkTo} onClick={onClick} className="job-posting-link">
-      <Card className="job-posting-card">
-        <Card.Image
-          className="job-posting-card__image"
-          src={imgSrc}
-          alt={jobTitle}
-        />
-        <Card.Content>
-          {toggleFavorite && (
-            <div
-              className="job-posting-card__favorite"
-              onClick={handleFavoriteClick}
-            >
-              <Icon
-                icon={isFavorite ? 'heartFilled' : 'heart'}
-                className="job-posting-card__favorite__icon"
+  const InnerCard = () => (
+    <Card className="job-posting-card">
+      <div className="job-posting-card__columns">
+        <div className="job-posting-card__firstColumn is-narrow">
+          <img
+            className="job-posting-card__image"
+            src={imgSrc}
+            alt={jobTitle}
+          ></img>
+        </div>
+        <div className="job-posting-card__middleColumn">
+          <p className="job-posting-card__job-title">{jobTitle}</p>
+          <p className="job-posting-card__company-name">{companyName}</p>
+          <CardLocation location={location} remote={remote} />
+          {idealTechnicalSkills?.length > 0 ? (
+            <div>
+              <CardTags
+                items={idealTechnicalSkills}
+                formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
               />
             </div>
-          )}
-          <Element
-            key="name"
-            renderAs="h3"
-            textWeight="bold"
-            textSize={4}
-            className="job-posting-card__job-title"
-          >
-            {jobTitle}
-          </Element>
-          <Element
-            className="content job-posting-card__company-name"
-            key="location"
-            renderAs="div"
-          >
-            {companyName}
-          </Element>
-          {idealTechnicalSkills?.length > 0 ? (
-            <CardTags
-              items={idealTechnicalSkills}
-              shortList
-              formatter={(skill: string) => topSkillsIdToLabelMap[skill]}
-            />
           ) : null}
-        </Card.Content>
-      </Card>
-    </NavLink>
+        </div>
+        <div className="job-posting-card__lastColumn">
+          <div className="job-posting-card__timeFooterBox">
+            {renderCTA && renderCTA()}
+            {timestamp && (
+              <div className="job-posting-card__timestamp">{timestamp}</div>
+            )}
+          </div>
+        </div>
+      </div>
+    </Card>
   )
+
+  if (onClick || linkTo) {
+    return (
+      <NavLink
+        to={linkTo ?? '#'}
+        onClick={onClick}
+        className="job-posting-link"
+      >
+        <InnerCard />
+      </NavLink>
+    )
+  }
+
+  return <InnerCard />
 }

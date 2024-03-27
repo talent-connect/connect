@@ -1,44 +1,129 @@
 @import '_variables.scss';
+@import '~bulma/sass/utilities/_all';
 
 .job-posting-link:hover {
   text-decoration: none;
+  padding: 0;
 }
 
 .job-posting-card {
   border-radius: 4px;
-  height: 24.5rem;
   overflow: hidden;
-
+  padding: 32px;
   &:hover {
     box-shadow: $card-shadow-hover;
   }
-
-  &__job-title {
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 24px;
-    letter-spacing: 1.25px;
+  @include mobile() {
+    padding: 24px;
   }
 
-  &__company-name {
-    margin-top: 5px;
-    color: $grey;
-  }
+  &__columns {
+    display: flex;
+    max-height: 136px;
 
-  &__image {
-    img {
-      height: 9.5rem;
-      overflow: hidden;
-      object-fit: contain;
+    @include mobile() {
+      flex-direction: column;
+      max-height: fit-content;
     }
   }
 
-  &__favorite {
-    padding: 0.5rem;
-    position: absolute;
-    top: 0.3rem;
-    right: 0.4rem;
+  &__firstColumn {
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
 
+    @include mobile {
+      margin-bottom: 16px;
+    }
+  }
+
+  &__image {
+    height: 136px;
+    width: 136px;
+    overflow: hidden;
+    border-radius: 100%;
+
+    @include mobile() {
+      height: 112px;
+      width: 112px;
+    }
+  }
+
+  &__middleColumn {
+    padding: 0;
+    padding-left: 40px;
+    max-width: 750px;
+    flex-grow: 4;
+    flex-shrink: 1;
+
+    @include mobile {
+      padding: 0;
+    }
+  }
+
+  &__job-title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--black, #000);
+    font-family: Avenir LT Std;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+
+    @include mobile() {
+      color: var(--black, #000);
+
+      /* Desktop/Body Text Small SemiBold */
+      font-family: Avenir;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: 150%; /* 21px */
+    }
+  }
+
+  &__company-name {
+    color: var(--grey, #a0a0a0);
+    font-family: Avenir;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 150%;
+    margin-top: 2px;
+    margin-bottom: 8px;
+
+    @include mobile() {
+      color: var(--grey, #a0a0a0);
+
+      /* Desktop/Body Text Micro SemiBold */
+      font-family: Avenir;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: 150%; /* 18px */
+
+      margin-top: 4px;
+      margin-bottom: 6px;
+    }
+  }
+
+  &__lastColumn {
+    padding: 0;
+    align-items: end;
+    padding-left: 40px;
+  }
+
+  &__timeFooterBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 100%;
+    width: auto;
+  }
+
+  &__favorite {
     &__icon {
       transition: $transition;
 
@@ -50,7 +135,42 @@
         transform: scale(1.2);
       }
     }
+
+    @include mobile() {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+    }
+  }
+
+  &__ellipsis {
+    &__icon {
+      &:hover {
+        background-color: $redi-orange-extra-light;
+        border-radius: 50%;
+        transform: scale(1.2);
+      }
+    }
+  }
+
+  &__timestamp {
+    margin-top: auto;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--grey, #a0a0a0);
+    white-space: nowrap;
+    height: 16px;
+
+    @include mobile() {
+      margin-top: 16px;
+    }
   }
 }
 
-
+@include mobile {
+  .__reactivate {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+  }
+}

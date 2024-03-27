@@ -1,12 +1,23 @@
-import { useLoadMyProfileQuery } from '@talent-connect/data-access'
+import {
+  fetcher,
+  LoadMyProfileDocument,
+  LoadMyProfileQuery,
+  LoadMyProfileQueryVariables,
+  MyTpDataDocument,
+  MyTpDataQuery,
+  MyTpDataQueryVariables,
+  RediLocation,
+  useConProfileSignUpMutation,
+  UserType,
+} from '@talent-connect/data-access'
 import {
   Button,
   FormInput,
-  Heading
+  Heading,
+  showNotification,
 } from '@talent-connect/shared-atomic-design-components'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import { RediLocation } from '@talent-connect/shared-types'
-import { buildFrontendUrl } from '@talent-connect/shared-utils'
+import { buildFrontendUrl, decodeJwt } from '@talent-connect/shared-utils'
 import { useFormik } from 'formik'
 import { capitalize } from 'lodash'
 import { useState } from 'react'
@@ -17,7 +28,8 @@ import Teaser from '../../../components/molecules/Teaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { login } from '../../../services/api/api'
 import {
-  getAccessTokenFromLocalStorage, purgeAllSessionData
+  getAccessTokenFromLocalStorage,
+  purgeAllSessionData,
 } from '../../../services/auth/auth'
 import { envRediLocation } from '../../../utils/env-redi-location'
 
@@ -36,38 +48,160 @@ const validationSchema = Yup.object({
   password: Yup.string().required().label('Password').max(255),
 })
 
-export default function Login() {
-  const history = useHistory()
-  const accessToken = getAccessTokenFromLocalStorage()
-  const loopbackUserId = accessToken?.userId ?? ''
-  const [stateLoopbackUserId, setStateLoopbackUserId] = useState(loopbackUserId)
-  const myProfileQuery = useLoadMyProfileQuery(
-    { loopbackUserId: stateLoopbackUserId },
-    { enabled: Boolean(stateLoopbackUserId) }
+// This is copied directly from the file that contains the auto-codegenerated useMyTpDataQuery.
+// We have a need to use the underlying data fetcher function directly. If we were to use the
+// react queries directly, the logic inside of our component would be needlessly complex.
+// Believe us. We tried. (Kate, Eric, 9 June 2023)
+const myTpDataFetcher = fetcher<MyTpDataQuery, MyTpDataQueryVariables>(
+  MyTpDataDocument
+)
+// Same for the useLoadMyProfileQuery that loads CON data:
+const buildMyConProfileDataFetcher = () =>
+  fetcher<LoadMyProfileQuery, LoadMyProfileQueryVariables>(
+    LoadMyProfileDocument,
+    { loopbackUserId: getAccessTokenFromLocalStorage()?.userId }
   )
 
+export default function Login() {
+  const history = useHistory()
+  const conProfileSignUpMutation = useConProfileSignUpMutation()
+
   const [loginError, setLoginError] = useState<string>('')
+  const [isWrongRediLocationError, setIsWrongRediLocationError] =
+    useState<boolean>(false)
 
-  const isWrongRediLocationError =
-    myProfileQuery.isSuccess &&
-    myProfileQuery.data.conProfile.rediLocation !== envRediLocation()
-
-  if (isWrongRediLocationError) {
-    purgeAllSessionData()
-  }
+  const [conProfile, setConProfile] = useState<
+    LoadMyProfileQuery['conProfile'] | null
+  >(null)
+  const [tpProfileLocation, setTpProfileLocation] =
+    useState<RediLocation | null>(null)
 
   const submitForm = async () => {
+    // LOG THE USER IN VIA LOOPBACK
     try {
-      const accessToken = await login(
-        formik.values.username,
-        formik.values.password
-      )
-      setStateLoopbackUserId(accessToken.userId)
-      formik.setSubmitting(false)
-      history.push('/app/me')
+      await login(formik.values.username, formik.values.password)
     } catch (err) {
+      console.log(err)
       formik.setSubmitting(false)
       setLoginError('You entered an incorrect email, password, or both.')
+      return
+    }
+
+    const jwtToken = decodeJwt(getAccessTokenFromLocalStorage().jwtToken)
+    if (!jwtToken.emailVerified) {
+      formik.setSubmitting(false)
+      showNotification(
+        'Please verify your email address first. Check your inbox.',
+        { autoHideDuration: 8000 }
+      )
+      return
+    }
+
+    // GET THEIR CON PROFILE FROM SALESFORCE
+    try {
+      // Load "outside" of react-query to avoid having to build
+      // a complex logic adhering to the rules-of-hooks.
+      const myProfileResult = await fetcher<
+        LoadMyProfileQuery,
+        LoadMyProfileQueryVariables
+      >(LoadMyProfileDocument, {
+        loopbackUserId: getAccessTokenFromLocalStorage().userId,
+      })()
+
+      // TODO: insert proper error handling here and elsewhere. We should cover cases where we
+      // get values usch as myProfileResult.isError. Perhaps we-ure the error boundary logic
+      // that Eric has been looking into.
+
+      const conProfile = myProfileResult?.conProfile
+      const isWrongRediLocationError =
+        conProfile.rediLocation !== envRediLocation()
+
+      if (isWrongRediLocationError) {
+        purgeAllSessionData()
+        setIsWrongRediLocationError(true)
+        setConProfile(conProfile)
+        return
+      }
+
+      const urlParams = new URLSearchParams(window.location.search)
+      const goto = urlParams.get('goto') ?? '/app/me'
+      return history.push(goto)
+    } catch (err) {
+      console.log(err)
+    }
+
+    // IF NO CON PROFILE, TRY TO CREATE ONE FROM TP
+    // If the user does not have a con profile, we will try to create one
+    // for them using the data from the TP.
+    try {
+      const tpUserData = await myTpDataFetcher()
+      const tpJobseekerDirectoryEntry =
+        tpUserData.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+      const userHasATpJobseekerProfile = Boolean(tpJobseekerDirectoryEntry)
+
+      if (userHasATpJobseekerProfile) {
+        const isWrongRediLocationError =
+          tpJobseekerDirectoryEntry.rediLocation !== envRediLocation()
+
+        if (isWrongRediLocationError) {
+          purgeAllSessionData()
+          setIsWrongRediLocationError(true)
+          setTpProfileLocation(
+            tpJobseekerDirectoryEntry.rediLocation as RediLocation
+          )
+          return
+        }
+
+        await conProfileSignUpMutation.mutateAsync({
+          input: {
+            email: tpJobseekerDirectoryEntry.email,
+            userType: UserType.Mentee,
+            rediLocation:
+              tpJobseekerDirectoryEntry.rediLocation as RediLocation,
+          },
+        })
+        return history.push('/front/signup-complete/mentee')
+      }
+    } catch (err) {
+      console.log(err)
+    }
+
+    // IF NO CON PROFILE AND NO TP PROFILE, TRY TO CREATE ONE FROM JWT
+    try {
+      // The user has no TP profile, so we assume that they have just signed up via the CON
+      // login form, and that they have a RedUser in Loobpack/MongoDB, and that the JWT token
+      // in localStorage contains the data from RedUser which contains the data from the CON
+      // sign-up page. We now want to use this to create a CON profile for them.
+      const accessToken = getAccessTokenFromLocalStorage()
+      const {
+        email,
+        userType,
+        rediLocation,
+        mentor_isPartnershipMentor,
+        mentor_workPlace,
+      } = decodeJwt(accessToken.jwtToken)
+
+      await conProfileSignUpMutation.mutateAsync({
+        input: {
+          email,
+          userType: userType as UserType,
+          rediLocation: rediLocation as RediLocation,
+          mentor_isPartnershipMentor: mentor_isPartnershipMentor as boolean,
+          mentor_workPlace,
+        },
+      })
+      return history.push(`/front/signup-complete/${userType.toLowerCase()}`)
+    } catch (err) {
+      // IF NO CON PROFILE AND NO TP PROFILE AND NO JWT, SHOW ERROR
+      // If we reach this place, it means that the user does not have a TP
+      // profile nor do the have data in their JWT token from the CON sign-up,
+      // OR, something went wrong on the server. In that case, show them an error message.
+      console.log(err)
+      formik.setSubmitting(false)
+      setLoginError(
+        'Something unexpected happened, please try again or contact the ReDI Talent Success Team at career@redi-school.org'
+      )
+      return
     }
   }
 
@@ -93,12 +227,8 @@ export default function Login() {
             Enter your email and password below.
           </Content>
           <Content size="small" renderAs="p">
-            {/* Commented and replaced with different text until the cross-platform log-in feature is implemented. */}
-            {/* Got a ReDI Talent Pool user account? You can use the same username
-            and password here. */}
-            Got a ReDI Talent Pool user account? To log in with the same username 
-            and password get in contact with @Kate in ReDI Slack or write an e-mail 
-            <a href="mailto:kateryna@redi-school.org"> here</a>.
+            Got a ReDI Talent Pool user account? You can use the same username
+            and password here.
           </Content>
 
           {isWrongRediLocationError && (
@@ -113,14 +243,17 @@ export default function Login() {
               </strong>
               , but your account is linked to ReDI Connect{' '}
               <strong>
-                {capitalize(myProfileQuery.data.conProfile.rediLocation)}
+                {capitalize(conProfile?.rediLocation || tpProfileLocation)}
               </strong>
               . To access ReDI Connect{' '}
-              <strong>{myProfileQuery.data.conProfile.rediLocation}</strong>, go{' '}
+              <strong>
+                {capitalize(conProfile?.rediLocation || tpProfileLocation)}
+              </strong>
+              , go{' '}
               <a
                 href={buildFrontendUrl(
                   process.env.NODE_ENV,
-                  myProfileQuery.data.conProfile.rediLocation
+                  conProfile?.rediLocation || tpProfileLocation
                 )}
               >
                 here
@@ -166,7 +299,9 @@ export default function Login() {
               <Button
                 fullWidth
                 onClick={formik.submitForm}
-                disabled={!(formik.dirty && formik.isValid)}
+                disabled={
+                  !(formik.dirty && formik.isValid) || formik.isSubmitting
+                }
               >
                 Log in
               </Button>

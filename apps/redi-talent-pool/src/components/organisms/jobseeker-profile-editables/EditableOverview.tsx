@@ -8,7 +8,6 @@ import {
   Caption,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
-import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import {
   desiredPositions,
   desiredPositionsIdToLabelMap,
@@ -90,13 +89,11 @@ const validationSchema = Yup.object({
 interface JobseekerFormSectionOverviewProps {
   setIsEditing: (boolean) => void
   setIsFormDirty?: (boolean) => void
-  hideCurrentRediCourseField?: boolean
 }
 
 function JobseekerFormSectionOverview({
   setIsEditing,
   setIsFormDirty,
-  hideCurrentRediCourseField,
 }: JobseekerFormSectionOverviewProps) {
   const queryClient = useQueryClient()
   const myData = useMyTpDataQuery()
@@ -107,9 +104,8 @@ function JobseekerFormSectionOverview({
   const initialValues: EditableOverviewProfilePropFragment = useMemo(
     () => ({
       desiredPositions: profile?.desiredPositions ?? [],
-      currentlyEnrolledInCourse: profile?.currentlyEnrolledInCourse ?? null,
     }),
-    [profile?.currentlyEnrolledInCourse, profile?.desiredPositions]
+    [profile?.desiredPositions]
   )
 
   const onSubmit = async (values: EditableOverviewProfilePropFragment) => {
@@ -117,7 +113,6 @@ function JobseekerFormSectionOverview({
     await tpJobsekerProfileMutation.mutateAsync({
       input: {
         desiredPositions: values.desiredPositions,
-        currentlyEnrolledInCourse: values.currentlyEnrolledInCourse,
       },
     })
     queryClient.invalidateQueries()
@@ -154,14 +149,6 @@ function JobseekerFormSectionOverview({
         placeholder="Start typing and select positions"
         closeMenuOnSelect={false}
       />
-      {hideCurrentRediCourseField ? null : (
-        <FormSelect
-          label="Current ReDI course"
-          name="currentlyEnrolledInCourse"
-          items={formCourses}
-          formik={formik}
-        />
-      )}
       <Button disabled={!formik.isValid || isBusy} onClick={formik.submitForm}>
         Save
       </Button>
@@ -176,26 +163,3 @@ const formDesiredPositions = desiredPositions.map(({ id, label }) => ({
   value: id,
   label,
 }))
-
-// TODO: merge this logic with the stuff in SignUp.tsx
-const coursesWithAlumniDeduped = [
-  ...COURSES.filter((c) => {
-    return !c.id.includes('alumni')
-  }),
-  {
-    id: 'alumni',
-    label: `I'm a ReDI School alumni (I took a course before)`,
-    location: 'berlin',
-  },
-]
-
-const formCourses = coursesWithAlumniDeduped.map((course) => {
-  const label =
-    course.id === 'alumni'
-      ? course.label
-      : `(ReDI ${REDI_LOCATION_NAMES[course.location]}) ${course.label}`
-  return {
-    value: course.id,
-    label: label,
-  }
-})

@@ -11,8 +11,7 @@ fragment AllTpJobseekerDirectoryEntryFields on TpJobseekerDirectoryEntry {
   id
   ifAvailabilityIsDate_date
   isHired
-  isJobFair2022Participant
-  isJobFair2023Participant
+  joinsMunich24SummerJobFair
   availability
   isProfileVisibleToCompanies
   lastName
@@ -36,7 +35,6 @@ fragment AllTpJobseekerDirectoryEntryFields on TpJobseekerDirectoryEntry {
     ...AllTpJobseekerProfileLanguageRecordFields
   }
   createdAt
-  currentlyEnrolledInCourse
   desiredEmploymentType
   desiredPositions
   dribbbleUrl

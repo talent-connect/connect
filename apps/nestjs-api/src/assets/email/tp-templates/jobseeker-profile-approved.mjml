@@ -14,42 +14,36 @@
             >Dear ${firstName},</mj-text
           >
 
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph"
             >Congratulations - your profile has been approved!</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph"
             >You are now ReDI to start browsing all the job openings companies
             are sharing with us here on our Talent Pool platform.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
-            >How to do this?</mj-text
+          <mj-text mj-class="text paragraph"
+            >How to do this? Just log back into
+             <a href="https://talent-pool.redi-school.org/front/login" class="text-link"
+              >Talent Pool</a>.</mj-text
           >
-          <mj-text mj-class="text" padding="0 0 20px 0"
-            >Just log back into Talent Pool:</mj-text
-          >
-          <mj-text mj-class="text" padding="0 0 20px 0"
-            ><a href="https://talent-pool.redi-school.org" class="text-link"
-              >https://talent-pool.redi-school.org</a
-            ></mj-text
-          >
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph"
             >The companies are also able to browse all jobseekers, see your
             profile and invite you to an interview, if you fit the requirements
             of any of their open positions.</mj-text
           >
 
-          <mj-text mj-class="text" padding="0 0 20px 0"
+          <mj-text mj-class="text paragraph"
             >Please let us know, if you get invited for an interview and of
             course if you get hired!</mj-text
           >
 
-          <mj-text mj-class="text">Best wishes,</mj-text>
+          <mj-text mj-class="text">All the best,</mj-text>
           <mj-text mj-class="text"
-            >Paulina and your Career Support Team</mj-text
+            >ReDI Talent Success Team</mj-text
           >
         </mj-column>
       </mj-section>
-      <mj-include path="../templates/footer.berlin.paulina.mjml" />
+      <mj-include path="../templates/footer.career.support.team-tp.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

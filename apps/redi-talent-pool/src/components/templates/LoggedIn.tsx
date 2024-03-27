@@ -26,6 +26,36 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
 
   const isBusy = useIsBusy()
 
+  // Determine user type (jobseeker, company representative, or undefined), then
+  // inform Hotjar about it (we're using its IDENTIFY API)
+  const userType = (() => {
+    switch (true) {
+      case Boolean(
+        myTpData.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
+      ):
+        return 'JOBSEEKER'
+
+      case Boolean(
+        myTpData.data?.tpCurrentUserDataGet?.companyRepresentativeRelationship
+      ) && Boolean(myTpData.data?.tpCurrentUserDataGet?.representedCompany):
+        return 'COMPANY_REPRESENTATIVE'
+
+      default:
+        return undefined
+    }
+  })()
+  if ((window as any).hj) {
+    ;(window as any).hj(
+      'identify',
+      myTpData.data?.tpCurrentUserDataGet?.userContact?.id,
+      {
+        userType,
+      }
+    )
+  }
+  // (hj as any)(
+  //   'identify'  // )
+
   return (
     <>
       <Navbar />

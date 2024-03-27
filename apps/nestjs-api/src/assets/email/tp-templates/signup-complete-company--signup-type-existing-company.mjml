@@ -26,6 +26,7 @@
           <mj-text mj-class="text paragraph"
             >We are excited to have you on board!</mj-text
           >
+          
           <mj-text mj-class="text">Best,</mj-text>
           <mj-text mj-class="text">Janis</mj-text>
         </mj-column>

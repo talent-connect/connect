@@ -24,7 +24,6 @@ export class TpJobseekerProfileMapper
     props.id = raw.props.Id
 
     props.rediLocation = raw.props.ReDI_Location__c
-    props.currentlyEnrolledInCourse = raw.props.ReDI_Course__c
     props.profileAvatarImageS3Key = raw.props.Avatar_Image_URL__c
     props.desiredPositions =
       (raw.props.Desired_Positions__c?.split(';') as TpDesiredPosition[]) ??
@@ -40,8 +39,8 @@ export class TpJobseekerProfileMapper
     props.topSkills =
       (raw.props.Top_Skills__c?.split(';') as TpTechnicalSkill[]) ?? undefined
     props.state = raw.props.Profile_Status__c as JobseekerProfileStatus
-    props.isJobFair2022Participant = raw.props.Is_Job_Fair_2022_Participant__c
-    props.isJobFair2023Participant = raw.props.Is_Job_Fair_2023_Participant__c
+    props.joinsMunich24SummerJobFair =
+      raw.props.Joins_Munich_24_Summer_Job_Fair__c
     props.isProfileVisibleToCompanies = raw.props.Is_Visible_to_Companies__c
     props.isHired = raw.props.Is_Hired__c
     props.federalState = raw.props.Federal_State__c as FederalState
@@ -68,7 +67,6 @@ export class TpJobseekerProfileMapper
     props.Id = source.props.id
 
     props.ReDI_Location__c = source.props.rediLocation
-    props.ReDI_Course__c = source.props.currentlyEnrolledInCourse
     props.Avatar_Image_URL__c = source.props.profileAvatarImageS3Key
     props.Desired_Positions__c = source.props?.desiredPositions?.join(';')
     props.Location__c = source.props.location
@@ -79,10 +77,8 @@ export class TpJobseekerProfileMapper
     props.About_Yourself__c = source.props.aboutYourself
     props.Top_Skills__c = source.props?.topSkills?.join(';')
     props.Profile_Status__c = source.props.state
-    props.Is_Job_Fair_2022_Participant__c =
-      source.props.isJobFair2022Participant
-    props.Is_Job_Fair_2023_Participant__c =
-      source.props.isJobFair2023Participant
+    props.Joins_Munich_24_Summer_Job_Fair__c =
+      source.props.joinsMunich24SummerJobFair
     props.Is_Visible_to_Companies__c = source.props.isProfileVisibleToCompanies
     props.Is_Hired__c = source.props.isHired
     props.Federal_State__c = source.props.federalState

@@ -1,7 +1,4 @@
-import {
-  COURSES as allCourses,
-  REDI_LOCATION_NAMES as configRediLocationNames,
-} from '@talent-connect/shared-config'
+import { REDI_LOCATION_NAMES as configRediLocationNames } from '@talent-connect/shared-config'
 import { RediLocation } from '@talent-connect/shared-types'
 
 const rediLocationNames = {
@@ -16,5 +13,3 @@ if (!validRediLocations.includes(rediLocation))
   throw new Error(
     `Invalid RediLocation: ${rediLocation}. Valid Locations: ${validRediLocations}`
   )
-
-export const courses = allCourses.filter((c) => c.location === rediLocation)

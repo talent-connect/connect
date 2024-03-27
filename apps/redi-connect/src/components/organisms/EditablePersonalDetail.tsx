@@ -4,12 +4,10 @@ import {
 } from '@talent-connect/data-access'
 import {
   Editable,
-  FormDatePicker,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import { GENDERS } from '@talent-connect/shared-config'
 import { objectEntries, objectKeys } from '@talent-connect/typescript-utilities'
-import { subYears } from 'date-fns'
 import { FormikValues, useFormik } from 'formik'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
@@ -22,12 +20,15 @@ const formGenders = objectEntries(GENDERS).map(([value, label]) => ({
 }))
 export interface PersonalDetailFormValues {
   gender: string
-  birthDate: Date | null
+  // Disabled for reasons explained above.
+  // birthDate: Date | null
 }
 
 const validationSchema = Yup.object({
   gender: Yup.string().oneOf(objectKeys(GENDERS)).label('Gender'),
-  birthDate: Yup.date().nullable(true).label('Date'),
+  // Temporarily disabled until datepicker returns only date (not datetime).
+  // By saving datetime to Salesforce the saved date is off by one day.
+  // birthDate: Yup.date().nullable(true).label('Date'),
 })
 
 const EditablePersonalDetail = () => {
@@ -39,7 +40,8 @@ const EditablePersonalDetail = () => {
   const profile = myProfileQuery.data?.conProfile
 
   const gender = profile?.gender
-  const birthDate = profile?.birthDate
+  // Disabled for reasons explained above.
+  // const birthDate = profile?.birthDate
 
   const submitForm = async (values: FormikValues) => {
     const mutationResult = await patchMyProfileMutation.mutateAsync({
@@ -52,7 +54,8 @@ const EditablePersonalDetail = () => {
 
   const initialValues: PersonalDetailFormValues = {
     gender,
-    birthDate: birthDate ? new Date(birthDate) : null,
+    // Disabled for reasons explained above.
+    // birthDate: birthDate ? new Date(birthDate) : null,
   }
 
   const formik = useFormik({
@@ -66,7 +69,7 @@ const EditablePersonalDetail = () => {
 
   return (
     <Editable
-      title="Personal Details"
+      title="Personal Details (optional)"
       onSave={() => formik.handleSubmit()}
       onClose={() => formik.resetForm()}
       savePossible={formik.dirty && formik.isValid}
@@ -79,8 +82,8 @@ const EditablePersonalDetail = () => {
         items={formGenders}
         formik={formik}
       />
-
-      <FormDatePicker
+      {/* Disabled for reasons explained above */}
+      {/* <FormDatePicker
         label="Date of birth"
         name="birthDate"
         placeholder="Add your date of birth"
@@ -92,7 +95,7 @@ const EditablePersonalDetail = () => {
         dropdownMode="select"
         isClearable
         {...formik}
-      />
+      /> */}
     </Editable>
   )
 }

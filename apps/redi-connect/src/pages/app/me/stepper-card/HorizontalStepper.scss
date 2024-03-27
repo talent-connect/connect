@@ -1,0 +1,63 @@
+@import '~bulma/sass/utilities/_all';
+@import '_variables.scss';
+
+$desktop-stepper-message-border-radius: 6px;
+$desktop-stepper-message-padding: 1rem 1.5rem;
+
+@mixin bubble($left) {
+  top: -30px;
+  left: $left;
+  position: absolute;
+  content: '';
+  border-width: 16px 12px;
+  border-style: solid;
+  border-color: transparent transparent #f5f5f5 transparent;
+}
+
+.horizontal {
+  &--step {
+    &:not(:first-child) {
+      margin-left: 28px;
+    }
+
+    .MuiStepLabel-iconContainer {
+      z-index: 1;
+    }
+  }
+
+  &--label {
+    .MuiStepLabel-label {
+      text-align: left;
+      font-family: $family-primary;
+    }
+    .MuiStepLabel-label.Mui-active {
+      font-weight: $weight-bold;
+    }
+    .MuiStepLabel-label.Mui-completed {
+      font-weight: $weight-bold;
+    }
+  }
+
+  &--message {
+    border-radius: $desktop-stepper-message-border-radius !important;
+    padding: $desktop-stepper-message-padding !important;
+    position: relative;
+    margin-top: 1.5rem;
+  }
+
+  &--message.bubble-first:after {
+    @include bubble(30px);
+  }
+
+  &--message.bubble-second:after {
+    @include bubble(calc(50% - 130px));
+  }
+
+  &--message.bubble-third:after {
+    @include bubble(calc(50% + 30px));
+  }
+
+  &--message.bubble-fourth:after {
+    @include bubble(calc(100% - 130px));
+  }
+}

@@ -1,42 +1,22 @@
-import { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import AccountOperation from '../../../components/templates/AccountOperation'
-
-import * as Yup from 'yup'
-
+import { RediLocation, UserType } from '@talent-connect/data-access'
 import {
   Button,
   Checkbox,
   FormInput,
-  FormSelect,
-  Heading
+  Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
-
-import Teaser from '../../../components/molecules/Teaser'
-
-import { Columns, Content, Form, Notification } from 'react-bulma-components'
-
-import {
-  RediCourse,
-  RediLocation,
-  useConProfileSignUpMutation,
-  UserType
-} from '@talent-connect/data-access'
-import { COURSES } from '@talent-connect/shared-config'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
-import { courses } from '../../../config/config'
+import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
+import { useState } from 'react'
+import { Columns, Content, Form, Notification } from 'react-bulma-components'
+import { Link, useParams } from 'react-router-dom'
+import * as Yup from 'yup'
+import Teaser from '../../../components/molecules/Teaser'
+import AccountOperation from '../../../components/templates/AccountOperation'
 import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
 import { envRediLocation } from '../../../utils/env-redi-location'
-
-const formCourses = COURSES.filter((course) => {
-  const courseLocation = course.location as RediLocation
-  return courseLocation === envRediLocation()
-}).map((course) => ({
-  value: course.id,
-  label: course.label,
-}))
+import { SignUpPageType } from './signup-page.type'
 
 export const validationSchema = Yup.object({
   firstName: Yup.string()
@@ -61,18 +41,12 @@ export const validationSchema = Yup.object({
     .oneOf([Yup.ref('password')], 'Passwords do not match'),
   agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
   gaveGdprConsent: Yup.boolean().required().oneOf([true]),
-  mentee_currentlyEnrolledInCourse: Yup.string().when('userType', {
-    is: 'public-sign-up-mentee-pending-review',
-    then: Yup.string()
-      .required('Please select current ReDI course')
-      .oneOf(courses.map((level) => level.id))
-      .label('Currently enrolled in course'),
+  mentor_isPartnershipMentor: Yup.boolean(),
+  mentor_workPlace: Yup.string().when('mentor_isPartnershipMentor', {
+    is: true,
+    then: (schema) => schema.required('Please enter the company name').max(255),
   }),
 })
-
-type SignUpPageType = {
-  type: 'mentor' | 'mentee'
-}
 
 export interface SignUpFormValues {
   userType: UserType
@@ -83,12 +57,12 @@ export interface SignUpFormValues {
   firstName: string
   lastName: string
   agreesWithCodeOfConduct: boolean
-  mentee_currentlyEnrolledInCourse?: RediCourse
+  mentor_isPartnershipMentor?: boolean
+  mentor_workPlace?: string
 }
 
 export default function SignUp() {
-  const signUpMutation = useConProfileSignUpMutation()
-  const { type } = useParams<SignUpPageType>()
+  const { type } = useParams() as unknown as { type: SignUpPageType }
 
   const initialValues: SignUpFormValues = {
     userType: type.toUpperCase() as UserType,
@@ -99,7 +73,7 @@ export default function SignUp() {
     firstName: '',
     lastName: '',
     agreesWithCodeOfConduct: false,
-    mentee_currentlyEnrolledInCourse: undefined,
+    mentor_isPartnershipMentor: false,
   }
 
   const [loopbackSubmitError, setLoopbackSubmitError] = useState<string | null>(
@@ -111,20 +85,21 @@ export default function SignUp() {
   ) => {
     setLoopbackSubmitError(null)
     try {
-      await signUpLoopback(values.email, values.password)
-      await signUpMutation.mutateAsync({
-        input: {
-          email: values.email,
-          firstName: values.firstName,
-          lastName: values.lastName,
-          userType: type.toUpperCase() as UserType,
-          rediLocation: envRediLocation() as RediLocation,
-          mentee_currentlyEnrolledInCourse:
-            values.mentee_currentlyEnrolledInCourse,
-        },
+      await signUpLoopback(values.email, values.password, {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        userType: type.toUpperCase() as UserType,
+        rediLocation: envRediLocation() as RediLocation,
+        productSignupSource: 'CON',
+        ...(type === 'mentor'
+          ? {
+              mentor_isPartnershipMentor: values.mentor_isPartnershipMentor,
+              mentor_workPlace: values.mentor_workPlace,
+            }
+          : {}),
       })
       actions.setSubmitting(false)
-      history.push(`/front/signup-complete/${type}`)
+      history.push(`/front/signup-email-verification`)
     } catch (error) {
       actions.setSubmitting(false)
       if (
@@ -146,6 +121,8 @@ export default function SignUp() {
     onSubmit: submitForm,
   })
 
+  const isPartnershipMentor = formik.values.mentor_isPartnershipMentor === true
+
   return (
     <AccountOperation>
       <Columns vCentered>
@@ -160,12 +137,8 @@ export default function SignUp() {
           <Heading border="bottomLeft">Sign-up</Heading>
           {type === 'mentee' && (
             <Content size="small" renderAs="p">
-              {/* Commented and replaced with different text until the cross-platform log-in feature is implemented. */}
-              {/* Got a ReDI Talent Pool user account? You can log in with the same
-              username and password <Link to="/front/login">here</Link>. */}
-              Got a ReDI Talent Pool user account? To log in with the same username 
-              and password get in contact with @Kate in ReDI Slack or write an e-mail 
-              <a href="mailto:kateryna@redi-school.org"> here</a>.
+              Got a ReDI Talent Pool user account? You can log in with the same
+              username and password <Link to="/front/login">here</Link>.
             </Content>
           )}
           {loopbackSubmitError === 'user-already-exists' ? (
@@ -209,20 +182,27 @@ export default function SignUp() {
               {...formik}
             />
 
-            {type === 'mentee' && (
-              <FormSelect
-                label="Current ReDI Course"
-                name="mentee_currentlyEnrolledInCourse"
-                placeholder="Choose your ReDI Course"
-                items={formCourses}
-                formik={formik}
+            {type === 'mentor' && (
+              <Checkbox.Form
+                name="mentor_isPartnershipMentor"
+                checked={formik.values.mentor_isPartnershipMentor}
+                className="submit-spacer"
+                {...formik}
+              >
+                My employer is in a mentorship partnership with ReDI School
+              </Checkbox.Form>
+            )}
+            {type === 'mentor' && isPartnershipMentor && (
+              <FormInput
+                name="mentor_workPlace"
+                placeholder="Which company are you working for?"
+                {...formik}
               />
             )}
 
             <Checkbox.Form
               name="agreesWithCodeOfConduct"
               checked={formik.values.agreesWithCodeOfConduct}
-              className="submit-spacer"
               {...formik}
             >
               I agree to the{' '}
@@ -251,10 +231,9 @@ export default function SignUp() {
               </a>
             </Checkbox.Form>
             {loopbackSubmitError !== 'user-already-exists' &&
-            (loopbackSubmitError || signUpMutation.isError) ? (
+            loopbackSubmitError ? (
               <Form.Help color="danger" className="help--show">
                 An error occurred, please try again.
-                {signUpMutation.isError ? 'yes' : 'no'}
               </Form.Help>
             ) : null}
 

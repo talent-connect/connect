@@ -9,7 +9,6 @@ import {
   TpEmploymentType,
   TpTechnicalSkill,
 } from '../../common-objects'
-import { RediCourse } from '../../con-profile'
 import { TpAvailabilityOption } from '../../tp-common-objects'
 import { TpJobseekerProfileEducationRecordEntityProps } from '../common-objects/tp-jobseeker-profile-education-record.entityprops'
 import { TpJobseekerProfileExperienceRecordEntityProps } from '../common-objects/tp-jobseeker-profile-experience-record.entityprops'
@@ -51,8 +50,6 @@ export class TpJobseekerDirectoryEntryMapper
     props.id = jobseekerProfileRecord.Id
 
     props.rediLocation = jobseekerProfileRecord.ReDI_Location__c
-    props.currentlyEnrolledInCourse =
-      jobseekerProfileRecord.ReDI_Course__c as RediCourse
     props.profileAvatarImageS3Key = jobseekerProfileRecord.Avatar_Image_URL__c
     props.desiredPositions =
       (jobseekerProfileRecord.Desired_Positions__c?.split(
@@ -74,10 +71,8 @@ export class TpJobseekerDirectoryEntryMapper
       ) as TpTechnicalSkill[]) ?? undefined
     props.state =
       jobseekerProfileRecord.Profile_Status__c as JobseekerProfileStatus
-    props.isJobFair2022Participant =
-      jobseekerProfileRecord.Is_Job_Fair_2022_Participant__c
-    props.isJobFair2023Participant =
-      jobseekerProfileRecord.Is_Job_Fair_2023_Participant__c
+    props.joinsMunich24SummerJobFair =
+      jobseekerProfileRecord.Joins_Munich_24_Summer_Job_Fair__c
     props.isProfileVisibleToCompanies =
       jobseekerProfileRecord.Is_Visible_to_Companies__c
     props.isHired = jobseekerProfileRecord.Is_Hired__c
@@ -103,7 +98,7 @@ export class TpJobseekerDirectoryEntryMapper
       const records = raw.props.Jobseeker_Line_Items__r?.records
       for (let i = 0; i < records.length; i++) {
         const record = records[i]
-        let baseRecord = {} as
+        const baseRecord = {} as
           | TpJobseekerProfileExperienceRecordEntityProps
           | TpJobseekerProfileEducationRecordEntityProps
         baseRecord.id = record.Id

@@ -17,7 +17,6 @@ fragment AllConProfileFields on ConProfile {
   linkedInProfileUrl
   loopbackUserId
   menteeCountCapacity
-  mentee_currentlyEnrolledInCourse
   mentee_highestEducationLevel
   mentee_occupationCategoryId
   mentee_occupationJob_placeOfEmployment
@@ -26,6 +25,7 @@ fragment AllConProfileFields on ConProfile {
   mentee_occupationOther_description
   mentee_occupationStudent_studyName
   mentee_occupationStudent_studyPlace
+  mentor_isPartnershipMentor
   mentor_occupation
   mentor_workPlace
   optOutOfMenteesFromOtherRediLocation

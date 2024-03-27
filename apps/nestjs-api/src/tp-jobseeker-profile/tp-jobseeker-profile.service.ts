@@ -72,18 +72,9 @@ export class TpJobseekerProfileService {
     input: TpJobseekerProfileSignUpMutationDto,
     currentUser: CurrentUserInfo
   ) {
-    await this.userContactService.patch(
-      {
-        firstName: input.firstName,
-        lastName: input.lastName,
-      },
-      currentUser
-    )
-
     const newEntityProps = new TpJobseekerProfileEntityProps()
     newEntityProps.userId = currentUser.userId
     newEntityProps.rediLocation = input.rediLocation
-    newEntityProps.currentlyEnrolledInCourse = input.currentlyEnrolledInCourse
     newEntityProps.state = JobseekerProfileStatus.DRAFTING_PROFILE
 
     const entityToPersist = TpJobseekerProfileEntity.create(newEntityProps)
@@ -91,7 +82,7 @@ export class TpJobseekerProfileService {
 
     this.emailService.sendJobseekerSignupCompleteEmail({
       recipient: currentUser.userProps.email,
-      firstName: input.firstName,
+      firstName: currentUser.userProps.firstName,
     })
   }
 }

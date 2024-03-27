@@ -12,7 +12,6 @@ import {
   Mapper,
   MentoringTopic,
   OccupationCategory,
-  RediCourse,
   RediLocation,
   UserType,
 } from '@talent-connect/common-types'
@@ -31,6 +30,7 @@ export class ConProfileMapper
     props.userType = raw.props.RecordType.DeveloperName as UserType
     props.loopbackUserId = raw.props.Contact__r.Loopback_User_ID__c
     props.rediLocation = raw.props.ReDI_Location__c as RediLocation
+    props.mentor_isPartnershipMentor = raw.props.Partnership_Mentor__c
     props.mentor_occupation = raw.props.Occupation__c
     props.mentor_workPlace = raw.props.Work_Place__c
     props.expectations = raw.props.Expectations__c
@@ -46,8 +46,6 @@ export class ConProfileMapper
       raw.props.Main_Occupation_Other__c
     props.mentee_highestEducationLevel = raw.props
       .Education__c as EducationLevel
-    props.mentee_currentlyEnrolledInCourse = raw.props
-      .ReDI_Course__c as RediCourse
     props.profileAvatarImageS3Key = raw.props.Avatar_Image_URL__c
 
     props.firstName = String(raw.props.Contact__r.FirstName)
@@ -116,6 +114,7 @@ export class ConProfileMapper
     props.Profile_Status__c = srcProps.profileStatus
     // props.RecordType.DeveloperName = srcProps.RecordType.userType
     props.ReDI_Location__c = srcProps.rediLocation
+    props.Partnership_Mentor__c = srcProps.mentor_isPartnershipMentor
     props.Occupation__c = srcProps.mentor_occupation
     props.Work_Place__c = srcProps.mentor_workPlace
     props.Expectations__c = srcProps.expectations
@@ -128,7 +127,6 @@ export class ConProfileMapper
     props.Desired_Job__c = srcProps.mentee_occupationLookingForJob_what
     props.Main_Occupation_Other__c = srcProps.mentee_occupationOther_description
     props.Education__c = srcProps.mentee_highestEducationLevel
-    props.ReDI_Course__c = srcProps.mentee_currentlyEnrolledInCourse
     props.Avatar_Image_URL__c = srcProps.profileAvatarImageS3Key
 
     props.Languages__c = srcProps.languages?.join(';')

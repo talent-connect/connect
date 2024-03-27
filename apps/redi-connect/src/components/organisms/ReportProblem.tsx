@@ -139,7 +139,7 @@ const ReportProblem = ({ redProfileId, type }: ReportProblemProps) => {
             {isCancelImmediatly && (
               <Content textColor="primary">
                 Not ReDI? We regret you want to cancel this mentorship. Someone
-                from our Career Department will be in touch with both you and
+                from our ReDI Talent Success Team will be in touch with both you and
                 your mentee
               </Content>
             )}

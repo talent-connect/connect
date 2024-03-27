@@ -9,6 +9,7 @@ export class PatchConProfileInput extends PartialType(
   PickType(_ConProfileEntityProps, [
     'mentor_occupation',
     'mentor_workPlace',
+    'mentor_isPartnershipMentor',
     'expectations',
     'mentee_occupationCategoryId',
     'mentee_occupationJob_placeOfEmployment',
@@ -18,7 +19,6 @@ export class PatchConProfileInput extends PartialType(
     'mentee_occupationLookingForJob_what',
     'mentee_occupationOther_description',
     'mentee_highestEducationLevel',
-    'mentee_currentlyEnrolledInCourse',
     'profileAvatarImageS3Key',
     'firstName',
     'lastName',

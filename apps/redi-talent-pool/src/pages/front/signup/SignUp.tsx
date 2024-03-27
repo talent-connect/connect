@@ -1,22 +1,22 @@
 import {
+  FirstPointOfTpContactOption,
   TpCompanyProfileSignUpOperationType,
-  useListAllTpCompanyNamesQuery
+  useListAllTpCompanyNamesQuery,
 } from '@talent-connect/data-access'
 import {
   Button,
   Checkbox,
   FormInput,
   FormSelect,
-  Heading
+  Heading,
 } from '@talent-connect/shared-atomic-design-components'
-import { COURSES, REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { FormikHelpers as FormikActions, useFormik } from 'formik'
 import { useMemo, useState } from 'react'
-
 import { Columns, Content, Form, Notification } from 'react-bulma-components'
 import { Link, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
@@ -24,10 +24,6 @@ import TpTeaser from '../../../components/molecules/TpTeaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
-import {
-  useSignUpCompanyMutation,
-  useSignUpJobseekerMutation
-} from './SignUp.generated'
 
 const formRediLocations = objectEntries(REDI_LOCATION_NAMES).map(
   ([id, label]) => ({
@@ -35,12 +31,6 @@ const formRediLocations = objectEntries(REDI_LOCATION_NAMES).map(
     label,
   })
 )
-
-const formCourses = COURSES.map((course) => ({
-  value: course.id,
-  label: course.label,
-  location: course.location,
-}))
 
 const howDidHearAboutRediOptionsEntries = Object.entries(
   howDidHearAboutRediOptions
@@ -78,10 +68,6 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
         .required()
         .oneOf(formRediLocations.map((loc) => loc.value))
         .label('Current ReDI Location'),
-      currentlyEnrolledInCourse: Yup.string()
-        .required('Please select current ReDI course')
-        .oneOf(COURSES.map((level) => level.id))
-        .label('Currently enrolled in course'),
       agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
     })
   }
@@ -89,14 +75,15 @@ function buildValidationSchema(signupType: SignUpPageType['type']) {
   if (signupType === 'company') {
     return Yup.object({
       ...baseSchema,
-      companyNameOrId: Yup.string()
+      companyIdOrName: Yup.string()
         .required('Your company name is required')
         .max(255),
       howDidHearAboutRediKey: Yup.string().required('This field is required'),
       howDidHearAboutRediOtherText: Yup.string().when(
         'howDidHearAboutRediKey',
         {
-          is: (howDidHearAboutRediKey) => howDidHearAboutRediKey === 'other',
+          is: (howDidHearAboutRediKey) =>
+            howDidHearAboutRediKey === FirstPointOfTpContactOption.Other,
           then: Yup.string().required('This field is required'),
         }
       ),
@@ -109,9 +96,6 @@ type SignUpPageType = {
 }
 
 export default function SignUp() {
-  const signUpCompanyMutation = useSignUpCompanyMutation()
-  const signUpJobseekerMutation = useSignUpJobseekerMutation()
-
   const { type } = useParams<SignUpPageType>()
 
   const initialValues: any = useMemo(
@@ -121,45 +105,55 @@ export default function SignUp() {
       passwordConfirm: '',
       firstName: '',
       lastName: '',
+      isMicrosoftPartner: false,
     }),
     []
   )
   if (type === 'jobseeker') {
     initialValues.state = 'drafting-profile'
-    initialValues.currentlyEnrolledInCourse = ''
     initialValues.agreesWithCodeOfConduct = false
   }
   if (type === 'company') {
-    initialValues.companyNameOrId = ''
+    initialValues.companyIdOrName = ''
     initialValues.state = 'drafting-profile'
+    initialValues.isMicrosoftPartner = false
   }
 
   const {
     data: tpCompanyNames,
-    isLoading: isLoadingTpCompanyNames,
-    isSuccess: isSuccessTpCompanyNames,
+    isLoading: isTpCompanyNamesLoading,
+    isSuccess: isTpCompanyNamesSuccess,
   } = useListAllTpCompanyNamesQuery({}, { enabled: type === 'company' })
+
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: initialValues,
+    validationSchema: buildValidationSchema(type as SignUpPageType['type']),
+    onSubmit: submitForm,
+  })
+
+  const isExistingCompany = tpCompanyNames?.publicTpCompanyProfiles.some(
+    (company) => company.id === formik.values.companyIdOrName
+  )
+  const isNewCompany = !isExistingCompany
 
   const [loopbackSubmitError, setLoopbackSubmitError] = useState(null)
 
-  const submitForm = async (values: any, actions: FormikActions<any>) => {
+  async function submitForm(values: any, actions: FormikActions<any>) {
     try {
       setLoopbackSubmitError(null)
-      await signUpLoopback(values.email, values.password)
 
       if (type === 'jobseeker') {
         const transformedValues: any =
           buildValidationSchema('jobseeker').cast(values)
-        await signUpJobseekerMutation.mutateAsync({
-          input: {
-            firstName: transformedValues.firstName,
-            lastName: transformedValues.lastName,
-            currentlyEnrolledInCourse:
-              transformedValues.currentlyEnrolledInCourse,
-            rediLocation: transformedValues.rediLocation,
-          },
+        await signUpLoopback(values.email, values.password, {
+          firstName: transformedValues.firstName,
+          lastName: transformedValues.lastName,
+          rediLocation: transformedValues.rediLocation,
+          productSignupSource: 'TP',
+          tpSignupType: 'jobseeker',
         })
-        history.push(`/app/me`)
+        history.push(`/front/signup-email-verification`)
       }
 
       if (type === 'company') {
@@ -167,23 +161,20 @@ export default function SignUp() {
         const profile = transformedValues as Partial<TpCompanyProfile>
         profile.isProfileVisibleToJobseekers = true
 
-        const isExistingCompany = tpCompanyNames?.publicTpCompanyProfiles.some(
-          (company) => company.id === values.companyNameOrId
-        )
-
-        await signUpCompanyMutation.mutateAsync({
-          input: {
-            companyIdOrName: values.companyNameOrId,
-            firstName: values.firstName,
-            lastName: values.lastName,
-            operationType: isExistingCompany
-              ? TpCompanyProfileSignUpOperationType.ExistingCompany
-              : TpCompanyProfileSignUpOperationType.NewCompany,
-            firstPointOfContact: values.howDidHearAboutRediKey,
-            firstPointOfContactOther: values.howDidHearAboutRediOtherText,
-          },
+        await signUpLoopback(values.email, values.password, {
+          companyIdOrName: values.companyIdOrName,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          operationType: isExistingCompany
+            ? TpCompanyProfileSignUpOperationType.ExistingCompany
+            : TpCompanyProfileSignUpOperationType.NewCompany,
+          firstPointOfContact: values.howDidHearAboutRediKey,
+          firstPointOfContactOther: values.howDidHearAboutRediOtherText,
+          isMicrosoftPartner: values.isMicrosoftPartner,
+          productSignupSource: 'TP',
+          tpSignupType: 'company',
         })
-        history.push(`/front/signup-complete`)
+        history.push(`/front/signup-email-verification`)
       }
       actions.setSubmitting(false)
     } catch (error) {
@@ -199,13 +190,6 @@ export default function SignUp() {
     }
   }
 
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: initialValues,
-    validationSchema: buildValidationSchema(type as SignUpPageType['type']),
-    onSubmit: submitForm,
-  })
-
   return (
     <AccountOperation>
       <Columns>
@@ -219,12 +203,8 @@ export default function SignUp() {
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>
           <Content size="small" renderAs="p">
-            {/* Commented and replaced with different text until the cross-platform log-in feature is implemented. */}
-            {/* Got a ReDI Connect user account? You can log in with the same
-            username and password <Link to="/front/login">here</Link>. */}
-            Got a ReDI Connect user account? To log in with the same username 
-            and password get in contact with @Kate in ReDI Slack or write an e-mail 
-            <a href="mailto:kateryna@redi-school.org"> here</a>.
+            Got a ReDI Connect user account? You can log in with the same
+            username and password <Link to="/front/login">here</Link>.
           </Content>
           {loopbackSubmitError === 'user-already-exists' && (
             <Notification color="info" className="is-light">
@@ -235,10 +215,10 @@ export default function SignUp() {
           <form onSubmit={(e) => e.preventDefault()} className="form">
             {type === 'company' ? (
               <FormSelect
-                name="companyNameOrId"
+                name="companyIdOrName"
                 placeholder="Your company name"
                 items={
-                  isSuccessTpCompanyNames
+                  isTpCompanyNamesSuccess
                     ? tpCompanyNames?.publicTpCompanyProfiles.map(
                         (company) => ({
                           label: company.companyName,
@@ -248,7 +228,7 @@ export default function SignUp() {
                     : []
                 }
                 creatable
-                isLoading={isLoadingTpCompanyNames}
+                isLoading={isTpCompanyNamesLoading}
                 formik={formik}
               />
             ) : null}
@@ -296,19 +276,6 @@ export default function SignUp() {
               />
             )}
 
-            {type === 'jobseeker' && (
-              <FormSelect
-                label="Current ReDI Course"
-                name="currentlyEnrolledInCourse"
-                placeholder="Choose your ReDI Course"
-                disabled={!formik.values.rediLocation}
-                items={formCourses.filter(
-                  (course) => course.location === formik.values.rediLocation
-                )}
-                formik={formik}
-              />
-            )}
-
             {type === 'jobseeker' ? (
               <Checkbox.Form
                 name="agreesWithCodeOfConduct"
@@ -336,7 +303,8 @@ export default function SignUp() {
                   items={howDidHearAboutRediOptionsEntries}
                   formik={formik}
                 />
-                {formik.values.howDidHearAboutRediKey === 'other' ? (
+                {formik.values.howDidHearAboutRediKey ===
+                FirstPointOfTpContactOption.Other ? (
                   <FormInput
                     name="howDidHearAboutRediOtherText"
                     placeholder="Please tell us how you heard about ReDI Talent Pool"
@@ -345,6 +313,16 @@ export default function SignUp() {
                 ) : null}
               </>
             ) : null}
+
+            {type === 'company' && isNewCompany && (
+              <Checkbox.Form
+                name="isMicrosoftPartner"
+                checked={formik.values.isMicrosoftPartner}
+                {...formik}
+              >
+                I am a Microsoft Partner{' '}
+              </Checkbox.Form>
+            )}
 
             <Checkbox.Form
               name="gaveGdprConsent"

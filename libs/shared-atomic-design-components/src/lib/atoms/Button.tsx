@@ -50,6 +50,7 @@ const Button = ({
         style={style}
       >
         {children}
+        {!simple && <div className="button-after" />}
       </button>
     )
   }
@@ -74,6 +75,7 @@ const Button = ({
         style={style}
       >
         {children}
+        {!simple && <div className="button-after" />}
       </button>
     )
   }

@@ -28,8 +28,9 @@ export class TpCompanyProfileMapper
     props.about = raw.props.Description
     props.state = raw.props.ReDI_Talent_Pool_State__c as CompanyTalentPoolState
     props.isProfileVisibleToJobseekers = raw.props.ReDI_Visible_to_Jobseekers__c
-    props.isJobFair2023Participant =
-      raw.props.ReDI_Is_Job_Fair_2023_Participant__c
+    props.isCareerPartner = raw.props.ReDI_Career_Partner__c
+    props.joinsMunich24SummerJobFair =
+      raw.props.ReDI_Joins_Munich_24_Summer_Job_Fair__c
 
     props.createdAt = raw.props.CreatedDate
     props.updatedAt = raw.props.LastModifiedDate
@@ -56,8 +57,8 @@ export class TpCompanyProfileMapper
     props.Description = srcProps.about
     props.ReDI_Talent_Pool_State__c = srcProps.state
     props.ReDI_Visible_to_Jobseekers__c = srcProps.isProfileVisibleToJobseekers
-    props.ReDI_Is_Job_Fair_2023_Participant__c =
-      srcProps.isJobFair2023Participant
+    props.ReDI_Joins_Munich_24_Summer_Job_Fair__c =
+      srcProps.joinsMunich24SummerJobFair
 
     props.CreatedDate = srcProps.createdAt
     props.LastModifiedDate = srcProps.updatedAt

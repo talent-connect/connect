@@ -12,7 +12,7 @@ export class TpCompanyProfilePatchInput extends PartialType(
     'about',
     'companyName',
     'industry',
-    'isJobFair2023Participant',
+    'joinsMunich24SummerJobFair',
     'isProfileVisibleToJobseekers',
     'linkedInUrl',
     'location',
