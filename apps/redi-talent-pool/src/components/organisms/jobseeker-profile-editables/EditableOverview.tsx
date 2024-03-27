@@ -1,16 +1,16 @@
 import {
   TpJobseekerDirectoryEntry,
   useMyTpDataQuery,
-  useTpJobseekerProfilePatchMutation
+  useTpJobseekerProfilePatchMutation,
 } from '@talent-connect/data-access'
 import {
   Button,
   Caption,
-  FormSelect
+  FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import {
   desiredPositions,
-  desiredPositionsIdToLabelMap
+  desiredPositionsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { useFormik } from 'formik'
 import { useEffect, useMemo, useState } from 'react'
@@ -144,7 +144,7 @@ function JobseekerFormSectionOverview({
         label="Desired position* (pick 1-3)"
         name="desiredPositions"
         items={formDesiredPositions}
-        {...formik}
+        formik={formik}
         multiselect
         placeholder="Start typing and select positions"
         closeMenuOnSelect={false}

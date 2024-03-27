@@ -100,7 +100,7 @@ const DeclineMentorshipButton = ({ match }: DeclineMentorshipButtonProps) => {
               name="ifDeclinedByMentor_chosenReasonForDecline"
               label=""
               items={formDeclineOptions}
-              {...formik}
+              formik={formik}
             />
             {formik.values.ifDeclinedByMentor_chosenReasonForDecline ===
             'other' ? (

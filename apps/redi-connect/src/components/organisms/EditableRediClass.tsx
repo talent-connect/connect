@@ -6,29 +6,30 @@ import {
   Editable,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
-import { LANGUAGES } from '@talent-connect/shared-config'
-import { objectEntries } from '@talent-connect/typescript-utilities'
 import { FormikValues, useFormik } from 'formik'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
+import { courses } from '../../config/config'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
-import { ReadLanguages } from '../molecules'
+import { ReadRediClass } from '../molecules'
 
-const formLanguages = objectEntries(LANGUAGES).map(([value, label]) => ({
-  value,
-  label,
+const formCourses = courses.map((course) => ({
+  value: course.id,
+  label: course.label,
 }))
 
-export interface LanguagesFormValues {
-  languages: string[]
+export interface RediClassFormValues {
+  mentee_currentlyEnrolledInCourse: string
 }
 
 const validationSchema = Yup.object({
-  languages: Yup.array().min(1).of(Yup.string().max(255)).label('Languages'),
+  mentee_currentlyEnrolledInCourse: Yup.string()
+    .required()
+    .oneOf(courses.map((level) => level.id))
+    .label('Currently enrolled in course'),
 })
 
-// props: FormikProps<AboutFormValues>
-function EditableLanguages() {
+function EditableRediClass() {
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const queryClient = useQueryClient()
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
@@ -36,7 +37,8 @@ function EditableLanguages() {
 
   const profile = myProfileQuery.data?.conProfile
 
-  const languages = profile?.languages
+  const mentee_currentlyEnrolledInCourse =
+    profile?.mentee_currentlyEnrolledInCourse
 
   const submitForm = async (values: FormikValues) => {
     const mutationResult = await patchMyProfileMutation.mutateAsync({
@@ -47,8 +49,8 @@ function EditableLanguages() {
     })
   }
 
-  const initialValues: LanguagesFormValues = {
-    languages: languages || [],
+  const initialValues: RediClassFormValues = {
+    mentee_currentlyEnrolledInCourse,
   }
 
   const formik = useFormik({
@@ -62,22 +64,20 @@ function EditableLanguages() {
 
   return (
     <Editable
-      title="Languages"
+      title="Redi Class"
       onSave={() => formik.handleSubmit()}
       onClose={() => formik.resetForm()}
       savePossible={formik.dirty && formik.isValid}
-      read={<ReadLanguages.Me />}
+      read={<ReadRediClass.Me />}
     >
       <FormSelect
-        label="Which of these languages do you speak?*"
-        name="languages"
-        items={formLanguages}
-        multiselect
-        placeholder="Start typing and select languages"
+        label="Which course are you taking at ReDI?"
+        name="mentee_currentlyEnrolledInCourse"
+        items={formCourses}
         formik={formik}
       />
     </Editable>
   )
 }
 
-export default EditableLanguages
+export default EditableRediClass

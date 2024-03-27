@@ -99,7 +99,7 @@ function EditableMenteeCount() {
         name="menteeCountCapacity"
         placeholder="Mentee count"
         items={formMenteeCountCapacityOptions}
-        {...formik}
+        formik={formik}
       />
       <Checkbox.Form
         name="optOutOfMenteesFromOtherRediLocation"

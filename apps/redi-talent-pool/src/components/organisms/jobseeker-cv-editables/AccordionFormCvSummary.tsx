@@ -134,7 +134,7 @@ export function JobseekerFormSectionSummary({
         label="Your top technical skills (pick 1-5 skills)"
         name="topSkills"
         items={formTopSkills}
-        {...formik}
+        formik={formik}
         multiselect
         placeholder="Start typing and select skills"
         closeMenuOnSelect={false}

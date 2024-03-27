@@ -443,7 +443,7 @@ export function JobseekerFormSectionProfessionalExperience({
                               name={`experience[${index}].startDateMonth`}
                               label="Started in month*"
                               items={formMonthsOptions}
-                              {...formik}
+                              formik={formik}
                             />
                           </Columns.Column>
                           <Columns.Column size={6}>
@@ -462,7 +462,7 @@ export function JobseekerFormSectionProfessionalExperience({
                                 name={`experience[${index}].endDateMonth`}
                                 label="Ended in month*"
                                 items={formMonthsOptions}
-                                {...formik}
+                                formik={formik}
                               />
                             </Columns.Column>
                             <Columns.Column size={6}>

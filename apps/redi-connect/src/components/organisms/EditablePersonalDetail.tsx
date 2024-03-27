@@ -80,7 +80,7 @@ const EditablePersonalDetail = () => {
         name="gender"
         placeholder="Prefer not to answer"
         items={formGenders}
-        {...formik}
+        formik={formik}
       />
       {/* Disabled for reasons explained above */}
       {/* <FormDatePicker
