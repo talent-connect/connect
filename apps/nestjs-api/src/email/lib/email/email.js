@@ -101,6 +101,7 @@ function buildSubjectLine(subject, env) {
 }
 
 const convertTemplateToHtml = (rediLocation, templateString) => {
+  if (rediLocation) rediLocation = rediLocation.toLowerCase()
   const defaultTemplateFileName = `${templateString}.mjml`
   const locationSpecificTemplateFileName = `${templateString}.${rediLocation}.mjml`
   const template = getMostSpecificTemplate(
