@@ -13,7 +13,7 @@
           >
 
           <mj-text mj-class="text paragraph"
-            >Unfortunately, ${mentorName} cannot accept your mentorship
+            >Unfortunately ${mentorName} cannot accept your mentorship
             application at this time.</mj-text
           >
           <mj-text mj-class="text paragraph"
@@ -36,16 +36,16 @@
 
           <mj-text mj-class="text paragraph"
             >If you need any support in the process, please reach out to us at
-            <a href="mailto:career@redi-school.org" class="text-link"
-              >career@redi-school.org</a
+            <a href="mailto:career.sweden@redi-school.org" class="text-link"
+              >career.sweden@redi-school.org</a
             >.</mj-text
           >
 
           <mj-text mj-class="text">All the best,</mj-text>
-          <mj-text mj-class="text">Your ReDI Talent Success Team</mj-text>
+          <mj-text mj-class="text">ReDI Malmö Team</mj-text>
         </mj-column>
       </mj-section>
-      <mj-include path="./footer.career.support.team.mjml" />
+      <mj-include path="./footer.malmo.team.mjml" />
       <mj-section />
     </mj-wrapper>
   </mj-body>

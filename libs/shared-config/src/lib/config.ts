@@ -1,6 +1,7 @@
 export const REDI_LOCATION_NAMES = {
   BERLIN: 'Berlin',
   HAMBURG: 'Hamburg',
+  MALMO: 'Malmö',
   MUNICH: 'Munich',
   NRW: 'NRW',
   CYBERSPACE: 'Cyberspace',
