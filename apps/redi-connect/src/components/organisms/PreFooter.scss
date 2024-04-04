@@ -11,6 +11,12 @@
       position: relative;
       bottom: -3.4rem;
       margin: 0 1rem 0;
+      width: 100%;
+      height: auto;
     }
+  }
+
+  &__content {
+    margin-top: 1.5rem !important;
   }
 }

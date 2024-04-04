@@ -1,17 +1,9 @@
 /* Keep me in sync with redi-connect-front/src/lib/build-frontend-url.ts */
 
 module.exports = {
-  buildFrontendUrl: function (env, rediLocation) {
-    if (env === 'production' && rediLocation === 'BERLIN') {
-      return 'https://connect.berlin.redi-school.org'
-    } else if (env === 'production' && rediLocation === 'HAMBURG') {
-      return 'https://connect.hamburg.redi-school.org'
-    } else if (env === 'production' && rediLocation === 'MUNICH') {
-      return 'https://connect.munich.redi-school.org'
-    } else if (env === 'production' && rediLocation === 'NRW') {
-      return 'https://connect.nrw.redi-school.org'
-    } else if (env === 'production' && rediLocation === 'CYBERSPACE') {
-      return 'https://connect.cyberspace.redi-school.org'
+  buildFrontendUrl: function (env) {
+    if (env === 'production') {
+      return 'https://connect.redi-school.org'
     } else if (env === 'demonstration') {
       return 'https://app.demo.connect.redi-school.org'
     } else if (env === 'staging') {

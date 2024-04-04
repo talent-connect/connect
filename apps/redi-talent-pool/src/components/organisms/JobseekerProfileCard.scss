@@ -1,73 +1,10 @@
 @import '_variables.scss';
+@import '~bulma/sass/utilities/_all';
 
-.jobseeker-profile-link:hover {
-  text-decoration: none;
-}
+.jobSeeker-profile-card-wrapper {
+  height: 514px;
 
-.jobseeker-profile-card {
-  border-radius: 4px;
-  height: 24.5rem;
-  overflow: hidden;
-
-  &:hover {
-    box-shadow: $card-shadow-hover;
-  }
-
-  &__job-title {
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 24px;
-    letter-spacing: 1.25px;
-  }
-
-  &__company-name {
-    margin-top: 5px;
-    color: $grey;
-  }
-
-  &__hired-tag {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    border-radius: 0 !important;
-    border-bottom-right-radius: 4px !important;
-  }
-
-  &__image {
-    .image {
-      display: flex;
-      justify-content: center;
-    }
-
-    img {
-      width: 9.5rem;
-      height: 9.5rem;
-      overflow: hidden;
-      object-fit: contain;
-
-      border: 2px solid $redi-orange-dark;
-      border-radius: 50%;
-      box-shadow: 2px 0 15px 0 rgba(255, 92, 31, 0.34);
-    }
-  }
-
-  &__favorite {
-    padding: 0.5rem;
-    position: absolute;
-    top: 0.3rem;
-    right: 0.4rem;
-
-    &__icon {
-      transition: $transition;
-
-      path {
-        fill: $redi-orange-dark;
-      }
-
-      &:hover {
-        transform: scale(1.2);
-      }
-    }
+  @include mobile() {
+    height: 384px;
   }
 }

@@ -3,10 +3,10 @@ import { topSkillsIdToLabelMap } from '@talent-connect/talent-pool/config'
 import React from 'react'
 import { Card } from 'react-bulma-components'
 import { NavLink } from 'react-router-dom'
-import LocationIcon from '../../assets/images/Location.svg'
 import placeholderImage from '../../assets/images/company-placeholder-img.svg'
 import './JobListingCard.scss'
 import { JobListingCardJobListingPropFragment } from './jobseeker-profile-editables/JobListingCard.generated'
+import CardLocation from '../../../../../libs/shared-atomic-design-components/src/lib/atoms/CardLocation'
 
 interface JobListingCardProps {
   jobListing: JobListingCardJobListingPropFragment
@@ -17,28 +17,6 @@ interface JobListingCardProps {
   renderCTA?: () => React.ReactNode
 
   onClick?: (e: React.MouseEvent) => void
-}
-
-const CardLocation = ({ location, remote }) => {
-  const locationArr = location.split(',')
-  const newLocationsString =
-    locationArr.length > 3
-      ? locationArr.slice(0, 3).join(',') + '...'
-      : location
-
-  return (
-    <div className="job-posting-card__location-container">
-      <img
-        src={LocationIcon}
-        alt="Location"
-        className="job-posting-card__location-icon"
-      />
-      <p className="job-posting-card__location-text">
-        {newLocationsString}
-        {remote ? ' | Remote' : ''}
-      </p>
-    </div>
-  )
 }
 
 export function JobListingCard({

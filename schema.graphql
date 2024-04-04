@@ -603,6 +603,7 @@ enum RediLocation {
   BERLIN
   CYBERSPACE
   HAMBURG
+  MALMO
   MUNICH
   NRW
 }

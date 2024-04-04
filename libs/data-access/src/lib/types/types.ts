@@ -925,6 +925,7 @@ export enum RediLocation {
   Berlin = 'BERLIN',
   Cyberspace = 'CYBERSPACE',
   Hamburg = 'HAMBURG',
+  Malmo = 'MALMO',
   Munich = 'MUNICH',
   Nrw = 'NRW'
 }

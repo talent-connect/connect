@@ -19,7 +19,7 @@
             ${menteeFirstName}!</mj-text
           >
           <mj-text mj-class="text paragraph" 
-            >This is super helpful because it’s currently the only way for us to
+            >This is super helpful because it's currently the only way for us to
             track the progress of your mentorship.
           </mj-text>
           <mj-text mj-class="text paragraph" 
