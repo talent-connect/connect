@@ -1,6 +1,10 @@
 import './Chip.scss'
 
-const Chip = ({ chip }) => {
+export interface ChipProps {
+  chip: string
+}
+
+const Chip = ({ chip }: ChipProps) => {
   return (
     <p key={chip} className="chip">
       {chip}
