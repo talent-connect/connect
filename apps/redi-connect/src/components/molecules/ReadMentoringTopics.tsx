@@ -27,7 +27,7 @@ export const ProfileTags = ({ items }: ProfileTagsProps) => {
   return (
     <div className="mentoring-topics__container">
       {formattedItems.map((chip) => (
-        <Chip chip={chip} />
+        <Chip key={chip} chip={chip} />
       ))}
     </div>
   )
