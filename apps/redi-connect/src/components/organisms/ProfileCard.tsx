@@ -71,9 +71,7 @@ const ProfileCard = ({
             {REDI_LOCATION_NAMES[rediLocation]}
           </Element>
           {languages && <PipeList items={languages} />}
-          {categories && (
-            <ReadMentoringTopics.Tags items={categories} shortList />
-          )}
+          {categories && <ReadMentoringTopics.Tags items={categories} />}
         </Card.Content>
       </Card>
     </NavLink>

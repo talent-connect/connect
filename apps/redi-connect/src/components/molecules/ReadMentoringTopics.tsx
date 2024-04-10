@@ -1,30 +1,37 @@
 import {
   ConProfile,
+  MentoringTopic,
   useLoadMyProfileQuery,
   UserType,
 } from '@talent-connect/data-access'
 import {
   Caption,
-  CardTags,
-  CardTagsProps,
   Placeholder,
 } from '@talent-connect/shared-atomic-design-components'
 import { CATEGORIES_MAP } from '@talent-connect/shared-config'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
+import Chip from '../../../../../libs/shared-atomic-design-components/src/lib/atoms/Chip'
+import './ReadMentoringTopics.scss'
 
 interface ReadMentoringProps {
   profile: Pick<ConProfile, 'categories' | 'userType'>
   caption?: boolean
 }
 
-export const ProfileTags = ({ items, shortList }: CardTagsProps) => (
-  <CardTags
-    items={items}
-    shortList={shortList}
-    formatter={(item: string) => CATEGORIES_MAP[item]}
-  />
-)
+interface ProfileTagsProps {
+  items: MentoringTopic[]
+}
 
+export const ProfileTags = ({ items }: ProfileTagsProps) => {
+  const formattedItems = items.map((item) => CATEGORIES_MAP[item])
+  return (
+    <div className="mentoring-topics__container">
+      {formattedItems.map((chip) => (
+        <Chip key={chip} chip={chip} />
+      ))}
+    </div>
+  )
+}
 const ReadMentoringTopics = ({ profile, caption }: ReadMentoringProps) => {
   const { categories, userType } = profile
 
@@ -60,7 +67,5 @@ export default {
   Some: ({ profile }: ReadMentoringProps) => (
     <ReadMentoringTopics profile={profile} caption />
   ),
-  Tags: ({ items, shortList }: CardTagsProps) => (
-    <ProfileTags items={items} shortList />
-  ),
+  Tags: ({ items }: ProfileTagsProps) => <ProfileTags items={items} />,
 }
