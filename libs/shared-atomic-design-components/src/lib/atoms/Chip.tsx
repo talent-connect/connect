@@ -5,10 +5,6 @@ export interface ChipProps {
 }
 
 const Chip = ({ chip }: ChipProps) => {
-  return (
-    <p key={chip} className="chip">
-      {chip}
-    </p>
-  )
+  return <p className="chip">{chip}</p>
 }
 export default Chip
