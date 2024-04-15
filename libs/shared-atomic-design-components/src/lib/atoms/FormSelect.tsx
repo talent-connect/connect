@@ -125,8 +125,11 @@ function FormSelect(props: FormSelectProps) {
     : undefined
 
   const handleScroll = (e) => {
-    if ((e.target as Element).className === 'modal-card-body' || e.target === document)
-              return true
+    if (
+      (e.target as Element).className === 'modal-card-body' ||
+      e.target === document
+    )
+      return true
   }
 
   return (
@@ -147,10 +150,6 @@ function FormSelect(props: FormSelectProps) {
           menuPosition="fixed"
           closeMenuOnSelect={closeMenuOnSelect}
           closeMenuOnScroll={handleScroll}
-          // closeMenuOnScroll={(e) => {
-          //   if ((e.target as Element).className === 'modal-card-body' || e.target === document)
-          //     return true
-          // }}
           isLoading={isLoading}
           {...(creatable
             ? {
