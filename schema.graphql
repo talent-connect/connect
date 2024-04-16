@@ -493,6 +493,7 @@ enum MentoringTopic {
   react
   sales
   salesforce
+  swedish
   userExperienceDesign
   userInterfaceDesign
 }

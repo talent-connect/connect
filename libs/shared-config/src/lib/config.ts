@@ -89,6 +89,7 @@ export const CATEGORIES = [
   { id: 'basicGerman', label: 'Basic German 🇩🇪', group: 'language' },
   { id: 'businessGerman', label: 'Business German 🇩🇪', group: 'language' },
   { id: 'english', label: 'English 🇬🇧', group: 'language' },
+  { id: 'swedish', label: 'Swedish 🇸🇪', group: 'language' },
   { id: 'graphicDesign', label: 'Graphic Design', group: 'design' },
   {
     id: 'userInterfaceDesign',
