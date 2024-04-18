@@ -305,7 +305,7 @@ function JobseekerFormSectionImportantDetails({
             label="What kind of employment are you looking for?*"
             name="desiredEmploymentType"
             items={formDesiredEmploymentType}
-            {...formik}
+            formik={formik}
             multiselect
             placeholder="Select desired employment types"
             closeMenuOnSelect={false}
@@ -314,7 +314,7 @@ function JobseekerFormSectionImportantDetails({
             label="When are you available to start?*"
             name="availability"
             items={formAvailabilityOptions}
-            {...formik}
+            formik={formik}
           />
           {formik.values.availability === 'date' ? (
             <FormDatePicker
@@ -333,7 +333,7 @@ function JobseekerFormSectionImportantDetails({
             label="What is your immigration status?"
             name="immigrationStatus"
             items={formImmigrationStatusOptions}
-            {...formik}
+            formik={formik}
           />
         </>
       )}

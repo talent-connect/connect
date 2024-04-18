@@ -236,7 +236,7 @@ function ModalForm({
         name="federalState"
         label="Your place of residence (state)*"
         items={federalStatesOptions}
-        {...formik}
+        formik={formik}
       />
       <Checkbox.Form
         name={`willingToRelocate`}

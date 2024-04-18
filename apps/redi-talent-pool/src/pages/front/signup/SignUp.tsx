@@ -229,7 +229,7 @@ export default function SignUp() {
                 }
                 creatable
                 isLoading={isTpCompanyNamesLoading}
-                {...formik}
+                formik={formik}
               />
             ) : null}
 
@@ -272,7 +272,7 @@ export default function SignUp() {
                 name="rediLocation"
                 placeholder="Choose your ReDI Location"
                 items={formRediLocations}
-                {...formik}
+                formik={formik}
               />
             )}
 
@@ -301,7 +301,7 @@ export default function SignUp() {
                   name="howDidHearAboutRediKey"
                   placeholder="How did you first hear about ReDI Talent Pool?"
                   items={howDidHearAboutRediOptionsEntries}
-                  {...formik}
+                  formik={formik}
                 />
                 {formik.values.howDidHearAboutRediKey ===
                 FirstPointOfTpContactOption.Other ? (
