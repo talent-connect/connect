@@ -1,4 +1,4 @@
-# Connect
+# Connect 
 
 You'll find two sister products in this repository:
 
