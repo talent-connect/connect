@@ -134,12 +134,14 @@ export function MeCompany() {
             companyProfile={companyProfile}
             userContact={userContact}
           />
-          <Checkbox
-            checked={!companyProfile.isProfileVisibleToJobseekers}
-            customOnChange={onHideFromJobseekersCheckboxChange}
-          >
-            Hide job listings from jobseekers
-          </Checkbox>
+          {isProfileApproved && (
+            <Checkbox
+              checked={!companyProfile.isProfileVisibleToJobseekers}
+              customOnChange={onHideFromJobseekersCheckboxChange}
+            >
+              Hide job listings from jobseekers
+            </Checkbox>
+          )}
         </Columns.Column>
       </Columns>
       <EditableJobPostings jobListings={activeJobListings} />

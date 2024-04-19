@@ -202,10 +202,12 @@ export default function SignUp() {
 
         <Columns.Column size={5} offset={1}>
           <Heading border="bottomLeft">Sign-up</Heading>
-          <Content size="small" renderAs="p">
-            Got a ReDI Connect user account? You can log in with the same
-            username and password <Link to="/front/login">here</Link>.
-          </Content>
+          {type === 'jobseeker' && (
+            <Content size="small" renderAs="p">
+              Got a ReDI Connect user account? You can log in with the same
+              username and password <Link to="/front/login">here</Link>.
+            </Content>
+          )}
           {loopbackSubmitError === 'user-already-exists' && (
             <Notification color="info" className="is-light">
               You already have an account. Please{' '}
