@@ -515,6 +515,7 @@ export enum MentoringTopic {
   React = 'react',
   Sales = 'sales',
   Salesforce = 'salesforce',
+  Swedish = 'swedish',
   UserExperienceDesign = 'userExperienceDesign',
   UserInterfaceDesign = 'userInterfaceDesign'
 }

@@ -25,6 +25,7 @@ export enum MentoringTopic {
   'basicGerman' = 'basicGerman',
   'businessGerman' = 'businessGerman',
   'english' = 'english',
+  'swedish' = 'swedish',
   'graphicDesign' = 'graphicDesign',
   'userInterfaceDesign' = 'userInterfaceDesign',
   'userExperienceDesign' = 'userExperienceDesign',
