@@ -56,6 +56,12 @@ export class TpCompanyProfilesService {
     )
   }
 
+  async update(entity: TpCompanyProfileEntity) {
+    await this.sfService.updateTpCompanyProfile(
+      this.mapper.toPersistence(entity)
+    )
+  }
+
   // TODO: this same method exists in TpCompanyRepresentativesService.
   // We can't use that class as a dependency here because it would
   // create a circular dependency. Refactor to solve for that.

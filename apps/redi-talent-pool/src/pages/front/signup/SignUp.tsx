@@ -11,7 +11,6 @@ import {
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import { TpCompanyProfile } from '@talent-connect/shared-types'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
 import { howDidHearAboutRediOptions } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
@@ -157,10 +156,6 @@ export default function SignUp() {
       }
 
       if (type === 'company') {
-        const transformedValues = buildValidationSchema('company').cast(values)
-        const profile = transformedValues as Partial<TpCompanyProfile>
-        profile.isProfileVisibleToJobseekers = true
-
         await signUpLoopback(values.email, values.password, {
           companyIdOrName: values.companyIdOrName,
           firstName: values.firstName,
