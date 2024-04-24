@@ -28,7 +28,6 @@ export function JobseekerProfileCard({
     location,
     workingLanguages,
     topSkills,
-    isHired,
   } = jobseekerProfile
 
   const subheader = desiredPositions
@@ -45,7 +44,6 @@ export function JobseekerProfileCard({
         profile={{ id, avatar, fullName, location, languages }}
         subheader={subheader}
         tags={tags}
-        topChip={isHired ? 'Hired!' : ''}
         linkTo={linkTo}
         isFavorite={isFavorite}
         toggleFavorite={toggleFavorite}
