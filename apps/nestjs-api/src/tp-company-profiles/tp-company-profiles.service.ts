@@ -51,9 +51,7 @@ export class TpCompanyProfilesService {
       props[key] = value
     })
     const entityToPersist = TpCompanyProfileEntity.create(props)
-    await this.sfService.updateTpCompanyProfile(
-      this.mapper.toPersistence(entityToPersist)
-    )
+    await this.update(entityToPersist)
   }
 
   async update(entity: TpCompanyProfileEntity) {
