@@ -46,6 +46,9 @@ Thumbs.db
 # environment variables
 .env
 
-
 # tf
 infrastructure/.terraform
+
+# reminder-email stuff
+/reminder-email-scripts/.secrets
+/reminder-email-scripts/logs/*
