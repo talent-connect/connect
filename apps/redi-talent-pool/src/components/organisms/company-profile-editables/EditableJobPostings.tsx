@@ -123,6 +123,7 @@ export function EditableJobPostings({ jobListings }) {
 }
 
 const MIN_CHARS_COUNT = 200
+const MAX_CHARS_COUNT = 255
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required('Please provide a job title'),
@@ -141,6 +142,7 @@ const validationSchema = Yup.object().shape({
   languageRequirements: Yup.string().required(
     'Please specify the language requirement(s)'
   ),
+  salaryRange: Yup.string().label('Salary Range').max(MAX_CHARS_COUNT),
   contactFirstName: Yup.string().required('First name is required'),
   contactLastName: Yup.string().required('Last name is required'),
   contactPhoneNumber: Yup.string(),
