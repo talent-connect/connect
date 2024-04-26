@@ -55,9 +55,12 @@ export function JobseekerProfileForJobseekerEyes() {
   //   queryClient.invalidateQueries()
   // }
 
+  const isProfileApproved =
+    profile?.state === JobseekerProfileStatus.ProfileApproved
+
   return (
     <LoggedIn>
-      {profile?.state === JobseekerProfileStatus.ProfileApproved ? (
+      {isProfileApproved ? (
         <Notification className="account-not-active double-bs">
           <Icon
             className="account-not-active__icon"
@@ -100,7 +103,7 @@ export function JobseekerProfileForJobseekerEyes() {
             <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
               <CallToActionButton profile={profile} />
             </div>
-            <OnboardingSteps />
+            {!isProfileApproved && <OnboardingSteps />}
           </div>
           {/* <EditableVisibility /> */}
           <EditableImportantDetails profile={profile} showFullAddress />
