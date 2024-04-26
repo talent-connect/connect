@@ -28,6 +28,8 @@
   }
 
   &__firstColumn {
+    display: flex;
+    justify-content: space-between;
     padding: 0;
     margin: 0;
     flex-shrink: 0;
