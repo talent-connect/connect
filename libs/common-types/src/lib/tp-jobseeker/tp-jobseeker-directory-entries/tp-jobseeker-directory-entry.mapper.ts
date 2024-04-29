@@ -75,7 +75,6 @@ export class TpJobseekerDirectoryEntryMapper
       jobseekerProfileRecord.Joins_Munich_24_Summer_Job_Fair__c
     props.isProfileVisibleToCompanies =
       jobseekerProfileRecord.Is_Visible_to_Companies__c
-    props.isHired = jobseekerProfileRecord.Is_Hired__c
     props.federalState = jobseekerProfileRecord.Federal_State__c as FederalState
     props.willingToRelocate = jobseekerProfileRecord.Willing_to_Relocate__c
     //! TODO: this "as unknown as OneType | undefined" was needed to get around TS

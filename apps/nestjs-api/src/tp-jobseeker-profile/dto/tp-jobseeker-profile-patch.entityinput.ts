@@ -13,7 +13,6 @@ export class TpJobseekerProfilePatchInput extends PartialType(
     'desiredPositions',
     'federalState',
     'ifAvailabilityIsDate_date',
-    'isHired',
     'joinsMunich24SummerJobFair',
     'isProfileVisibleToCompanies',
     'location',
