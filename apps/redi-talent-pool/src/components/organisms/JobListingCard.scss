@@ -57,6 +57,7 @@
     max-width: 750px;
     flex-grow: 4;
     flex-shrink: 1;
+    overflow: hidden;
 
     @include mobile {
       padding: 0;
