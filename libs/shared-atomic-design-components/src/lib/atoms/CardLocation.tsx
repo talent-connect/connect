@@ -1,4 +1,4 @@
-import LocationIcon from '../../assets/images/Location.svg'
+import LocationIcon from '../../assets/images/location.svg'
 import './CardLocation.scss'
 
 const CardLocation = ({ location, remote }) => {
@@ -10,10 +10,10 @@ const CardLocation = ({ location, remote }) => {
 
   return (
     <div className="card__location-container">
-      <img src={LocationIcon} alt="Location" className="card__location-icon" />
+      <img src={ LocationIcon } alt="Location" className="card__location-icon" />
       <p className="card__location-text">
-        {newLocationsString}
-        {remote ? ' | Remote' : ''}
+        { newLocationsString }
+        { remote ? ' | Remote' : '' }
       </p>
     </div>
   )
