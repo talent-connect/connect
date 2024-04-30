@@ -98,7 +98,7 @@ export function MeCompany() {
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <div className="is-hidden-tablet">
-            {isProfileSubmittedForReview ? null : (
+            {!isProfileSubmittedForReview && (
               <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
                 <CallToActionButton profile={companyProfile} />
               </div>
@@ -135,7 +135,7 @@ export function MeCompany() {
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
           <div className="is-hidden-mobile">
-            {isProfileSubmittedForReview ? null : (
+            {!isProfileSubmittedForReview && (
               <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
                 <CallToActionButton profile={companyProfile} />
               </div>

@@ -68,8 +68,8 @@ export function EditableEducation({ profile, disableEditing }: Props) {
             Add your education
           </EmptySectionPlaceholder>
         ) : (
-          educationRecords?.map((item, index) => (
-            <div key={index} style={{ marginBottom: '2.8rem' }}>
+          educationRecords?.map((item) => (
+            <div key={item.id} style={{ marginBottom: '2.8rem' }}>
               <div
                 style={{
                   display: 'flex',

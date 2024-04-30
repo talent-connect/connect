@@ -67,8 +67,8 @@ export function EditableProfessionalExperience({
             Add your experience
           </EmptySectionPlaceholder>
         ) : (
-          experienceRecords?.map((item, index) => (
-            <div key={index} style={{ marginBottom: '2.8rem' }}>
+          experienceRecords?.map((item) => (
+            <div key={item.id} style={{ marginBottom: '2.8rem' }}>
               <div
                 style={{
                   display: 'flex',
