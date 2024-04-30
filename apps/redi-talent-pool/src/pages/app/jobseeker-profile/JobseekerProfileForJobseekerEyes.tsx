@@ -58,6 +58,9 @@ export function JobseekerProfileForJobseekerEyes() {
   const isProfileApproved =
     profile?.state === JobseekerProfileStatus.ProfileApproved
 
+  const isProfileSubmittedForReview =
+    profile?.state === JobseekerProfileStatus.SubmittedForReview
+
   return (
     <LoggedIn>
       {isProfileApproved ? (
@@ -77,10 +80,12 @@ export function JobseekerProfileForJobseekerEyes() {
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <div className="is-hidden-tablet">
-            <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
-              <CallToActionButton profile={profile} />
-            </div>
-            <OnboardingSteps />
+            {isProfileSubmittedForReview ? null : (
+              <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
+                <CallToActionButton profile={profile} />
+              </div>
+            )}
+            {!isProfileApproved && <OnboardingSteps />}
           </div>
           <EditableNamePhotoLocation profile={profile} />
           <div style={{ marginBottom: '1.5rem' }}>
@@ -100,9 +105,11 @@ export function JobseekerProfileForJobseekerEyes() {
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
           <div className="is-hidden-mobile">
-            <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
-              <CallToActionButton profile={profile} />
-            </div>
+            {isProfileSubmittedForReview ? null : (
+              <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
+                <CallToActionButton profile={profile} />
+              </div>
+            )}
             {!isProfileApproved && <OnboardingSteps />}
           </div>
           {/* <EditableVisibility /> */}
