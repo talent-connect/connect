@@ -67,8 +67,8 @@ export function EditableProfessionalExperience({
             Add your experience
           </EmptySectionPlaceholder>
         ) : (
-          experienceRecords?.map((item) => (
-            <div style={{ marginBottom: '2.8rem' }}>
+          experienceRecords?.map((item, index) => (
+            <div key={index} style={{ marginBottom: '2.8rem' }}>
               <div
                 style={{
                   display: 'flex',
@@ -94,8 +94,10 @@ export function EditableProfessionalExperience({
                 {item.description ? (
                   <ReactMarkdown
                     components={{
-                      p: ({ children }) => (
-                        <p style={{ marginBottom: '0' }}>{children}</p>
+                      p: ({ children, index }) => (
+                        <p key={index} style={{ marginBottom: '0' }}>
+                          {children}
+                        </p>
                       ),
                     }}
                   >
