@@ -45,7 +45,7 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
     }
   })()
   if ((window as any).hj) {
-    ; (window as any).hj(
+    ;(window as any).hj(
       'identify',
       myTpData.data?.tpCurrentUserDataGet?.userContact?.id,
       {
@@ -60,51 +60,51 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
     <>
       <Navbar />
       <Container className="main-container">
-        <div style={ { display: 'flex' } }>
-          { hideNavigation ? null : (
+        <div style={{ display: 'flex' }}>
+          {hideNavigation ? null : (
             <>
               <div className="tp-side-menu">
                 <TpMainNavItem
                   page="profile-page"
                   pageName="My profile"
                   to="/app/me"
-                  isActive={ location.pathname === '/app/me' }
+                  isActive={location.pathname === '/app/me'}
                 />
-                { companyProfile?.state ===
+                {companyProfile?.state ===
                   CompanyTalentPoolState.ProfileApproved ||
-                  tpJobseekerDirectoryEntry?.state ===
+                tpJobseekerDirectoryEntry?.state ===
                   JobseekerProfileStatus.ProfileApproved ? (
                   <TpMainNavItem
                     page="browse-page"
                     pageName="Browse"
                     to="/app/browse"
-                    isActive={ location.pathname === '/app/browse' }
+                    isActive={location.pathname === '/app/browse'}
                   />
-                ) : null }
-                { tpJobseekerDirectoryEntry ? (
+                ) : null}
+                {tpJobseekerDirectoryEntry ? (
                   <TpMainNavItem
                     page="cv-builder-page"
                     pageName="CV Builder"
                     to="/app/cv-builder"
-                    isActive={ location.pathname.includes('/app/cv-builder') }
+                    isActive={location.pathname.includes('/app/cv-builder')}
                   />
-                ) : null }
+                ) : null}
               </div>
               <div className="main-container--horizontal-spacer"></div>
             </>
-          ) }
+          )}
           <Columns className="main-content-wrapper">
             <Columns.Column
-              desktop={ { size: 12 } }
+              desktop={{ size: 12 }}
               className="column--main-content"
             >
-              <Loader loading={ isBusy } />
-              { children }
+              <Loader loading={isBusy} />
+              {children}
             </Columns.Column>
           </Columns>
-          { hideNavigation ? null : (
+          {hideNavigation ? null : (
             <div className="main-container--horizontal-spacer is-hidden-desktop"></div>
-          ) }
+          )}
         </div>
       </Container>
       <Footer />
