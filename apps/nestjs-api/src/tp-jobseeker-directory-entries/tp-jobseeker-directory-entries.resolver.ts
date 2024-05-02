@@ -17,6 +17,13 @@ export class TpJobseekerDirectoryEntriesResolver {
   async findAllVisible(
     @Args() args: FindAllVisibleTpJobseekerDirectoryEntriesArgs
   ) {
+    /*
+      Action items for next time:
+      - Create a SfPaginatedApiRepository class that wraps around SfApiRepository
+      - Pass down pagination args from here down to the appropriate service
+      - The service uses the SfPaginatedApiRepository to fetch the data
+    */
+    console.log('args', args)
     const entities = await this.service.findAllVisibleJobseekers(args)
     const sorted = entities.sort((a, b) => {
       if (a.props.updatedAt > b.props.updatedAt) return -1

@@ -7,6 +7,14 @@ import {
   TpTechnicalSkill,
 } from '@talent-connect/common-types'
 
+@InputType('PaginationArgs')
+export class PaginationArgs {
+  @Field((type) => Number)
+  page: number
+  @Field((type) => Number)
+  perPage: number
+}
+
 @ArgsType()
 export class FindAllVisibleTpJobseekerDirectoryEntriesArgs {
   filter: FindAllVisibleTpJobseekerDirectoryEntriesFilter
@@ -26,4 +34,7 @@ class FindAllVisibleTpJobseekerDirectoryEntriesFilter {
   @Field((type) => [FederalState])
   federalStates?: FederalState[]
   joinsMunich24SummerJobFair?: boolean
+
+  @Field((type) => PaginationArgs, { defaultValue: { page: 1, perPage: 50 } })
+  pagination: PaginationArgs
 }
