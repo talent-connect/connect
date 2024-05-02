@@ -68,7 +68,7 @@ export function ExpiredJobListings({ jobListings }) {
         <Element
           renderAs="h4"
           textSize={4}
-          responsive={{ mobile: { textSize: { value: 7 } } }}
+          responsive={{ mobile: { textSize: { value: 5 } } }}
           className="is-flex-grow-1"
           style={{ flexGrow: 1 }}
         >

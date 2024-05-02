@@ -67,6 +67,9 @@ export function MeCompany() {
   const isProfileApproved =
     companyProfile.state === CompanyTalentPoolState.ProfileApproved
 
+  const isProfileSubmittedForReview =
+    companyProfile.state === CompanyTalentPoolState.SubmittedForReview
+
   return (
     <LoggedIn>
       {isProfileApproved ? (
@@ -94,6 +97,23 @@ export function MeCompany() {
       ) : null}
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
+          <div className="is-hidden-tablet">
+            {!isProfileSubmittedForReview && (
+              <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
+                <CallToActionButton profile={companyProfile} />
+              </div>
+            )}
+            {!isProfileApproved && (
+              <OnboardingSteps
+                profile={companyProfile}
+                isProfileComplete={isProfileComplete(
+                  companyProfile,
+                  userContact
+                )}
+                hasJobListing={jobListings?.length > 0}
+              />
+            )}
+          </div>
           <EditableNamePhotoLocation companyProfile={companyProfile} />
           <div style={{ marginBottom: '1.5rem' }}>
             {/* Hidden until the next Job Fair date announced */}
@@ -115,9 +135,11 @@ export function MeCompany() {
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
           <div className="is-hidden-mobile">
-            <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
-              <CallToActionButton profile={companyProfile} />
-            </div>
+            {!isProfileSubmittedForReview && (
+              <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
+                <CallToActionButton profile={companyProfile} />
+              </div>
+            )}
             {!isProfileApproved && (
               <OnboardingSteps
                 profile={companyProfile}

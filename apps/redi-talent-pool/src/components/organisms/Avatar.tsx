@@ -234,7 +234,7 @@ const AvatarEditable = ({
           <Element
             renderAs="span"
             className="avatar__button"
-            textSize={7}
+            textSize={6}
             textTransform="uppercase"
           >
             Edit Photo
