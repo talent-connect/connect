@@ -200,7 +200,7 @@ export default function SignUp() {
               name="rediLocation"
               placeholder="Choose your ReDI Location"
               items={formRediLocations}
-              {...formik}
+              formik={formik}
             />
 
             {type === 'mentor' && (

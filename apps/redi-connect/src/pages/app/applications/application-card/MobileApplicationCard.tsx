@@ -80,7 +80,7 @@ function MobileApplicationCard({ application }: Props) {
             className="mobile-column"
             textAlignment="right"
             narrow
-            textSize="6"
+            textSize={6}
           >
             <p
               className={

@@ -68,7 +68,7 @@ export function EditableProfessionalExperience({
           </EmptySectionPlaceholder>
         ) : (
           experienceRecords?.map((item) => (
-            <div style={{ marginBottom: '2.8rem' }}>
+            <div key={item.id} style={{ marginBottom: '2.8rem' }}>
               <div
                 style={{
                   display: 'flex',
@@ -94,8 +94,10 @@ export function EditableProfessionalExperience({
                 {item.description ? (
                   <ReactMarkdown
                     components={{
-                      p: ({ children }) => (
-                        <p style={{ marginBottom: '0' }}>{children}</p>
+                      p: ({ children, index }) => (
+                        <p key={index} style={{ marginBottom: '0' }}>
+                          {children}
+                        </p>
                       ),
                     }}
                   >
@@ -443,7 +445,7 @@ export function JobseekerFormSectionProfessionalExperience({
                               name={`experience[${index}].startDateMonth`}
                               label="Started in month*"
                               items={formMonthsOptions}
-                              {...formik}
+                              formik={formik}
                             />
                           </Columns.Column>
                           <Columns.Column size={6}>
@@ -462,7 +464,7 @@ export function JobseekerFormSectionProfessionalExperience({
                                 name={`experience[${index}].endDateMonth`}
                                 label="Ended in month*"
                                 items={formMonthsOptions}
-                                {...formik}
+                                formik={formik}
                               />
                             </Columns.Column>
                             <Columns.Column size={6}>

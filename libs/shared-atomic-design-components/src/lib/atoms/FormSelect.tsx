@@ -1,8 +1,10 @@
+import { useFormik } from 'formik'
 import { get } from 'lodash'
 import { Form } from 'react-bulma-components'
 import Select, { components } from 'react-select'
 import CreatableSelect from 'react-select/creatable'
 import { Icon } from '../atoms'
+
 import { formSelectStyles } from './FormSelect.styles'
 
 export const DropdownIndicator = (props: any) => (
@@ -23,27 +25,48 @@ const MultiValueRemove = (props: any) => (
   </components.MultiValueRemove>
 )
 
-// TODO add typed safe props
-function FormSelect(props: any) {
+interface FormSelectOption {
+  value: string | number
+  label: string
+}
+
+interface FormSelectProps {
+  name: string
+  items?: FormSelectOption[]
+  placeholder?: string
+  label?: string
+  customOnChange?: () => void
+  multiselect?: boolean
+  disabled?: boolean
+  closeMenuOnSelect?: boolean
+  creatable?: boolean
+  customOnCreate?: () => void
+  isLoading?: boolean
+  formik: ReturnType<typeof useFormik>
+}
+
+function FormSelect(props: FormSelectProps) {
   const {
     name,
     items,
     placeholder,
     label,
     customOnChange,
-    values,
-    setFieldTouched,
-    handleBlur,
     multiselect,
-    isSubmitting,
-    setFieldValue,
-    touched,
-    errors,
     disabled,
     closeMenuOnSelect,
     creatable = false,
     customOnCreate,
     isLoading,
+    formik: {
+      values,
+      setFieldTouched,
+      setFieldValue,
+      touched,
+      errors,
+      handleBlur,
+      isSubmitting,
+    },
   } = props
 
   const SelectComponent = creatable ? CreatableSelect : Select
@@ -101,6 +124,14 @@ function FormSelect(props: any) {
     ? { label: get(values, name) }
     : undefined
 
+  const handleScroll = (e) => {
+    if (
+      (e.target as Element).className === 'modal-card-body' ||
+      e.target === document
+    )
+      return true
+  }
+
   return (
     <Form.Field>
       {label && <Form.Label size="small">{label}</Form.Label>}
@@ -118,6 +149,7 @@ function FormSelect(props: any) {
           menuPortalTarget={document.body}
           menuPosition="fixed"
           closeMenuOnSelect={closeMenuOnSelect}
+          closeMenuOnScroll={handleScroll}
           isLoading={isLoading}
           {...(creatable
             ? {

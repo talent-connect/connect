@@ -69,7 +69,7 @@ export function EditableEducation({ profile, disableEditing }: Props) {
           </EmptySectionPlaceholder>
         ) : (
           educationRecords?.map((item) => (
-            <div style={{ marginBottom: '2.8rem' }}>
+            <div key={item.id} style={{ marginBottom: '2.8rem' }}>
               <div
                 style={{
                   display: 'flex',
@@ -407,7 +407,7 @@ function JobseekerFormSectionEducation({
                           name={`education[${index}].certificationType`}
                           label="The type of certification*"
                           items={formCertificationTypes}
-                          {...formik}
+                          formik={formik}
                         />
                         <FormInput
                           name={`education[${index}].institutionName`}
@@ -449,7 +449,7 @@ function JobseekerFormSectionEducation({
                               name={`education[${index}].startDateMonth`}
                               label="Started in month*"
                               items={formMonthsOptions}
-                              {...formik}
+                              formik={formik}
                             />
                           </Columns.Column>
                           <Columns.Column size={6}>
@@ -468,7 +468,7 @@ function JobseekerFormSectionEducation({
                                 name={`education[${index}].endDateMonth`}
                                 label="Ended in month*"
                                 items={formMonthsOptions}
-                                {...formik}
+                                formik={formik}
                               />
                             </Columns.Column>
                             <Columns.Column size={6}>
