@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import {
   ConnectProfileStatus,
   MentorshipMatchStatus,
@@ -11,12 +12,6 @@ import { ConMentorshipMatchesService } from '../con-mentorship-matches/con-mento
 import { ConProfilesService } from '../con-profiles/con-profiles.service'
 import { SfApiEmailTemplatesService } from '../salesforce-api/sf-api-email-templates.service'
 
-const sesConfig = {
-  accessKeyId: process.env.NX_EMAILER_AWS_ACCESS_KEY,
-  secretAccessKey: process.env.NX_EMAILER_AWS_SECRET_KEY,
-  region: process.env.NX_EMAILER_AWS_REGION,
-}
-
 const isProductionOrDemonstration = () =>
   ['production', 'demonstration', 'staging'].includes(process.env.NODE_ENV)
 
@@ -27,29 +22,25 @@ export class ReminderEmailsService {
   constructor(
     private readonly emailTemplatesService: SfApiEmailTemplatesService,
     private readonly conProfilesService: ConProfilesService,
-    private readonly conMentorshipMatchesService: ConMentorshipMatchesService
+    private readonly conMentorshipMatchesService: ConMentorshipMatchesService,
+    private readonly config: ConfigService
   ) {
-    this.ses = new AWS.SES(sesConfig)
+    this.ses = new AWS.SES({
+      accessKeyId: this.config.get('NX_EMAILER_AWS_ACCESS_KEY'),
+      secretAccessKey: this.config.get('NX_EMAILER_AWS_SECRET_KEY'),
+      region: this.config.get('NX_EMAILER_AWS_REGION'),
+    })
   }
 
   async getDraftingConProfiles({ userType }: { userType: UserType }) {
-    if (!userType) {
-      throw new Error('User type is required')
-    }
-
     const createdDate = new Date()
     createdDate.setDate(createdDate.getDate() - 14)
-    createdDate.setHours(0, 0, 0, 0) // set time to 00:00
-
-    const endOfCreatedDate = new Date(createdDate)
-    endOfCreatedDate.setHours(23, 59, 59, 999) // set time to 23:59
 
     return this.conProfilesService.findAll({
       'RecordType.DeveloperName': userType,
       Profile_Status__c: ConnectProfileStatus.DRAFTING_PROFILE,
-      CreatedDate: {
-        $gte: jsforce.SfDate.toDateTimeLiteral(createdDate),
-        $lte: jsforce.SfDate.toDateTimeLiteral(endOfCreatedDate),
+      Created_Date_Without_Time__c: {
+        $eq: jsforce.SfDate.toDateLiteral(createdDate),
       },
     })
   }
@@ -109,20 +100,12 @@ export class ReminderEmailsService {
     email: string
     firstName: string
   }) {
-    if (!userType) {
-      throw new Error('User type is required')
-    }
-
     const sfEmailTemplateName =
       userType === UserType.MENTOR
         ? 'Mentor - Profile Completion Reminder'
         : userType === UserType.MENTEE
         ? 'Mentee - Profile Completion Reminder'
         : null
-
-    if (!sfEmailTemplateName) {
-      throw new Error('Invalid user type. Must be either MENTOR or MENTEE')
-    }
 
     const template = await this.emailTemplatesService.getEmailTemplate(
       sfEmailTemplateName
@@ -141,7 +124,7 @@ export class ReminderEmailsService {
       Destination: {
         ToAddresses: isProductionOrDemonstration()
           ? ['anilakarsu93@gmail.com']
-          : [process.env.NX_DEV_MODE_EMAIL_RECIPIENT],
+          : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
       },
       Message: {
         Body: {
@@ -183,7 +166,7 @@ export class ReminderEmailsService {
       Destination: {
         ToAddresses: isProductionOrDemonstration()
           ? ['anilakarsu93@gmail.com']
-          : [process.env.NX_DEV_MODE_EMAIL_RECIPIENT],
+          : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
       },
       Message: {
         Body: {
@@ -225,7 +208,7 @@ export class ReminderEmailsService {
       Destination: {
         ToAddresses: isProductionOrDemonstration()
           ? ['anilakarsu93@gmail.com']
-          : [process.env.NX_DEV_MODE_EMAIL_RECIPIENT],
+          : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
       },
       Message: {
         Body: {
@@ -267,7 +250,7 @@ export class ReminderEmailsService {
       Destination: {
         ToAddresses: isProductionOrDemonstration()
           ? ['anilakarsu93@gmail.com']
-          : [process.env.NX_DEV_MODE_EMAIL_RECIPIENT],
+          : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
       },
       Message: {
         Body: {

@@ -1,8 +1,10 @@
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, UseGuards } from '@nestjs/common'
 import { UserType } from '@talent-connect/common-types'
+import { CronjobAuthGuard } from '../auth/cronjob-auth.guard'
 import { ReminderEmailsService } from './reminder-emails.service'
 
 @Controller('reminder-emails')
+@UseGuards(CronjobAuthGuard)
 export class ReminderEmailsController {
   constructor(private readonly reminderEmailsService: ReminderEmailsService) {}
 
@@ -59,32 +61,32 @@ export class ReminderEmailsController {
         daysAgo: '7d',
       })
 
-    // if (firstReminderMentees.length > 0) {
-    //   // send reminder emails
-    //   firstReminderMentees.forEach(async (mentee) => {
-    //     await this.reminderEmailsService.sendApplyToMentorFirstReminder({
-    //       email: mentee.props.email,
-    //       firstName: mentee.props.firstName,
-    //       location: mentee.props.rediLocation,
-    //     })
-    //   })
-    // }
+    if (firstReminderMentees.length > 0) {
+      // send reminder emails
+      firstReminderMentees.forEach(async (mentee) => {
+        await this.reminderEmailsService.sendApplyToMentorFirstReminder({
+          email: mentee.props.email,
+          firstName: mentee.props.firstName,
+          location: mentee.props.rediLocation,
+        })
+      })
+    }
 
     const secondReminderMentees =
       await this.reminderEmailsService.getApprovedMenteesByDaysAndLocation({
         daysAgo: '14d',
       })
 
-    // if (secondReminderMentees.length > 0) {
-    //   // send reminder emails
-    //   secondReminderMentees.forEach(async (mentee) => {
-    //     await this.reminderEmailsService.sendApplyToMentorSecondReminder({
-    //       email: mentee.props.email,
-    //       firstName: mentee.props.firstName,
-    //       location: mentee.props.rediLocation,
-    //     })
-    //   })
-    // }
+    if (secondReminderMentees.length > 0) {
+      // send reminder emails
+      secondReminderMentees.forEach(async (mentee) => {
+        await this.reminderEmailsService.sendApplyToMentorSecondReminder({
+          email: mentee.props.email,
+          firstName: mentee.props.firstName,
+          location: mentee.props.rediLocation,
+        })
+      })
+    }
 
     return {
       message: `First reminder emails to apply to a mentor sent to ${firstReminderMentees.length} mentees. Second reminder emails to apply to a mentor sent to ${secondReminderMentees.length} mentees`,

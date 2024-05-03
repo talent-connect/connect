@@ -15,8 +15,10 @@ MENTEES_APPLY_TO_MENTOR_URL="http://localhost:3333/api/reminder-emails/s3cr3t-3n
 
 MENTORSHIP_FOLLOW_UP_URL="http://localhost:3333/api/reminder-emails/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentorship-follow-up"
 
+LOGFILE_FILE_PATH="./logs/reminder_emails_$current_date.log"
+
 # Call the endpoint
-curl -s -w "\n" -H "Authorization: $DAILY_CRONJOB_SEND_REMINDER_EMAIL_SECRET_TOKEN" $MENTORS_COMPLETE_PROFILE_URL >> ./logs/reminder_emails_$current_date.log
-curl -s -w "\n" -H "Authorization: $DAILY_CRONJOB_SEND_REMINDER_EMAIL_SECRET_TOKEN" $MENTEES_COMPLETE_PROFILE_URL >> ./logs/reminder_emails_$current_date.log
-curl -s -w "\n" -H "Authorization: $DAILY_CRONJOB_SEND_REMINDER_EMAIL_SECRET_TOKEN" $MENTEES_APPLY_TO_MENTOR_URL >> ./logs/reminder_emails_$current_date.log
-curl -s -w "\n" -H "Authorization: $DAILY_CRONJOB_SEND_REMINDER_EMAIL_SECRET_TOKEN" $MENTORSHIP_FOLLOW_UP_URL >> ./logs/reminder_emails_$current_date.log
+curl -s -w "\n" -H "Authorization: $DAILY_CRONJOB_SEND_REMINDER_EMAIL_SECRET_TOKEN" $MENTORS_COMPLETE_PROFILE_URL >> $LOGFILE_FILE_PATH
+curl -s -w "\n" -H "Authorization: $DAILY_CRONJOB_SEND_REMINDER_EMAIL_SECRET_TOKEN" $MENTEES_COMPLETE_PROFILE_URL >> $LOGFILE_FILE_PATH
+curl -s -w "\n" -H "Authorization: $DAILY_CRONJOB_SEND_REMINDER_EMAIL_SECRET_TOKEN" $MENTEES_APPLY_TO_MENTOR_URL >> $LOGFILE_FILE_PATH
+curl -s -w "\n" -H "Authorization: $DAILY_CRONJOB_SEND_REMINDER_EMAIL_SECRET_TOKEN" $MENTORSHIP_FOLLOW_UP_URL >> $LOGFILE_FILE_PATH
