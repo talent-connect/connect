@@ -1,10 +1,10 @@
-import './NewProfileCard.scss'
 import { CardTags, Icon } from '@talent-connect/shared-atomic-design-components'
 import React, { ReactNode } from 'react'
 import { Card, Tag } from 'react-bulma-components'
 import { NavLink } from 'react-router-dom'
-import LocationIcon from '../../assets/images/location.svg'
 import LanguagesIcon from '../../assets/images/globe.svg'
+import LocationIcon from '../../assets/images/location.svg'
+import './NewProfileCard.scss'
 
 interface NewProfileCardProps {
   profile: {
@@ -33,7 +33,7 @@ const UserLocation = ({ location }) => {
         alt="Location"
         className="new-profile-card__location-icon"
       />
-      <p className="new-profile-card__location-text">Based in {location}</p>
+      <p className="new-profile-card__location-text">ReDI {location}</p>
     </div>
   )
 }
