@@ -42,7 +42,6 @@ export class TpJobseekerProfileMapper
     props.joinsMunich24SummerJobFair =
       raw.props.Joins_Munich_24_Summer_Job_Fair__c
     props.isProfileVisibleToCompanies = raw.props.Is_Visible_to_Companies__c
-    props.isHired = raw.props.Is_Hired__c
     props.federalState = raw.props.Federal_State__c as FederalState
     props.willingToRelocate = raw.props.Willing_to_Relocate__c
     props.immigrationStatus = raw.props.Immigration_Status__c as unknown as
@@ -80,7 +79,6 @@ export class TpJobseekerProfileMapper
     props.Joins_Munich_24_Summer_Job_Fair__c =
       source.props.joinsMunich24SummerJobFair
     props.Is_Visible_to_Companies__c = source.props.isProfileVisibleToCompanies
-    props.Is_Hired__c = source.props.isHired
     props.Federal_State__c = source.props.federalState
     props.Willing_to_Relocate__c = source.props.willingToRelocate
     props.Immigration_Status__c = source.props.immigrationStatus as unknown as
