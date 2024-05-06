@@ -14,7 +14,6 @@ interface NewProfileCardProps {
     location?: string
     languages?: string[]
   }
-  topChip?: ReactNode
   subheader?: string
   tags: string[]
   linkTo?: string
@@ -61,7 +60,6 @@ export function NewProfileCard({
   profile: { id, avatar, fullName, location, languages },
   tags,
   subheader,
-  topChip,
   linkTo,
   toggleFavorite,
   isFavorite,
@@ -76,9 +74,6 @@ export function NewProfileCard({
       <Card className="new-profile-card">
         <img className="new-profile-card__avatar" src={avatar} alt={fullName} />
         <div>
-          {topChip && (
-            <Tag className="new-profile-card__top-chip">{topChip}</Tag>
-          )}
           {toggleFavorite && (
             <div
               className="new-profile-card__favorite"

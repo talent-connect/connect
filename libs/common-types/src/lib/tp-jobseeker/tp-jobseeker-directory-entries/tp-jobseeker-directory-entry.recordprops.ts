@@ -61,7 +61,6 @@ class JobseekerProfileItem {
   Profile_Status__c: PicklistValue
   Joins_Munich_24_Summer_Job_Fair__c?: boolean
   Is_Visible_to_Companies__c: boolean
-  Is_Hired__c: boolean
   Federal_State__c?: PicklistValue
   Willing_to_Relocate__c: boolean
   Immigration_Status__c?: PicklistValue
