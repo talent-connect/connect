@@ -45,7 +45,7 @@ export class ReminderEmailsService {
     })
   }
 
-  async getApprovedMenteesByDaysAndLocation({
+  async getApprovedMenteesWithNoMentorApplicationsByDaysAndLocation({
     daysAgo,
   }: {
     daysAgo: '7d' | '14d'
@@ -59,6 +59,7 @@ export class ReminderEmailsService {
       Profile_First_Approved_At__c: {
         $eq: jsforce.SfDate.toDateLiteral(approvedDate),
       },
+      'Contact__r.ReDI_Active_Mentorship_Matches_Mentee__c': null,
     })
   }
 
