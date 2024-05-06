@@ -100,19 +100,21 @@ export class ReminderEmailsService {
     email: string
     firstName: string
   }) {
-    const sfEmailTemplateName =
+    const sfEmailTemplateDeveloperName =
       userType === UserType.MENTOR
-        ? 'Mentor - Profile Completion Reminder'
+        ? 'Mentor_Profile_Completion_Reminder_1711714790523'
         : userType === UserType.MENTEE
-        ? 'Mentee - Profile Completion Reminder'
+        ? 'Mentee_Profile_Completion_Reminder_1695974601621'
         : null
 
     const template = await this.emailTemplatesService.getEmailTemplate(
-      sfEmailTemplateName
+      sfEmailTemplateDeveloperName
     )
 
     if (!template) {
-      throw new Error(`Email template not found: ${sfEmailTemplateName}`)
+      throw new Error(
+        `Email template not found: ${sfEmailTemplateDeveloperName}`
+      )
     }
 
     const sanitizedHtml = template.HtmlValue.replace(
@@ -144,17 +146,19 @@ export class ReminderEmailsService {
   }
 
   async sendApplyToMentorFirstReminder({ email, firstName, location }) {
-    const sfEmailTemplateName =
+    const sfEmailTemplateDeveloperName =
       location === RediLocation.CYBERSPACE
-        ? 'Cyberspace Mentee - Apply To A Mentor Reminder #1'
-        : 'Mentee - Apply To A Mentor Reminder #1'
+        ? 'Cyberspace_Mentee_Apply_To_A_Mentor_Reminder_1_1711037205143'
+        : 'Mentee_Apply_To_A_Mentor_Reminder_1_1695975263767'
 
     const template = await this.emailTemplatesService.getEmailTemplate(
-      sfEmailTemplateName
+      sfEmailTemplateDeveloperName
     )
 
     if (!template) {
-      throw new Error(`Email template not found: ${sfEmailTemplateName}`)
+      throw new Error(
+        `Email template not found: ${sfEmailTemplateDeveloperName}`
+      )
     }
 
     const sanitizedHtml = template.HtmlValue.replace(
@@ -186,17 +190,19 @@ export class ReminderEmailsService {
   }
 
   async sendApplyToMentorSecondReminder({ email, firstName, location }) {
-    const sfEmailTemplateName =
+    const sfEmailTemplateDeveloperName =
       location === RediLocation.CYBERSPACE
-        ? 'Cyberspace Mentee - Apply To A Mentor Reminder #1'
-        : 'Mentee - Apply To A Mentor Reminder #1'
+        ? 'Cyberspace_Mentee_Apply_To_A_Mentor_Reminder_2_1711109460383'
+        : 'Mentee_Apply_To_A_Mentor_Reminder_2_1695975868066'
 
     const template = await this.emailTemplatesService.getEmailTemplate(
-      sfEmailTemplateName
+      sfEmailTemplateDeveloperName
     )
 
     if (!template) {
-      throw new Error(`Email template not found: ${sfEmailTemplateName}`)
+      throw new Error(
+        `Email template not found: ${sfEmailTemplateDeveloperName}`
+      )
     }
 
     const sanitizedHtml = template.HtmlValue.replace(
@@ -228,17 +234,19 @@ export class ReminderEmailsService {
   }
 
   async mentorshipFollowUpReminder({ email, firstName, userType }) {
-    const sfEmailTemplateName =
+    const sfEmailTemplateDeveloperName =
       userType === UserType.MENTOR
-        ? 'Mentor - Follow Up On The Long-Term Mentorship'
-        : 'Mentee - Follow Up On The Long-Term Mentorship'
+        ? 'Mentor_Follow_Up_On_Long_Term_Mentorship_1711363451370'
+        : 'Mentee_Follow_Up_On_The_Long_Term_Mentorship_1711363823265'
 
     const template = await this.emailTemplatesService.getEmailTemplate(
-      sfEmailTemplateName
+      sfEmailTemplateDeveloperName
     )
 
     if (!template) {
-      throw new Error(`Email template not found: ${sfEmailTemplateName}`)
+      throw new Error(
+        `Email template not found: ${sfEmailTemplateDeveloperName}`
+      )
     }
 
     const sanitizedHtml = template.HtmlValue.replace(

@@ -14,11 +14,13 @@ type EmailTemplate = {
 export class SfApiEmailTemplatesService {
   constructor(private readonly repository: SfApiRepository) {}
 
-  async getEmailTemplate(templateName: string): Promise<EmailTemplate> {
+  async getEmailTemplate(
+    templateDeveloperName: string
+  ): Promise<EmailTemplate> {
     const rawRecords = await this.repository.findRecordsOfObject({
       objectName: 'EmailTemplate',
       objectFields: ['Subject', 'HtmlValue'],
-      filter: { Name: templateName },
+      filter: { DeveloperName: templateDeveloperName },
     })
 
     // Return the first record found, expecting only one record
