@@ -45,7 +45,7 @@ export class ReminderEmailsService {
     })
   }
 
-  async getApprovedMenteesWithNoMentorApplicationsByDaysAndLocation({
+  async getApprovedMenteesWithNoMentorApplicationsByDays({
     daysAgo,
   }: {
     daysAgo: '7d' | '14d'
