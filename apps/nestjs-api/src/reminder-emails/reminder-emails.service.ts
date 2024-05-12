@@ -59,6 +59,7 @@ export class ReminderEmailsService {
       Profile_First_Approved_At__c: {
         $eq: jsforce.SfDate.toDateLiteral(approvedDate),
       },
+      // When there are no applications, this field is not 0 but null/undefined
       'Contact__r.ReDI_Active_Mentorship_Matches_Mentee__c': null,
     })
   }

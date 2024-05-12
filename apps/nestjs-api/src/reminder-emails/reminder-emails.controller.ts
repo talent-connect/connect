@@ -57,9 +57,11 @@ export class ReminderEmailsController {
   @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentees-apply-to-mentor')
   async sendMenteeApplyToMentorReminders() {
     const firstReminderMentees =
-      await this.reminderEmailsService.getApprovedMenteesByDaysAndLocation({
-        daysAgo: '7d',
-      })
+      await this.reminderEmailsService.getApprovedMenteesWithNoMentorApplicationsByDays(
+        {
+          daysAgo: '7d',
+        }
+      )
 
     if (firstReminderMentees.length > 0) {
       // send reminder emails
@@ -73,9 +75,11 @@ export class ReminderEmailsController {
     }
 
     const secondReminderMentees =
-      await this.reminderEmailsService.getApprovedMenteesByDaysAndLocation({
-        daysAgo: '14d',
-      })
+      await this.reminderEmailsService.getApprovedMenteesWithNoMentorApplicationsByDays(
+        {
+          daysAgo: '14d',
+        }
+      )
 
     if (secondReminderMentees.length > 0) {
       // send reminder emails
