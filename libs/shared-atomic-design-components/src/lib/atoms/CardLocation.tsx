@@ -1,7 +1,13 @@
 import LocationIcon from '../../assets/images/Location.svg'
 import './CardLocation.scss'
 
-const CardLocation = ({ location, remote }) => {
+const CardLocation = ({
+  location,
+  remote,
+}: {
+  location: string
+  remote: boolean
+}) => {
   const locationArr = location.split(',')
   const newLocationsString =
     locationArr.length > 3
