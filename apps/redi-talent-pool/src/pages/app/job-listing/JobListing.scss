@@ -1,3 +1,6 @@
+@import '_variables.scss';
+@import '~bulma/sass/utilities/_all';
+
 .quill-editor-output .ql-align-left {
   text-align: left;
 }
@@ -26,4 +29,155 @@
 
 .quill-editor-output ol > li {
   margin-top: 0.25rem;
+}
+
+.profile-section {
+  &--title {
+    color: #000;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'Avenir LT Std';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%; /* 24px */
+    letter-spacing: 2px;
+
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid $grey-light;
+    margin-bottom: 1rem;
+  }
+
+  &--body {
+    div {
+      margin-bottom: 24px;
+    }
+  }
+
+  &--caption {
+    color: #000;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'Avenir LT Std';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%; /* 24px */
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  &--content {
+    color: #000;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: 'Avenir LT Std';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 550;
+    line-height: 150%; /* 24px */
+  }
+
+  margin-bottom: 1.5rem;
+}
+
+.jobListing {
+  display: flex;
+  width: 964px;
+  height: 1387px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 48px;
+  flex-shrink: 0;
+
+  &--columns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &--left-column {
+    width: 530px;
+  }
+
+  &--right-column {
+    width: 263px;
+    margin-right: 29px;
+  }
+
+  &-header {
+    color: #000;
+    display: flex;
+    height: 162px;
+    flex-direction: row;
+    gap: 24px;
+    flex-shrink: 0;
+    align-items: center;
+
+    &--avatar {
+      width: 160px;
+      height: 160px;
+      flex-shrink: 0;
+    }
+
+    &--title {
+      font-family: 'Jubilat';
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 40px;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2; /* Limits the text to 2 lines */
+      text-overflow: ellipsis;
+      max-height: 80px;
+    }
+
+    &--subtitle {
+      font-family: 'Avenir LT Std';
+      font-size: 16px;
+      font-style: normal;
+      line-height: 30px;
+      margin: 8px 0px;
+    }
+
+    &--location {
+      &-container {
+        display: flex;
+        flex-direction: row;
+        gap: 4px;
+
+        @include mobile {
+          margin-bottom: 16px;
+        }
+      }
+
+      &-icon {
+        position: relative;
+        left: -3px;
+        fill: #000;
+      }
+
+      &-text {
+        color: #000;
+        font-family: 'Avenir LT Std';
+        font-size: 16px;
+        font-style: normal;
+        line-height: 30px; /* 184.375% */
+
+        @include mobile() {
+          font-family: 'Avenir';
+          font-size: 11px;
+          font-style: normal;
+          font-weight: 350;
+          line-height: normal;
+        }
+      }
+    }
+  }
+
+  &--body {
+    font-size: 16px;
+    font-weight: 550;
+    line-height: 180%; /* 28.8px */
+  }
 }
