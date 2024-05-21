@@ -26,6 +26,11 @@
 @import '_fonts.scss';
 @import '_forms.scss';
 
+// directives for each of Tailwind’s layers
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
