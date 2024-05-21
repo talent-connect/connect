@@ -251,7 +251,7 @@
               "apps/redi-talent-pool/src/favicon.ico",
               "apps/redi-talent-pool/src/assets"
             ],
-            "styles": [],
+            "styles": ["apps/redi-connect/src/styles/main.scss"],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "libs/shared-atomic-design-components/src/lib/styles"
