@@ -32,60 +32,90 @@
 }
 
 .profile-section {
+  font-family: 'Avenir LT Std';
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-size: 16px;
+
+  @include mobile() {
+    font-size: 14px;
+  }
+
   &--title {
-    color: #000;
-    font-feature-settings: 'clig' off, 'liga' off;
-    font-family: 'Avenir LT Std';
-    font-size: 16px;
-    font-style: normal;
     font-weight: 700;
     line-height: 150%; /* 24px */
     letter-spacing: 2px;
-
     padding-bottom: 0.5rem;
     border-bottom: 1px solid $grey-light;
-    margin-bottom: 1rem;
+    margin-bottom: 24px;
   }
 
   &--body {
     div {
       margin-bottom: 24px;
+      @include mobile() {
+        margin-bottom: 16px;
+      }
     }
   }
 
+  &--detail-section {
+    width: 100%;
+  }
+
   &--caption {
-    color: #000;
-    font-feature-settings: 'clig' off, 'liga' off;
-    font-family: 'Avenir LT Std';
-    font-size: 16px;
-    font-style: normal;
     font-weight: 700;
-    line-height: 150%; /* 24px */
     letter-spacing: 2px;
     margin-bottom: 8px;
   }
 
   &--content {
-    color: #000;
-    font-feature-settings: 'clig' off, 'liga' off;
-    font-family: 'Avenir LT Std';
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 550;
-    line-height: 150%; /* 24px */
+    @include mobile() {
+      font-size: 14px;
+    }
+  }
+
+  &--tag-container {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
   }
 
   margin-bottom: 1.5rem;
 }
 
+.responsive-section {
+  @include tablet-only() {
+    .profile-section--body {
+      display: flex;
+      flex-wrap: wrap;
+
+      div {
+        flex-basis: 50%;
+      }
+    }
+  }
+  @include from(1025px) {
+    .profile-section--body {
+      display: block;
+    }
+  }
+}
+
 .jobListing {
   display: flex;
-  width: 964px;
-  height: 1387px;
+  max-width: 964px;
   flex-direction: column;
   align-items: flex-start;
   gap: 48px;
   flex-shrink: 0;
+  font-family: 'Avenir LT Std';
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-size: 16px;
+  margin-left: 12px;
+
+  @include mobile() {
+    gap: 32px;
+  }
 
   &--columns {
     display: flex;
@@ -95,34 +125,53 @@
   }
 
   &--left-column {
-    width: 530px;
+    max-width: 530px;
+    div {
+      .profile-section {
+        margin-bottom: 48px;
+      }
+    }
   }
 
   &--right-column {
-    width: 263px;
+    max-width: 265px;
     margin-right: 29px;
   }
 
   &-header {
-    color: #000;
     display: flex;
-    height: 162px;
+    max-height: 162px;
     flex-direction: row;
     gap: 24px;
     flex-shrink: 0;
     align-items: center;
 
+    @include tablet() {
+      flex-wrap: wrap;
+      text-overflow: ellipsis;
+      white-space: none;
+    }
+
+    @include mobile() {
+      flex-direction: column;
+      align-items: flex-start;
+      max-height: fit-content;
+    }
+
     &--avatar {
       width: 160px;
       height: 160px;
       flex-shrink: 0;
+
+      @include mobile() {
+        width: 100px;
+        height: 100px;
+      }
     }
 
     &--title {
       font-family: 'Jubilat';
       font-size: 32px;
-      font-style: normal;
-      font-weight: 500;
       line-height: 40px;
       overflow: hidden;
       display: -webkit-box;
@@ -130,14 +179,21 @@
       -webkit-line-clamp: 2; /* Limits the text to 2 lines */
       text-overflow: ellipsis;
       max-height: 80px;
+
+      @include mobile() {
+        font-size: 24px;
+        line-height: 120%; /* 28.8px */
+      }
     }
 
     &--subtitle {
-      font-family: 'Avenir LT Std';
-      font-size: 16px;
-      font-style: normal;
       line-height: 30px;
       margin: 8px 0px;
+
+      @include mobile() {
+        font-size: 14px;
+        margin: 12px 0px 3px;
+      }
     }
 
     &--location {
@@ -145,38 +201,30 @@
         display: flex;
         flex-direction: row;
         gap: 4px;
+        align-items: center;
 
         @include mobile {
-          margin-bottom: 16px;
+          //margin-bottom: 16px;
         }
       }
 
       &-icon {
         position: relative;
         left: -3px;
-        fill: #000;
       }
 
       &-text {
-        color: #000;
-        font-family: 'Avenir LT Std';
-        font-size: 16px;
-        font-style: normal;
         line-height: 30px; /* 184.375% */
 
         @include mobile() {
-          font-family: 'Avenir';
-          font-size: 11px;
-          font-style: normal;
-          font-weight: 350;
-          line-height: normal;
+          font-size: 14px;
+          line-height: 100%; /* 14px */
         }
       }
     }
   }
 
   &--body {
-    font-size: 16px;
     font-weight: 550;
     line-height: 180%; /* 28.8px */
   }
