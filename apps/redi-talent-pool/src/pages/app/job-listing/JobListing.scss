@@ -112,9 +112,11 @@
   font-feature-settings: 'clig' off, 'liga' off;
   font-size: 16px;
   margin-left: 12px;
+  margin-top: 40px;
 
   @include mobile() {
     gap: 32px;
+    margin-top: 24px;
   }
 
   &--columns {
