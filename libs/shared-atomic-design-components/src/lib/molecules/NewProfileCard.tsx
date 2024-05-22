@@ -1,10 +1,10 @@
-import './NewProfileCard.scss'
 import { CardTags, Icon } from '@talent-connect/shared-atomic-design-components'
 import React, { ReactNode } from 'react'
 import { Card, Tag } from 'react-bulma-components'
 import { NavLink } from 'react-router-dom'
-import LocationIcon from '../../assets/images/location.svg'
 import LanguagesIcon from '../../assets/images/globe.svg'
+import LocationIcon from '../../assets/images/location.svg'
+import './NewProfileCard.scss'
 
 interface NewProfileCardProps {
   profile: {
@@ -14,7 +14,6 @@ interface NewProfileCardProps {
     location?: string
     languages?: string[]
   }
-  topChip?: ReactNode
   subheader?: string
   tags: string[]
   linkTo?: string
@@ -34,7 +33,7 @@ const UserLocation = ({ location }) => {
         alt="Location"
         className="new-profile-card__location-icon"
       />
-      <p className="new-profile-card__location-text">Based in {location}</p>
+      <p className="new-profile-card__location-text">ReDI {location}</p>
     </div>
   )
 }
@@ -61,7 +60,6 @@ export function NewProfileCard({
   profile: { id, avatar, fullName, location, languages },
   tags,
   subheader,
-  topChip,
   linkTo,
   toggleFavorite,
   isFavorite,
@@ -76,9 +74,6 @@ export function NewProfileCard({
       <Card className="new-profile-card">
         <img className="new-profile-card__avatar" src={avatar} alt={fullName} />
         <div>
-          {topChip && (
-            <Tag className="new-profile-card__top-chip">{topChip}</Tag>
-          )}
           {toggleFavorite && (
             <div
               className="new-profile-card__favorite"

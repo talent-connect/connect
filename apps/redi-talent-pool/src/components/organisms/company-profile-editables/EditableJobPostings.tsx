@@ -27,7 +27,6 @@ import {
 
 import { CardContextMenu } from '../../../components/molecules/CardContextMenu'
 
-import { Tooltip } from '@mui/material'
 import { TALENT_POOL_URL } from '@talent-connect/shared-config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { formatDistance } from 'date-fns'
@@ -64,7 +63,7 @@ export function EditableJobPostings({ jobListings }) {
           <Element
             renderAs="h4"
             textSize={4}
-            responsive={{ mobile: { textSize: { value: 7 } } }}
+            responsive={{ mobile: { textSize: { value: 5 } } }}
             className="is-flex-grow-1"
             style={{ flexGrow: 1 }}
           >
@@ -124,6 +123,7 @@ export function EditableJobPostings({ jobListings }) {
 }
 
 const MIN_CHARS_COUNT = 200
+const MAX_CHARS_COUNT = 255
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required('Please provide a job title'),
@@ -142,6 +142,7 @@ const validationSchema = Yup.object().shape({
   languageRequirements: Yup.string().required(
     'Please specify the language requirement(s)'
   ),
+  salaryRange: Yup.string().label('Salary Range').max(MAX_CHARS_COUNT),
   contactFirstName: Yup.string().required('First name is required'),
   contactLastName: Yup.string().required('Last name is required'),
   contactPhoneNumber: Yup.string(),
@@ -198,45 +199,36 @@ function JobListingCards({ jobListings, startEditing }) {
             jobListing={jobListing}
             timestamp={renderTimestamp(jobListing.expiresAt)}
             renderCTA={() => (
-              <Tooltip
-                title="You can copy the job posting link here"
-                placement="top"
-                arrow
+              <CardContextMenu
+                menuItems={[
+                  {
+                    label: 'Edit',
+                    onClick: () => startEditing(jobListing.id),
+                    icon: 'editLightGrey',
+                  },
+                  {
+                    label: 'Copy link',
+                    onClick: () => copyUrl(jobListing.id),
+                    icon: 'link',
+                  },
+                  {
+                    label: 'Delete',
+                    onClick: () =>
+                      setDeleteModalOpenForJobPostingId(jobListing.id),
+                    icon: 'delete',
+                  },
+                ]}
               >
-                {/* Acceptable hack: Tooltip doesn't trigger correctly unless child wrapped in <span> */}
-                <span>
-                  <CardContextMenu
-                    menuItems={[
-                      {
-                        label: 'Edit',
-                        onClick: () => startEditing(jobListing.id),
-                        icon: 'editLightGrey',
-                      },
-                      {
-                        label: 'Copy link',
-                        onClick: () => copyUrl(jobListing.id),
-                        icon: 'link',
-                      },
-                      {
-                        label: 'Delete',
-                        onClick: () =>
-                          setDeleteModalOpenForJobPostingId(jobListing.id),
-                        icon: 'delete',
-                      },
-                    ]}
-                  >
-                    <LightModal
-                      isOpen={deleteModalOpenForJobPostingId === jobListing.id}
-                      handleClose={handleDeleteModalClose}
-                      headline="Delete job posting?"
-                      message="You will lose all the information entered for this job posting."
-                      ctaLabel="Delete"
-                      ctaOnClick={() => handleDelete(jobListing.id)}
-                      cancelLabel="Keep it"
-                    />
-                  </CardContextMenu>
-                </span>
-              </Tooltip>
+                <LightModal
+                  isOpen={deleteModalOpenForJobPostingId === jobListing.id}
+                  handleClose={handleDeleteModalClose}
+                  headline="Delete job posting?"
+                  message="You will lose all the information entered for this job posting."
+                  ctaLabel="Delete"
+                  ctaOnClick={() => handleDelete(jobListing.id)}
+                  cancelLabel="Keep it"
+                />
+              </CardContextMenu>
             )}
           />
         </Columns.Column>

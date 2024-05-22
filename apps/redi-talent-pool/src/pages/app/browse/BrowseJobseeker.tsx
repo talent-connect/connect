@@ -185,7 +185,7 @@ export function BrowseJobseeker() {
       <Element
         renderAs="h4"
         textSize={3}
-        responsive={{ mobile: { textSize: { value: 7 } } }}
+        responsive={{ mobile: { textSize: { value: 4 } } }}
         className="is-flex-grow-1"
         style={{ flexGrow: 1 }}
       >
@@ -195,7 +195,7 @@ export function BrowseJobseeker() {
       <Element
         renderAs="p"
         textSize={4}
-        responsive={{ mobile: { textSize: { value: 5 } } }}
+        responsive={{ mobile: { textSize: { value: 6 } } }}
         className="oneandhalf-bs"
       >
         Your profile has been approved and you can now browse job listings

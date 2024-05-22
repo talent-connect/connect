@@ -1090,7 +1090,6 @@ type TpJobseekerDirectoryEntry {
   id: ID!
   ifAvailabilityIsDate_date: DateTime
   immigrationStatus: ImmigrationStatus
-  isHired: Boolean!
   isProfileVisibleToCompanies: Boolean!
   joinsMunich24SummerJobFair: Boolean
   lastName: String!
@@ -1146,7 +1145,6 @@ type TpJobseekerProfile {
   id: ID!
   ifAvailabilityIsDate_date: DateTime
   immigrationStatus: ImmigrationStatus
-  isHired: Boolean!
   isProfileVisibleToCompanies: Boolean!
   joinsMunich24SummerJobFair: Boolean
   location: String
@@ -1296,7 +1294,6 @@ input TpJobseekerProfilePatchInput {
   federalState: FederalState
   ifAvailabilityIsDate_date: DateTime
   immigrationStatus: ImmigrationStatus
-  isHired: Boolean
   isProfileVisibleToCompanies: Boolean
   joinsMunich24SummerJobFair: Boolean
   location: String

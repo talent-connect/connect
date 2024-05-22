@@ -60,7 +60,6 @@ export function OnboardingSteps({
           textAlignment="centered"
           textTransform="uppercase"
           textSize={6}
-          responsive={{ mobile: { textSize: { value: 7 } } }}
         >
           Complete the steps below!
         </Element>
@@ -78,7 +77,7 @@ export function OnboardingSteps({
           ) : (
             <ChecklistImage className="checklist-image" />
           )}
-          <Element textSize="5">{step.label}</Element>
+          <Element textSize={5}>{step.label}</Element>
           {currentStep[0] > step.number ? (
             <CheckmarkImage className="checkmark-image" />
           ) : null}

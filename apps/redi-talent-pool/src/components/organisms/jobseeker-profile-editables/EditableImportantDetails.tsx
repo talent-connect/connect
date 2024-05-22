@@ -117,7 +117,8 @@ export function EditableImportantDetails({
                 <Caption>Contact</Caption>
                 <Content>
                   {[profile?.telephoneNumber, profile?.email].map(
-                    (contactItem) => (contactItem ? <p>{contactItem}</p> : null)
+                    (contactItem, index) =>
+                      contactItem ? <p key={index}>{contactItem}</p> : null
                   )}
                 </Content>
               </div>
