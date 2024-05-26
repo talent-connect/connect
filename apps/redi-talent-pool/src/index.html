@@ -64,11 +64,17 @@
     <!-- Trigger CookieConsent popover and only enable HotJar and Google Analytics if approved-->
     <script async defer>
       window.addEventListener('load', () => {
-        // setupCookieConsent()
-        initHotjar()
-        initGoogleAnalytics()
-        initSentry()
+        setupCookieConsent()
       })
+      function resetCookieConsent() {
+        // Crude but effective: remove the stored cookie consent
+        // preferences, then reload, which will trigger the cookie consent
+        // popover to show again. I didn't find a way to programmatically
+        // tell CookieConsent to reset/show the popover modal again.
+        document.cookie =
+          document.cookie = `cc_cookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`
+        window.location.reload()
+      }
 
       function setupCookieConsent() {
         CookieConsent.run({
@@ -103,7 +109,7 @@
                   sections: [
                     {
                       description:
-                        'At ReDI School, we value your privacy and strive to provide you with control over your online experience. Please customize your cookie settings below to align with your preferences.',
+                        'At ReDI School, we care about your privacy and want to give you choices about your online experience. You can adjust your cookie settings below to match what you prefer. You can withdraw your consent at any time via clicking a button in the footer of the website. For more information about cookies please refer to our Data Privacy Policy.',
                     },
                     {
                       title: 'Strictly Necessary cookies',
@@ -129,14 +135,14 @@
             const allowsAnalytics =
               consentData.cookie.categories.includes('analytics')
             if (allowsAnalytics) {
-              initHotjar()
-              initGoogleAnalytics()
-              initSentry()
+              bootstrapHotjar()
+              bootstrapGoogleAnalytics()
+              bootstrapSentry()
             }
           },
         })
       }
-      function initHotjar() {
+      function bootstrapHotjar() {
         ;(function (h, o, t, j, a, r) {
           h.hj =
             h.hj ||
@@ -151,7 +157,7 @@
           a.appendChild(r)
         })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=')
       }
-      function initGoogleAnalytics() {
+      function bootstrapGoogleAnalytics() {
         window.dataLayer = window.dataLayer || []
 
         function gtag() {
@@ -161,7 +167,7 @@
 
         gtag('config', 'UA-140306226-1')
       }
-      function initSentry() {
+      function bootstrapSentry() {
         window.initSentry?.('tp')
       }
     </script>
