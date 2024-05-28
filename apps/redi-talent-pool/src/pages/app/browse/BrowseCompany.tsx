@@ -258,7 +258,7 @@ export function BrowseCompany() {
             checked={joinsMunich24SummerJobFair || false}
             handleChange={toggleMunich24SummerJobFairFilter}
           >
-            ReDI Munich Winter Job Fair 2024
+            ReDI Munich Summer Job Fair 2024
           </Checkbox>
         </div>
         {/* Next Div is to keep three filters sizing for two checkboxes. Remove if necessary */}
