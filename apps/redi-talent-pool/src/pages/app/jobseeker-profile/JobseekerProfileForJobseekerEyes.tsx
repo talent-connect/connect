@@ -45,15 +45,14 @@ export function JobseekerProfileForJobseekerEyes() {
     queryClient.invalidateQueries()
   }
 
-  // Hidden until the new date announced
-  // const onMunich24SummerJobFairParticipateChange = async () => {
-  //   await mutation.mutateAsync({
-  //     input: {
-  //       joinsMunich24SummerJobFair: !profile?.joinsMunich24SummerJobFair,
-  //     },
-  //   })
-  //   queryClient.invalidateQueries()
-  // }
+  const onMunich24SummerJobFairParticipateChange = async () => {
+    await mutation.mutateAsync({
+      input: {
+        joinsMunich24SummerJobFair: !profile?.joinsMunich24SummerJobFair,
+      },
+    })
+    queryClient.invalidateQueries()
+  }
 
   const isProfileApproved =
     profile?.state === JobseekerProfileStatus.ProfileApproved
@@ -89,14 +88,13 @@ export function JobseekerProfileForJobseekerEyes() {
           </div>
           <EditableNamePhotoLocation profile={profile} />
           <div style={{ marginBottom: '1.5rem' }}>
-            {/* Hidden until the next Job Fair date announced */}
-            {/* <Checkbox
+            <Checkbox
               checked={profile?.joinsMunich24SummerJobFair}
               customOnChange={onMunich24SummerJobFairParticipateChange}
             >
-              I will attend the <b>ReDI Winter Job Fair in Munich</b> on{' '}
-              <b>22/02/2024</b>.
-            </Checkbox> */}
+              I will attend the <b>ReDI Summer Job Fair in Munich</b> on{' '}
+              <b>01/07/2024</b>.
+            </Checkbox>
           </div>
           <EditableOverview profile={profile} />
           <EditableSummary profile={profile} />
