@@ -1,6 +1,5 @@
 import Icon, { IconProps } from '../atoms/Icon'
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { envRediLocation } from '../../../../../apps/redi-connect/src/utils/env-redi-location'
 import './MediaIcons.scss'
 
 const icons: Array<SocialMediaIcon> = [
@@ -63,11 +62,7 @@ const SocialMediaIcons = () => (
   <ul className="media-icons__list">
     {icons.map((item: SocialMediaIcon) => (
       <li key={item.icon}>
-        <a
-          href={item[envRediLocation()] || item['BERLIN']}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href={item['BERLIN']} target="_blank" rel="noopener noreferrer">
           <Icon icon={item.icon} className="media-icons__icon" />
         </a>
       </li>

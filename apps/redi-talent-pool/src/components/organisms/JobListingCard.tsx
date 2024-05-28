@@ -1,12 +1,13 @@
+import { useMediaQuery, useTheme } from '@mui/material'
 import { CardTags } from '@talent-connect/shared-atomic-design-components'
 import { topSkillsIdToLabelMap } from '@talent-connect/talent-pool/config'
 import React from 'react'
 import { Card } from 'react-bulma-components'
 import { NavLink } from 'react-router-dom'
+import CardLocation from '../../../../../libs/shared-atomic-design-components/src/lib/atoms/CardLocation'
 import placeholderImage from '../../assets/images/company-placeholder-img.svg'
 import './JobListingCard.scss'
 import { JobListingCardJobListingPropFragment } from './jobseeker-profile-editables/JobListingCard.generated'
-import CardLocation from '../../../../../libs/shared-atomic-design-components/src/lib/atoms/CardLocation'
 
 interface JobListingCardProps {
   jobListing: JobListingCardJobListingPropFragment
@@ -35,6 +36,10 @@ export function JobListingCard({
     profileAvatarImageS3Key: companyAvatarImage,
   } = jobListing
 
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down(769))
+  const isTabletOrDesktop = useMediaQuery(theme.breakpoints.up(769))
+
   const imgSrc = companyAvatarImage ? companyAvatarImage : placeholderImage
 
   const InnerCard = () => (
@@ -45,7 +50,10 @@ export function JobListingCard({
             className="job-posting-card__image"
             src={imgSrc}
             alt={jobTitle}
-          ></img>
+          />
+          <div style={{ height: '100%' }}>
+            {isMobile && renderCTA && renderCTA()}
+          </div>
         </div>
         <div className="job-posting-card__middleColumn">
           <p className="job-posting-card__job-title">{jobTitle}</p>
@@ -62,7 +70,7 @@ export function JobListingCard({
         </div>
         <div className="job-posting-card__lastColumn">
           <div className="job-posting-card__timeFooterBox">
-            {renderCTA && renderCTA()}
+            {isTabletOrDesktop && renderCTA && renderCTA()}
             {timestamp && (
               <div className="job-posting-card__timestamp">{timestamp}</div>
             )}

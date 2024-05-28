@@ -35,8 +35,8 @@
         "name": "Transparency"
       },
       {
-        "url": "https://www.redi-school.org/imprint/",
-        "name": "Cookie policy"
+        "name": "Cookie settings",
+        "triggerCookieSettingsGlobalFunction": true
       },
       {
         "url": "https://www.redi-school.org/data-privacy-policy/",

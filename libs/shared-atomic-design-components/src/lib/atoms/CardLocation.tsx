@@ -1,4 +1,4 @@
-import LocationIcon from '../../assets/images/Location.svg'
+import LocationIcon from '../../assets/images/location.svg'
 import './CardLocation.scss'
 
 const CardLocation = ({ location, remote }) => {

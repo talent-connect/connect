@@ -515,6 +515,7 @@ export enum MentoringTopic {
   React = 'react',
   Sales = 'sales',
   Salesforce = 'salesforce',
+  Swedish = 'swedish',
   UserExperienceDesign = 'userExperienceDesign',
   UserInterfaceDesign = 'userInterfaceDesign'
 }
@@ -925,6 +926,7 @@ export enum RediLocation {
   Berlin = 'BERLIN',
   Cyberspace = 'CYBERSPACE',
   Hamburg = 'HAMBURG',
+  Malmo = 'MALMO',
   Munich = 'MUNICH',
   Nrw = 'NRW'
 }
@@ -1423,7 +1425,6 @@ export type TpJobseekerDirectoryEntry = {
   id: Scalars['ID'];
   ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
   immigrationStatus?: Maybe<ImmigrationStatus>;
-  isHired: Scalars['Boolean'];
   isProfileVisibleToCompanies: Scalars['Boolean'];
   joinsMunich24SummerJobFair?: Maybe<Scalars['Boolean']>;
   lastName: Scalars['String'];
@@ -1483,7 +1484,6 @@ export type TpJobseekerProfile = {
   id: Scalars['ID'];
   ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
   immigrationStatus?: Maybe<ImmigrationStatus>;
-  isHired: Scalars['Boolean'];
   isProfileVisibleToCompanies: Scalars['Boolean'];
   joinsMunich24SummerJobFair?: Maybe<Scalars['Boolean']>;
   location?: Maybe<Scalars['String']>;
@@ -1636,7 +1636,6 @@ export type TpJobseekerProfilePatchInput = {
   federalState?: InputMaybe<FederalState>;
   ifAvailabilityIsDate_date?: InputMaybe<Scalars['DateTime']>;
   immigrationStatus?: InputMaybe<ImmigrationStatus>;
-  isHired?: InputMaybe<Scalars['Boolean']>;
   isProfileVisibleToCompanies?: InputMaybe<Scalars['Boolean']>;
   joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   location?: InputMaybe<Scalars['String']>;

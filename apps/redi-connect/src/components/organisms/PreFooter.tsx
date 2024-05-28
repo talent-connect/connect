@@ -1,5 +1,4 @@
 import {
-  Button,
   Heading,
   SVGImage,
 } from '@talent-connect/shared-atomic-design-components'
@@ -18,29 +17,26 @@ const PreFooter = () => {
           <Columns.Column size={4}>
             <Heading>{t('preFooter.headline')}</Heading>
             <Content
-              renderAs="p"
+              renderAs="div"
               textSize={4}
               responsive={{ mobile: { textSize: { value: 5 } } }}
-              className="oneandhalf-bs"
+              className="pre-footer__content"
+              dangerouslySetInnerHTML={{
+                __html: `${t('preFooter.content')}`,
+              }}
+            />
+            {/* Hide button until we implement the new Contact Us page */}
+            {/* <Button
+              size="large"
+              onClick={() =>
+                (window.location.href = 'mailto:career@redi-school.org')
+              }
             >
-              {t('preFooter.content')}
-            </Content>
-            <Content>
-              <Button
-                size="large"
-                onClick={() =>
-                  (window.location.href = 'mailto:career@redi-school.org')
-                }
-              >
-                {t('button.sayHello')}
-              </Button>
-            </Content>
+              {t('button.sayHello')}
+            </Button> */}
           </Columns.Column>
-          <Columns.Column className="is-hidden-mobile">
+          <Columns.Column>
             <SVGImage image="hello" className="pre-footer__image" />
-          </Columns.Column>
-          <Columns.Column className="is-hidden-tablet">
-            <SVGImage image="helloMobile" className="pre-footer__image" />
           </Columns.Column>
         </Columns>
       </Container>

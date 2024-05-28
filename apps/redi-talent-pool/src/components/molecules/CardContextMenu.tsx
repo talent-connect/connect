@@ -40,6 +40,7 @@ export function CardContextMenu({ menuItems, children }: CardContextMenuProps) {
         <Content style={{ width: '180px' }}>
           {menuItems.map(({ label, onClick, icon }) => (
             <MenuItem
+              key={label}
               onClick={() => {
                 onClick()
                 handleClose()

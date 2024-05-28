@@ -1,6 +1,7 @@
 export const REDI_LOCATION_NAMES = {
   BERLIN: 'Berlin',
   HAMBURG: 'Hamburg',
+  MALMO: 'Malmö',
   MUNICH: 'Munich',
   NRW: 'NRW',
   CYBERSPACE: 'Cyberspace',
@@ -88,6 +89,7 @@ export const CATEGORIES = [
   { id: 'basicGerman', label: 'Basic German 🇩🇪', group: 'language' },
   { id: 'businessGerman', label: 'Business German 🇩🇪', group: 'language' },
   { id: 'english', label: 'English 🇬🇧', group: 'language' },
+  { id: 'swedish', label: 'Swedish 🇸🇪', group: 'language' },
   { id: 'graphicDesign', label: 'Graphic Design', group: 'design' },
   {
     id: 'userInterfaceDesign',

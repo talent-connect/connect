@@ -76,7 +76,7 @@ function EditableEducation() {
         name="mentee_highestEducationLevel"
         placeholder="Education Level"
         items={formEducationLevels}
-        {...formik}
+        formik={formik}
       />
     </Editable>
   )

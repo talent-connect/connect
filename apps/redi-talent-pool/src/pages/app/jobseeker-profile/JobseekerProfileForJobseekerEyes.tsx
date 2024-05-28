@@ -54,9 +54,15 @@ export function JobseekerProfileForJobseekerEyes() {
     queryClient.invalidateQueries()
   }
 
+  const isProfileApproved =
+    profile?.state === JobseekerProfileStatus.ProfileApproved
+
+  const isProfileSubmittedForReview =
+    profile?.state === JobseekerProfileStatus.SubmittedForReview
+
   return (
     <LoggedIn>
-      {profile?.state === JobseekerProfileStatus.ProfileApproved ? (
+      {isProfileApproved ? (
         <Notification className="account-not-active double-bs">
           <Icon
             className="account-not-active__icon"
@@ -73,10 +79,12 @@ export function JobseekerProfileForJobseekerEyes() {
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <div className="is-hidden-tablet">
-            <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
-              <CallToActionButton profile={profile} />
-            </div>
-            <OnboardingSteps />
+            {!isProfileSubmittedForReview && (
+              <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
+                <CallToActionButton profile={profile} />
+              </div>
+            )}
+            {!isProfileApproved && <OnboardingSteps />}
           </div>
           <EditableNamePhotoLocation profile={profile} />
           <div style={{ marginBottom: '1.5rem' }}>
@@ -95,10 +103,12 @@ export function JobseekerProfileForJobseekerEyes() {
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
           <div className="is-hidden-mobile">
-            <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
-              <CallToActionButton profile={profile} />
-            </div>
-            <OnboardingSteps />
+            {!isProfileSubmittedForReview && (
+              <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
+                <CallToActionButton profile={profile} />
+              </div>
+            )}
+            {!isProfileApproved && <OnboardingSteps />}
           </div>
           {/* <EditableVisibility /> */}
           <EditableImportantDetails profile={profile} showFullAddress />
@@ -167,7 +177,6 @@ export function OnboardingSteps() {
           textAlignment="centered"
           textTransform="uppercase"
           textSize={6}
-          responsive={{ mobile: { textSize: { value: 7 } } }}
         >
           Complete the steps below!
         </Element>
@@ -185,7 +194,7 @@ export function OnboardingSteps() {
           ) : (
             <ChecklistImage className="checklist-image" />
           )}
-          <Element textSize="5">{step.label}</Element>
+          <Element textSize={5}>{step.label}</Element>
           {currentStep[0] > step.number ? (
             <CheckmarkImage className="checkmark-image" />
           ) : null}

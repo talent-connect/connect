@@ -17,9 +17,14 @@ export class ConProblemReportService {
     input: CreateConProblemReportInput,
     currentUser: CurrentUserInfo
   ) {
+    const conProfile = await this.profilesService.findOneById(
+      input.reporteeProfileId
+    )
+
     this.emailService.sendReportProblemEmail({
       sendingUserEmail: currentUser.userProps.email,
       message: input.problemDescription,
+      rediLocation: conProfile.props.rediLocation,
     })
 
     if (input.ifFromMentor_cancelMentorshipImmediately) {
@@ -35,11 +40,13 @@ export class ConProblemReportService {
       this.emailService.sendMentorCancelledMentorshipNotificationEmail({
         recipient: menteeProfile.props.email,
         firstName: menteeProfile.props.firstName,
+        rediLocation: menteeProfile.props.rediLocation,
       })
       this.emailService.sendToMentorConfirmationOfMentorshipCancelled({
         recipient: currentUser.userProps.email,
         mentorFirstName: currentUser.userProps.firstName,
         menteeFullName: menteeProfile.props.fullName,
+        rediLocation: conProfile.props.rediLocation,
       })
     }
   }

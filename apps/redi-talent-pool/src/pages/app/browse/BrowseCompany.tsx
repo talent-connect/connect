@@ -158,7 +158,7 @@ export function BrowseCompany() {
       <Element
         renderAs="h4"
         textSize={3}
-        responsive={{ mobile: { textSize: { value: 7 } } }}
+        responsive={{ mobile: { textSize: { value: 4 } } }}
         className="is-flex-grow-1"
         style={{ flexGrow: 1 }}
       >
@@ -168,7 +168,7 @@ export function BrowseCompany() {
       <Element
         renderAs="p"
         textSize={4}
-        responsive={{ mobile: { textSize: { value: 5 } } }}
+        responsive={{ mobile: { textSize: { value: 6 } } }}
         className="oneandhalf-bs"
       >
         Browse our Jobseeker profiles and find the talent you're looking for.
@@ -351,6 +351,7 @@ export function BrowseCompany() {
 
             return (
               <Columns.Column
+                key={profile.id}
                 mobile={{ size: 12 }}
                 tablet={{ size: 6 }}
                 desktop={{ size: 4 }}

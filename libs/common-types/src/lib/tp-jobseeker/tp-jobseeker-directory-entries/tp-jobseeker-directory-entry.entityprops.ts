@@ -55,7 +55,6 @@ export class TpJobseekerDirectoryEntryEntityProps implements EntityProps {
   state: JobseekerProfileStatus
   joinsMunich24SummerJobFair?: boolean
   isProfileVisibleToCompanies: boolean
-  isHired: boolean
   @Field((type) => FederalState)
   federalState?: FederalState
   willingToRelocate: boolean
