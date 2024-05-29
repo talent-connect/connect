@@ -1,8 +1,8 @@
 import { SocialMediaIcons } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Container, Element, Section } from 'react-bulma-components'
 import { useTranslation } from 'react-i18next'
-import DeloitteLogo from '../../assets/images/deloitte-logo.png'
 import JpmLogo from '../../assets/images/Jpm-logo.png'
+import DeloitteLogo from '../../assets/images/deloitte-logo.png'
 import { ReactComponent as RediSchool } from '../../assets/images/redi-school-logo.svg'
 import './Footer.scss'
 
@@ -18,7 +18,17 @@ const RediFooter = () => {
   const legalLinks: Array<{
     url: string
     name: string
+    triggerCookieSettingsGlobalFunction: boolean
   }> = t('footer.legalLinks', { returnObjects: true })
+
+  const handleCookieSettingsClick = () => {
+    if (
+      typeof window !== 'undefined' &&
+      typeof (window as any).resetCookieConsent === 'function'
+    ) {
+      ;(window as any).resetCookieConsent()
+    }
+  }
 
   return (
     <footer className="footer">
@@ -109,6 +119,11 @@ const RediFooter = () => {
                     <Element
                       renderAs="a"
                       href={link.url}
+                      onClick={
+                        link.triggerCookieSettingsGlobalFunction
+                          ? () => handleCookieSettingsClick()
+                          : undefined
+                      }
                       target="_blank"
                       className="footer__link"
                     >
