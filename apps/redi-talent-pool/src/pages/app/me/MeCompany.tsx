@@ -11,6 +11,15 @@ import {
   Checkbox,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@talent-connect/shared-shadcn-ui-components'
 import { AllTpCompanyProfileFieldsFragment } from 'libs/data-access/src/lib/tp/company-profiles/tp-company-profile.fragment.generated'
 import { Columns, Content, Notification } from 'react-bulma-components'
 import CareerPartnerBanner from '../../../components/organisms/CareerPartnerBanner'
@@ -71,6 +80,25 @@ export function MeCompany() {
 
   return (
     <LoggedIn>
+      {/* testing shadcn/ui */}
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious href="#" />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#">1</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationNext href="#" />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+      {/* testing shadcn/ui */}
+
       {/* testing Tailwind classes */}
       <div className="bg-indigo-500 p-2 font-mono text-white">
         Hello TailwindCSS

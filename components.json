@@ -4,14 +4,13 @@
   "rsc": false,
   "tsx": true,
   "tailwind": {
-    "config": "tailwind.config.js",
+    "config": "libs/shared-shadcn-ui-components/src/lib/utils/tailwind.config.js",
     "css": "apps/redi-connect/src/styles/main.scss",
     "baseColor": "slate",
-    "cssVariables": true,
-    "prefix": ""
+    "cssVariables": true
   },
   "aliases": {
-    "components": "@/components",
-    "utils": "@/libs/tailwind-utils"
+    "components": "@talent-connect/shared-shadcn-ui-components/ui-components",
+    "utils": "@talent-connect/shared-shadcn-ui-components"
   }
 }

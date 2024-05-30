@@ -448,6 +448,31 @@
       },
       "tags": []
     },
+    "shared-shadcn-ui-components": {
+      "root": "libs/shared-shadcn-ui-components",
+      "sourceRoot": "libs/shared-shadcn-ui-components/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared-shadcn-ui-components/**/*.{ts,tsx,js,jsx}"
+            ]
+          },
+          "outputs": ["{options.outputFile}"]
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared-shadcn-ui-components"],
+          "options": {
+            "jestConfig": "libs/shared-shadcn-ui-components/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "shared-types": {
       "root": "libs/shared-types",
       "sourceRoot": "libs/shared-types/src",

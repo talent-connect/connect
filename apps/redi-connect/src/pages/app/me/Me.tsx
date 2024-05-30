@@ -31,6 +31,15 @@ import {
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { useLoading } from '../../../hooks/WithLoading'
 // CHECK OUT THE LOADER
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@talent-connect/shared-shadcn-ui-components'
 import './Me.scss'
 import OnboardingSteps from './OnboardingSteps'
 
@@ -109,6 +118,25 @@ function Me() {
 
   return (
     <LoggedIn>
+      {/* testing shadcn/ui */}
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious href="#" />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink href="#">1</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationNext href="#" />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+      {/* testing shadcn/ui */}
+
       {/* testing Tailwind classes */}
       <div className="bg-indigo-500 p-2 font-mono text-white">
         Hello TailwindCSS
