@@ -31,11 +31,13 @@ import {
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { useLoading } from '../../../hooks/WithLoading'
 // CHECK OUT THE LOADER
+import { useHistory } from 'react-router-dom'
 import './Me.scss'
 import OnboardingSteps from './OnboardingSteps'
 
 function Me() {
   const queryClient = useQueryClient()
+  const history = useHistory()
   const submitProfileForReviewMutation = useConProfileSubmitForReviewMutation()
   const { Loading, isLoading } = useLoading()
   const myProfileResult = useLoadMyProfileQuery(
@@ -50,6 +52,11 @@ function Me() {
   // that Eric has been looking into.
 
   const conProfile = myProfileResult?.data?.conProfile
+  // if (conProfile?.profileStatus === 'DEACTIVATED') {
+  //   // logout()
+  //   history.push('/front/login')
+  // }
+
   if (!conProfile) return <Loading />
 
   const {
