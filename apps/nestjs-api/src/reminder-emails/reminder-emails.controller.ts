@@ -54,109 +54,114 @@ export class ReminderEmailsController {
     }
   }
 
-  @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentees-apply-to-mentor')
-  async sendMenteeApplyToMentorReminders() {
-    const firstReminderMentees =
-      await this.reminderEmailsService.getApprovedMenteesWithNoMentorApplicationsByDays(
-        {
-          daysAgo: '7d',
-        }
-      )
+  /**
+   * Following reminders are implemented but not working as expected.
+   * They will be tested and fixed in the next iterations.
+   */
 
-    if (firstReminderMentees.length > 0) {
-      // send reminder emails
-      firstReminderMentees.forEach(async (mentee) => {
-        await this.reminderEmailsService.sendApplyToMentorFirstReminder({
-          email: mentee.props.email,
-          firstName: mentee.props.firstName,
-          location: mentee.props.rediLocation,
-        })
-      })
-    }
+  // @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentees-apply-to-mentor')
+  // async sendMenteeApplyToMentorReminders() {
+  //   const firstReminderMentees =
+  //     await this.reminderEmailsService.getApprovedMenteesWithNoMentorApplicationsByDays(
+  //       {
+  //         daysAgo: '7d',
+  //       }
+  //     )
 
-    const secondReminderMentees =
-      await this.reminderEmailsService.getApprovedMenteesWithNoMentorApplicationsByDays(
-        {
-          daysAgo: '14d',
-        }
-      )
+  //   if (firstReminderMentees.length > 0) {
+  //     // send reminder emails
+  //     firstReminderMentees.forEach(async (mentee) => {
+  //       await this.reminderEmailsService.sendApplyToMentorFirstReminder({
+  //         email: mentee.props.email,
+  //         firstName: mentee.props.firstName,
+  //         location: mentee.props.rediLocation,
+  //       })
+  //     })
+  //   }
 
-    if (secondReminderMentees.length > 0) {
-      // send reminder emails
-      secondReminderMentees.forEach(async (mentee) => {
-        await this.reminderEmailsService.sendApplyToMentorSecondReminder({
-          email: mentee.props.email,
-          firstName: mentee.props.firstName,
-          location: mentee.props.rediLocation,
-        })
-      })
-    }
+  //   const secondReminderMentees =
+  //     await this.reminderEmailsService.getApprovedMenteesWithNoMentorApplicationsByDays(
+  //       {
+  //         daysAgo: '14d',
+  //       }
+  //     )
 
-    return {
-      message: `First reminder emails to apply to a mentor sent to ${firstReminderMentees.length} mentees. Second reminder emails to apply to a mentor sent to ${secondReminderMentees.length} mentees`,
-    }
-  }
+  //   if (secondReminderMentees.length > 0) {
+  //     // send reminder emails
+  //     secondReminderMentees.forEach(async (mentee) => {
+  //       await this.reminderEmailsService.sendApplyToMentorSecondReminder({
+  //         email: mentee.props.email,
+  //         firstName: mentee.props.firstName,
+  //         location: mentee.props.rediLocation,
+  //       })
+  //     })
+  //   }
 
-  @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentorship-follow-up')
-  async sendMentorshipFollowUpReminders() {
-    const conProfilesWithThreeMonthsOldMentorshipMatches =
-      await this.reminderEmailsService.getConProfilesWithThreeMonthsOldMentorshipMatches()
+  //   return {
+  //     message: `First reminder emails to apply to a mentor sent to ${firstReminderMentees.length} mentees. Second reminder emails to apply to a mentor sent to ${secondReminderMentees.length} mentees`,
+  //   }
+  // }
 
-    if (conProfilesWithThreeMonthsOldMentorshipMatches.length > 0) {
-      // send reminder emails
-      conProfilesWithThreeMonthsOldMentorshipMatches.forEach(async (match) => {
-        await this.reminderEmailsService.mentorshipFollowUpReminder({
-          email: match.props.email,
-          firstName: match.props.firstName,
-          userType: match.props.userType,
-        })
-      })
-    }
+  // @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentorship-follow-up')
+  // async sendMentorshipFollowUpReminders() {
+  //   const conProfilesWithThreeMonthsOldMentorshipMatches =
+  //     await this.reminderEmailsService.getConProfilesWithThreeMonthsOldMentorshipMatches()
 
-    return {
-      message: `Follow-up reminder emails sent to ${conProfilesWithThreeMonthsOldMentorshipMatches.length} mentorship matches`,
-    }
-  }
+  //   if (conProfilesWithThreeMonthsOldMentorshipMatches.length > 0) {
+  //     // send reminder emails
+  //     conProfilesWithThreeMonthsOldMentorshipMatches.forEach(async (match) => {
+  //       await this.reminderEmailsService.mentorshipFollowUpReminder({
+  //         email: match.props.email,
+  //         firstName: match.props.firstName,
+  //         userType: match.props.userType,
+  //       })
+  //     })
+  //   }
 
-  @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentees-platform-and-new-mentors')
-  async sendUnmatchedMenteesReminder() {
-    const unmatchedMenteesWithApprovedProfiles =
-      await this.reminderEmailsService.getUnmatchedMenteesWithApprovedProfiles()
+  //   return {
+  //     message: `Follow-up reminder emails sent to ${conProfilesWithThreeMonthsOldMentorshipMatches.length} mentorship matches`,
+  //   }
+  // }
 
-    if (unmatchedMenteesWithApprovedProfiles.length > 0) {
-      // send reminder emails
-      unmatchedMenteesWithApprovedProfiles.forEach(async (mentee) => {
-        await this.reminderEmailsService.sendMenteesPlatformAndNewMentorsReminder(
-          {
-            email: mentee.props.email,
-            firstName: mentee.props.firstName,
-          }
-        )
-      })
-    }
+  // @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentees-platform-and-new-mentors')
+  // async sendUnmatchedMenteesReminder() {
+  //   const unmatchedMenteesWithApprovedProfiles =
+  //     await this.reminderEmailsService.getUnmatchedMenteesWithApprovedProfiles()
 
-    return {
-      message: `Reminder emails sent to ${unmatchedMenteesWithApprovedProfiles.length} unmatched mentees with approved profiles`,
-    }
-  }
+  //   if (unmatchedMenteesWithApprovedProfiles.length > 0) {
+  //     // send reminder emails
+  //     unmatchedMenteesWithApprovedProfiles.forEach(async (mentee) => {
+  //       await this.reminderEmailsService.sendMenteesPlatformAndNewMentorsReminder(
+  //         {
+  //           email: mentee.props.email,
+  //           firstName: mentee.props.firstName,
+  //         }
+  //       )
+  //     })
+  //   }
 
-  @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentoring-sessions-logging')
-  async sendMentoringSessionsLoggingReminder() {
-    const conProfilesWithMentoringSessionsToLog =
-      await this.reminderEmailsService.getConProfilesWithMentorshipMatchesWithoutMentoringSessions(
-        { mentorshipMatchAgeInDays: 402 }
-      )
+  //   return {
+  //     message: `Reminder emails sent to ${unmatchedMenteesWithApprovedProfiles.length} unmatched mentees with approved profiles`,
+  //   }
+  // }
 
-    if (conProfilesWithMentoringSessionsToLog.length > 0) {
-      // send reminder emails
-      conProfilesWithMentoringSessionsToLog.forEach(async (profile) => {
-        await this.reminderEmailsService.sendLogMentoringSessionsReminder({
-          email: profile.props.email,
-          firstName: profile.props.firstName,
-          userType: profile.props.userType,
-          mentorshipMatchAgeInDays: 14,
-        })
-      })
-    }
-  }
+  // @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentoring-sessions-logging')
+  // async sendMentoringSessionsLoggingReminder() {
+  //   const conProfilesWithMentoringSessionsToLog =
+  //     await this.reminderEmailsService.getConProfilesWithMentorshipMatchesWithoutMentoringSessions(
+  //       { mentorshipMatchAgeInDays: 402 }
+  //     )
+
+  //   if (conProfilesWithMentoringSessionsToLog.length > 0) {
+  //     // send reminder emails
+  //     conProfilesWithMentoringSessionsToLog.forEach(async (profile) => {
+  //       await this.reminderEmailsService.sendLogMentoringSessionsReminder({
+  //         email: profile.props.email,
+  //         firstName: profile.props.firstName,
+  //         userType: profile.props.userType,
+  //         mentorshipMatchAgeInDays: 14,
+  //       })
+  //     })
+  //   }
+  // }
 }
