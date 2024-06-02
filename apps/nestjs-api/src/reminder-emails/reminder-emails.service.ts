@@ -8,6 +8,7 @@ import {
 } from '@talent-connect/common-types'
 import * as AWS from 'aws-sdk'
 import * as jsforce from 'jsforce'
+import transform from 'lodash/transform'
 import { ConMentorshipMatchesService } from '../con-mentorship-matches/con-mentorship-matches.service'
 import { ConProfilesService } from '../con-profiles/con-profiles.service'
 import { SfApiEmailTemplatesService } from '../salesforce-api/sf-api-email-templates.service'
@@ -64,16 +65,24 @@ export class ReminderEmailsService {
     })
   }
 
-  async getConProfilesWithThreeMonthsOldMentorshipMatches() {
-    const NinetyDaysAgo = new Date().setDate(new Date().getDate() - 90)
-
+  async getThreeMonthsOldMentorshipMatches() {
     const threeMonthsOldMentorshipMatches =
       await this.conMentorshipMatchesService.findAll({
         Status__c: MentorshipMatchStatus.ACCEPTED,
-        Start_Date__c: {
-          $eq: jsforce.SfDate.toDateLiteral(NinetyDaysAgo),
-        },
+        Mentorship_Match_Age_In_Days__c: 423,
       })
+
+    const reducedMatches = threeMonthsOldMentorshipMatches.reduce(
+      (acc, match) => {
+        acc[match.props.id] = {
+          menteeId: match.props.menteeId,
+          mentorId: match.props.mentorId,
+        }
+
+        return acc
+      },
+      {}
+    )
 
     const menteeIds = threeMonthsOldMentorshipMatches.map(
       (match) => match.props.menteeId
@@ -82,15 +91,43 @@ export class ReminderEmailsService {
       (match) => match.props.mentorId
     )
 
+    let matchConProfiles = []
+
     if ([...menteeIds, ...mentorIds].length > 0) {
-      return await this.conProfilesService.findAll({
+      matchConProfiles = await this.conProfilesService.findAll({
         'Contact__r.Id': {
           $in: [...menteeIds, ...mentorIds],
         },
       })
     }
 
-    return []
+    /**
+     * Some holy moly is happening here. The idea is, transforming the map of mentorship matches
+     * to a map of mentorship matches with the first names and emails of the mentee and mentor.
+     * See here for lodash/transform: https://lodash.com/docs/4.17.15#transform
+     */
+    const transformedReducedMatches = transform(
+      reducedMatches,
+      (result, value, key) => {
+        const mentee = matchConProfiles.find(
+          (profile) => profile?.props.userId === value['menteeId']
+        )
+
+        const mentor = matchConProfiles.find(
+          (profile) => profile?.props.userId === value['mentorId']
+        )
+
+        result[key] = {
+          menteeFirstName: mentee?.props.firstName,
+          menteeEmail: mentee?.props.email,
+          mentorFirstName: mentor?.props.firstName,
+          mentorEmail: mentor?.props.email,
+        }
+      },
+      []
+    )
+
+    return transformedReducedMatches
   }
 
   async getUnmatchedMenteesWithApprovedProfiles() {
@@ -279,7 +316,12 @@ export class ReminderEmailsService {
     return { message: 'Email sent' }
   }
 
-  async mentorshipFollowUpReminder({ email, firstName, userType }) {
+  async sendMentorshipFollowUpReminder({
+    email,
+    firstName,
+    menteeOrMentorFirstName,
+    userType,
+  }) {
     const sfEmailTemplateDeveloperName =
       userType === UserType.MENTOR
         ? 'Mentor_Follow_Up_On_Long_Term_Mentorship_1711363451370'
@@ -297,13 +339,15 @@ export class ReminderEmailsService {
 
     const sanitizedHtml = template.HtmlValue.replace(
       /{{{Recipient\.FirstName}}}/g,
-      `${firstName} ${email}`
+      firstName
     )
+      .replace(/\${menteeFirstName}/g, menteeOrMentorFirstName)
+      .replace(/\${mentorFirstName}/g, menteeOrMentorFirstName)
 
     const params = {
       Destination: {
         ToAddresses: isProductionOrDemonstration()
-          ? ['anilakarsu93@gmail.com']
+          ? [email]
           : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
       },
       Message: {

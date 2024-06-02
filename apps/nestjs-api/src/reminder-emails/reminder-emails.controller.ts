@@ -102,26 +102,37 @@ export class ReminderEmailsController {
   //   }
   // }
 
-  // @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentorship-follow-up')
-  // async sendMentorshipFollowUpReminders() {
-  //   const conProfilesWithThreeMonthsOldMentorshipMatches =
-  //     await this.reminderEmailsService.getConProfilesWithThreeMonthsOldMentorshipMatches()
+  @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentorship-follow-up')
+  async sendMentorshipFollowUpReminders() {
+    const threeMonthsOldMentorshipMatches =
+      await this.reminderEmailsService.getThreeMonthsOldMentorshipMatches()
 
-  //   if (conProfilesWithThreeMonthsOldMentorshipMatches.length > 0) {
-  //     // send reminder emails
-  //     conProfilesWithThreeMonthsOldMentorshipMatches.forEach(async (match) => {
-  //       await this.reminderEmailsService.mentorshipFollowUpReminder({
-  //         email: match.props.email,
-  //         firstName: match.props.firstName,
-  //         userType: match.props.userType,
-  //       })
-  //     })
-  //   }
+    if (Object.keys(threeMonthsOldMentorshipMatches).length > 0) {
+      threeMonthsOldMentorshipMatches.forEach(async (match) => {
+        // Send reminder email to mentee
+        await this.reminderEmailsService.sendMentorshipFollowUpReminder({
+          userType: UserType.MENTEE,
+          email: match.menteeEmail,
+          firstName: match.menteeFirstName,
+          menteeOrMentorFirstName: match.mentorFirstName,
+        })
 
-  //   return {
-  //     message: `Follow-up reminder emails sent to ${conProfilesWithThreeMonthsOldMentorshipMatches.length} mentorship matches`,
-  //   }
-  // }
+        // Send reminder email to mentor
+        await this.reminderEmailsService.sendMentorshipFollowUpReminder({
+          userType: UserType.MENTOR,
+          email: match.mentorEmail,
+          firstName: match.mentorFirstName,
+          menteeOrMentorFirstName: match.menteeFirstName,
+        })
+      })
+    }
+
+    return {
+      message: `Follow-up reminder emails sent to ${
+        Object.keys(threeMonthsOldMentorshipMatches).length
+      } mentorship matches`,
+    }
+  }
 
   // @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentees-platform-and-new-mentors')
   // async sendUnmatchedMenteesReminder() {
