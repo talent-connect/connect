@@ -117,4 +117,46 @@ export class ReminderEmailsController {
       message: `Follow-up reminder emails sent to ${conProfilesWithThreeMonthsOldMentorshipMatches.length} mentorship matches`,
     }
   }
+
+  @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentees-platform-and-new-mentors')
+  async sendUnmatchedMenteesReminder() {
+    const unmatchedMenteesWithApprovedProfiles =
+      await this.reminderEmailsService.getUnmatchedMenteesWithApprovedProfiles()
+
+    if (unmatchedMenteesWithApprovedProfiles.length > 0) {
+      // send reminder emails
+      unmatchedMenteesWithApprovedProfiles.forEach(async (mentee) => {
+        await this.reminderEmailsService.sendMenteesPlatformAndNewMentorsReminder(
+          {
+            email: mentee.props.email,
+            firstName: mentee.props.firstName,
+          }
+        )
+      })
+    }
+
+    return {
+      message: `Reminder emails sent to ${unmatchedMenteesWithApprovedProfiles.length} unmatched mentees with approved profiles`,
+    }
+  }
+
+  @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentoring-sessions-logging')
+  async sendMentoringSessionsLoggingReminder() {
+    const conProfilesWithMentoringSessionsToLog =
+      await this.reminderEmailsService.getConProfilesWithMentorshipMatchesWithoutMentoringSessions(
+        { mentorshipMatchAgeInDays: 402 }
+      )
+
+    if (conProfilesWithMentoringSessionsToLog.length > 0) {
+      // send reminder emails
+      conProfilesWithMentoringSessionsToLog.forEach(async (profile) => {
+        await this.reminderEmailsService.sendLogMentoringSessionsReminder({
+          email: profile.props.email,
+          firstName: profile.props.firstName,
+          userType: profile.props.userType,
+          mentorshipMatchAgeInDays: 14,
+        })
+      })
+    }
+  }
 }

@@ -93,6 +93,45 @@ export class ReminderEmailsService {
     return []
   }
 
+  async getUnmatchedMenteesWithApprovedProfiles() {
+    const approvedDate = new Date()
+    approvedDate.setDate(approvedDate.getDate() - 45) // Interestingly, parseInt is able to parse 7d and 14d to 7 and 14 respectively
+
+    return await this.conProfilesService.findAll({
+      'RecordType.DeveloperName': UserType.MENTEE,
+      Profile_Status__c: ConnectProfileStatus.APPROVED,
+      Profile_First_Approved_At__c: {
+        $eq: jsforce.SfDate.toDateLiteral(approvedDate),
+      },
+      'Contact__r.ReDI_Active_Mentorship_Matches_Mentee__c': null,
+    })
+  }
+
+  async getConProfilesWithMentorshipMatchesWithoutMentoringSessions({
+    mentorshipMatchAgeInDays,
+  }: {
+    mentorshipMatchAgeInDays: number
+  }) {
+    const matches = await this.conMentorshipMatchesService.findAll({
+      Status__c: MentorshipMatchStatus.ACCEPTED,
+      Mentorship_Match_Age_In_Days__c: mentorshipMatchAgeInDays,
+      of_Sessions__c: 0,
+    })
+
+    const menteeIds = matches.map((match) => match.props.menteeId)
+    const mentorIds = matches.map((match) => match.props.mentorId)
+
+    if ([...menteeIds, ...mentorIds].length > 0) {
+      return await this.conProfilesService.findAll({
+        'Contact__r.Id': {
+          $in: [...menteeIds, ...mentorIds],
+        },
+      })
+    }
+
+    return []
+  }
+
   async sendCompleteProfileReminder({
     userType,
     email,
@@ -121,13 +160,13 @@ export class ReminderEmailsService {
 
     const sanitizedHtml = template.HtmlValue.replace(
       /{{{Recipient\.FirstName}}}/g,
-      `${firstName} ${email}`
+      `${firstName}`
     )
 
     const params = {
       Destination: {
         ToAddresses: isProductionOrDemonstration()
-          ? ['anilakarsu93@gmail.com']
+          ? [email]
           : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
       },
       Message: {
@@ -163,15 +202,64 @@ export class ReminderEmailsService {
       )
     }
 
-    const sanitizedHtml = template.HtmlValue.replace(
-      /${menteeFirstName}/g,
+    const sanitizedSubject = template.Subject.replace(
+      /\${menteeFirstName}/g,
       `${firstName}`
-    ).replace(/{{{Recipient\.FirstName}}}/g, `${firstName} ${email}`)
+    )
+
+    const sanitizedHtml = template.HtmlValue.replace(
+      /\${menteeFirstName}/g,
+      `${firstName}`
+    ).replace(/{{{Recipient\.FirstName}}}/g, `${firstName}`)
 
     const params = {
       Destination: {
         ToAddresses: isProductionOrDemonstration()
-          ? ['anilakarsu93@gmail.com']
+          ? [email]
+          : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+      },
+      Message: {
+        Body: {
+          Html: { Data: sanitizedHtml },
+        },
+        Subject: { Data: sanitizedSubject },
+      },
+      Source: 'career@redi-school.org',
+    }
+
+    this.ses.sendEmail(params, (err, data) => {
+      if (err) console.log(err, err.stack)
+      else console.log(data)
+    })
+
+    return { message: 'Email sent' }
+  }
+
+  async sendApplyToMentorSecondReminder({ email, firstName, location }) {
+    const sfEmailTemplateDeveloperName =
+      location === RediLocation.CYBERSPACE
+        ? 'Cyberspace_Mentee_Apply_To_A_Mentor_Reminder_2_1711109460383'
+        : 'Mentee_Apply_To_A_Mentor_Reminder_2_1695975868066'
+
+    const template = await this.emailTemplatesService.getEmailTemplate(
+      sfEmailTemplateDeveloperName
+    )
+
+    if (!template) {
+      throw new Error(
+        `Email template not found: ${sfEmailTemplateDeveloperName}`
+      )
+    }
+
+    const sanitizedHtml = template.HtmlValue.replace(
+      /{{{Recipient\.FirstName}}}/g,
+      `${firstName}`
+    )
+
+    const params = {
+      Destination: {
+        ToAddresses: isProductionOrDemonstration()
+          ? [email]
           : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
       },
       Message: {
@@ -191,11 +279,11 @@ export class ReminderEmailsService {
     return { message: 'Email sent' }
   }
 
-  async sendApplyToMentorSecondReminder({ email, firstName, location }) {
+  async mentorshipFollowUpReminder({ email, firstName, userType }) {
     const sfEmailTemplateDeveloperName =
-      location === RediLocation.CYBERSPACE
-        ? 'Cyberspace_Mentee_Apply_To_A_Mentor_Reminder_2_1711109460383'
-        : 'Mentee_Apply_To_A_Mentor_Reminder_2_1695975868066'
+      userType === UserType.MENTOR
+        ? 'Mentor_Follow_Up_On_Long_Term_Mentorship_1711363451370'
+        : 'Mentee_Follow_Up_On_The_Long_Term_Mentorship_1711363823265'
 
     const template = await this.emailTemplatesService.getEmailTemplate(
       sfEmailTemplateDeveloperName
@@ -235,11 +323,64 @@ export class ReminderEmailsService {
     return { message: 'Email sent' }
   }
 
-  async mentorshipFollowUpReminder({ email, firstName, userType }) {
+  async sendMenteesPlatformAndNewMentorsReminder({ email, firstName }) {
+    const sfEmailTemplateDeveloperName =
+      'Mentee_Platform_And_New_Mentors_Reminder_1711367982313'
+
+    const template = await this.emailTemplatesService.getEmailTemplate(
+      sfEmailTemplateDeveloperName
+    )
+
+    if (!template) {
+      throw new Error(
+        `Email template not found: ${sfEmailTemplateDeveloperName}`
+      )
+    }
+
+    const sanitizedHtml = template.HtmlValue.replace(
+      /{{{Recipient\.FirstName}}}/g,
+      `${firstName} ${email}`
+    )
+
+    const params = {
+      Destination: {
+        ToAddresses: isProductionOrDemonstration()
+          ? ['anilakarsu93@gmail.com']
+          : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+      },
+      Message: {
+        Body: {
+          Html: { Data: sanitizedHtml },
+        },
+        Subject: { Data: template.Subject },
+      },
+      Source: 'career@redi-school.org',
+    }
+
+    this.ses.sendEmail(params, (err, data) => {
+      if (err) console.log(err, err.stack)
+      else console.log(data)
+    })
+
+    return { message: 'Email sent' }
+  }
+
+  async sendLogMentoringSessionsReminder({
+    email,
+    firstName,
+    userType,
+    mentorshipMatchAgeInDays,
+  }) {
     const sfEmailTemplateDeveloperName =
       userType === UserType.MENTOR
-        ? 'Mentor_Follow_Up_On_Long_Term_Mentorship_1711363451370'
-        : 'Mentee_Follow_Up_On_The_Long_Term_Mentorship_1711363823265'
+        ? // Mentor Emails for 2 and 4 weeks
+          mentorshipMatchAgeInDays === 14
+          ? 'Mentor_Log_Mentoring_Sessions_Reminder_1_1711110740940'
+          : 'Mentor_Log_Mentoring_Sessions_Reminder_2_1711112496532'
+        : // Mentee Emails for 2 and 4 weeks
+        mentorshipMatchAgeInDays === 14
+        ? 'Mentee_Log_Mentoring_Sessions_Reminder_1_1711114670729'
+        : 'Mentee_Log_Mentoring_Sessions_Reminder_2_1711115347143'
 
     const template = await this.emailTemplatesService.getEmailTemplate(
       sfEmailTemplateDeveloperName
