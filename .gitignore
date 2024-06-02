@@ -50,5 +50,4 @@ Thumbs.db
 infrastructure/.terraform
 
 # reminder-email stuff
-/reminder-email-scripts/.secrets
-/reminder-email-scripts/logs/*
+/reminder-email-scripts/*
