@@ -1,17 +1,5 @@
-const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind')
-const { join } = require('path')
-// const { fontFamily } = require('tailwindcss/defaultTheme')
-
-// global TailwindCSS configuration
-/** @type {import('tailwindcss').Config} */
+// shared TailwindCSS/shadcn global theme configuration
 module.exports = {
-  content: [
-    // relative path by consumer app
-    join(__dirname, './src/**/*.{js,ts,jsx,tsx,html}'),
-    // path to shadcn ui components (relative to current dir)
-    join(__dirname, '../../ui-components/**/*.{js,ts,jsx,tsx}'),
-    ...createGlobPatternsForDependencies(__dirname),
-  ],
   theme: {
     container: {
       center: true,
@@ -61,9 +49,6 @@ module.exports = {
         md: `calc(var(--radius) - 2px)`,
         sm: 'calc(var(--radius) - 4px)',
       },
-      // fontFamily: {
-      //   sans: ['var(--font-sans)', ...fontFamily.sans],
-      // },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
@@ -80,5 +65,4 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
 }

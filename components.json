@@ -10,7 +10,7 @@
     "cssVariables": true
   },
   "aliases": {
-    "components": "@talent-connect/shared-shadcn-ui-components/ui-components",
-    "utils": "@talent-connect/shared-shadcn-ui-components"
+    "components": "@talent-connect/shared-shadcn-ui-components/components",
+    "utils": "@talent-connect/shared-utils"
   }
 }
