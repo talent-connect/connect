@@ -10,18 +10,10 @@ import {
   Checkbox,
   FilterDropdown,
   Icon,
+  Paginate,
   SearchField,
 } from '@talent-connect/shared-atomic-design-components'
 import { LANGUAGES } from '@talent-connect/shared-config'
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@talent-connect/shared-shadcn-ui-components'
 import {
   desiredPositions,
   desiredPositionsIdToLabelMap,
@@ -32,6 +24,7 @@ import {
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
+import { useState } from 'react'
 import { Columns, Element, Tag } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import {
@@ -43,22 +36,20 @@ import {
 } from 'use-query-params'
 import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
 import { LoggedIn } from '../../../components/templates'
+import { useLoading } from '../../../hooks/WithLoading'
 import {
   useTpCompanyFavouritedJobseekerProfilesQuery,
   useTpCompanyMarkJobseekerAsFavouriteMutation,
   useTpCompanyUnmarkJobseekerAsFavouriteMutation,
 } from './BrowseCompany.generated'
 
-const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
-  ([value, label]) => ({
-    value,
-    label,
-  })
-)
-
 export function BrowseCompany() {
   const queryClient = useQueryClient()
+  const { Loading } = useLoading()
+  const JOBSEEKER_CARDS_PER_PAGE = 12
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage] = useState(JOBSEEKER_CARDS_PER_PAGE)
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
     desiredLanguages: withDefault(ArrayParam, []),
@@ -92,6 +83,11 @@ export function BrowseCompany() {
     })
   const jobseekerProfiles =
     jobseekerProfilesQuery.data?.tpJobseekerDirectoryEntriesVisible
+  // console.log('jobseekerProfiles', jobseekerProfiles)
+
+  const lastItemIndex = currentPage * itemsPerPage
+  const firstItemIndex = lastItemIndex - itemsPerPage
+  const currentItems = jobseekerProfiles?.slice(firstItemIndex, lastItemIndex)
 
   const favoritedJobseekersQuery =
     useTpCompanyFavouritedJobseekerProfilesQuery()
@@ -161,6 +157,8 @@ export function BrowseCompany() {
     federalStates.length !== 0 ||
     employmentTypes.length !== 0 ||
     joinsMunich24SummerJobFair
+
+  if (!jobseekerProfiles) return <Loading />
 
   return (
     <LoggedIn>
@@ -341,7 +339,7 @@ export function BrowseCompany() {
         )}
       </div>
       <Columns>
-        {jobseekerProfiles
+        {currentItems
           ?.filter((profile) => {
             if (!onlyFavorites) return true
             const isFavorite =
@@ -376,32 +374,12 @@ export function BrowseCompany() {
             )
           })}
       </Columns>
-      <Pagination>
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive>
-                1
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">2</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </Pagination>
+      <Paginate
+        totalItems={jobseekerProfiles?.length}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </LoggedIn>
   )
 }
@@ -416,6 +394,12 @@ const employmentTypesOptions = employmentTypes.map(({ id, label }) => ({
   label,
 }))
 const desiredLanguagesOptions = Object.entries(LANGUAGES).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)
+const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
   ([value, label]) => ({
     value,
     label,
