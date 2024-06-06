@@ -104,7 +104,7 @@ const ApplicationCard = ({ application }: Props) => {
 
           <Columns.Column className="application-card-dropdown">
             <Icon
-              icon="chevron"
+              icon="chevronDown"
               size="small"
               className={classnames({ 'icon--rotate': showDetails })}
             />
