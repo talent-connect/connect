@@ -81,13 +81,17 @@ export default function Login() {
     try {
       // Load "outside" of react-query to avoid having to build
       // a complex logic adhering to the rules-of-hooks.
-      await fetcher<LoadMyProfileQuery, LoadMyProfileQueryVariables>(
-        LoadMyProfileDocument,
-        {
-          loopbackUserId: getAccessTokenFromLocalStorage().userId,
-        }
-      )()
+      const { conProfile } = await fetcher<
+        LoadMyProfileQuery,
+        LoadMyProfileQueryVariables
+      >(LoadMyProfileDocument, {
+        loopbackUserId: getAccessTokenFromLocalStorage().userId,
+      })()
 
+      // Redirects mentee/mentor with status rejected/deactivated to /front/login-result
+      if (conProfile?.profileStatus === 'REJECTED' || `DEACTIVATED`) {
+        return history.push('/front/login-result')
+      }
       // TODO: insert proper error handling here and elsewhere. We should cover cases where we
       // get values usch as myProfileResult.isError. Perhaps we-ure the error boundary logic
       // that Eric has been looking into.
