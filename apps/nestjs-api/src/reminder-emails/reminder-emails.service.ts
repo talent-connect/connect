@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config'
 import {
   ConnectProfileStatus,
   MentorshipMatchStatus,
-  RediLocation,
   UserType,
 } from '@talent-connect/common-types'
 import * as AWS from 'aws-sdk'
@@ -46,30 +45,30 @@ export class ReminderEmailsService {
     })
   }
 
-  async getApprovedMenteesWithNoMentorApplicationsByDays({
-    daysAgo,
-  }: {
-    daysAgo: '7d' | '14d'
-  }) {
-    const approvedDate = new Date()
-    approvedDate.setDate(approvedDate.getDate() - parseInt(daysAgo)) // Interestingly, parseInt is able to parse 7d and 14d to 7 and 14 respectively
+  // async getApprovedMenteesWithNoMentorApplicationsByDays({
+  //   daysAgo,
+  // }: {
+  //   daysAgo: '7d' | '14d'
+  // }) {
+  //   const approvedDate = new Date()
+  //   approvedDate.setDate(approvedDate.getDate() - parseInt(daysAgo)) // Interestingly, parseInt is able to parse 7d and 14d to 7 and 14 respectively
 
-    return this.conProfilesService.findAll({
-      'RecordType.DeveloperName': UserType.MENTEE,
-      Profile_Status__c: ConnectProfileStatus.APPROVED,
-      Profile_First_Approved_At__c: {
-        $eq: jsforce.SfDate.toDateLiteral(approvedDate),
-      },
-      // When there are no applications, this field is not 0 but null/undefined
-      'Contact__r.ReDI_Active_Mentorship_Matches_Mentee__c': null,
-    })
-  }
+  //   return this.conProfilesService.findAll({
+  //     'RecordType.DeveloperName': UserType.MENTEE,
+  //     Profile_Status__c: ConnectProfileStatus.APPROVED,
+  //     Profile_First_Approved_At__c: {
+  //       $eq: jsforce.SfDate.toDateLiteral(approvedDate),
+  //     },
+  //     // When there are no applications, this field is not 0 but null/undefined
+  //     'Contact__r.ReDI_Active_Mentorship_Matches_Mentee__c': null,
+  //   })
+  // }
 
   async getThreeMonthsOldMentorshipMatches() {
     const threeMonthsOldMentorshipMatches =
       await this.conMentorshipMatchesService.findAll({
         Status__c: MentorshipMatchStatus.ACCEPTED,
-        Mentorship_Match_Age_In_Days__c: 423,
+        Mentorship_Match_Age_In_Days__c: 90,
       })
 
     const reducedMatches = threeMonthsOldMentorshipMatches.reduce(
@@ -130,44 +129,44 @@ export class ReminderEmailsService {
     return transformedReducedMatches
   }
 
-  async getUnmatchedMenteesWithApprovedProfiles() {
-    const approvedDate = new Date()
-    approvedDate.setDate(approvedDate.getDate() - 45) // Interestingly, parseInt is able to parse 7d and 14d to 7 and 14 respectively
+  // async getUnmatchedMenteesWithApprovedProfiles() {
+  //   const approvedDate = new Date()
+  //   approvedDate.setDate(approvedDate.getDate() - 45) // Interestingly, parseInt is able to parse 7d and 14d to 7 and 14 respectively
 
-    return await this.conProfilesService.findAll({
-      'RecordType.DeveloperName': UserType.MENTEE,
-      Profile_Status__c: ConnectProfileStatus.APPROVED,
-      Profile_First_Approved_At__c: {
-        $eq: jsforce.SfDate.toDateLiteral(approvedDate),
-      },
-      'Contact__r.ReDI_Active_Mentorship_Matches_Mentee__c': null,
-    })
-  }
+  //   return await this.conProfilesService.findAll({
+  //     'RecordType.DeveloperName': UserType.MENTEE,
+  //     Profile_Status__c: ConnectProfileStatus.APPROVED,
+  //     Profile_First_Approved_At__c: {
+  //       $eq: jsforce.SfDate.toDateLiteral(approvedDate),
+  //     },
+  //     'Contact__r.ReDI_Active_Mentorship_Matches_Mentee__c': null,
+  //   })
+  // }
 
-  async getConProfilesWithMentorshipMatchesWithoutMentoringSessions({
-    mentorshipMatchAgeInDays,
-  }: {
-    mentorshipMatchAgeInDays: number
-  }) {
-    const matches = await this.conMentorshipMatchesService.findAll({
-      Status__c: MentorshipMatchStatus.ACCEPTED,
-      Mentorship_Match_Age_In_Days__c: mentorshipMatchAgeInDays,
-      of_Sessions__c: 0,
-    })
+  // async getConProfilesWithMentorshipMatchesWithoutMentoringSessions({
+  //   mentorshipMatchAgeInDays,
+  // }: {
+  //   mentorshipMatchAgeInDays: number
+  // }) {
+  //   const matches = await this.conMentorshipMatchesService.findAll({
+  //     Status__c: MentorshipMatchStatus.ACCEPTED,
+  //     Mentorship_Match_Age_In_Days__c: mentorshipMatchAgeInDays,
+  //     of_Sessions__c: 0,
+  //   })
 
-    const menteeIds = matches.map((match) => match.props.menteeId)
-    const mentorIds = matches.map((match) => match.props.mentorId)
+  //   const menteeIds = matches.map((match) => match.props.menteeId)
+  //   const mentorIds = matches.map((match) => match.props.mentorId)
 
-    if ([...menteeIds, ...mentorIds].length > 0) {
-      return await this.conProfilesService.findAll({
-        'Contact__r.Id': {
-          $in: [...menteeIds, ...mentorIds],
-        },
-      })
-    }
+  //   if ([...menteeIds, ...mentorIds].length > 0) {
+  //     return await this.conProfilesService.findAll({
+  //       'Contact__r.Id': {
+  //         $in: [...menteeIds, ...mentorIds],
+  //       },
+  //     })
+  //   }
 
-    return []
-  }
+  //   return []
+  // }
 
   async sendCompleteProfileReminder({
     userType,
@@ -223,98 +222,98 @@ export class ReminderEmailsService {
     return { message: 'Email sent' }
   }
 
-  async sendApplyToMentorFirstReminder({ email, firstName, location }) {
-    const sfEmailTemplateDeveloperName =
-      location === RediLocation.CYBERSPACE
-        ? 'Cyberspace_Mentee_Apply_To_A_Mentor_Reminder_1_1711037205143'
-        : 'Mentee_Apply_To_A_Mentor_Reminder_1_1695975263767'
+  // async sendApplyToMentorFirstReminder({ email, firstName, location }) {
+  //   const sfEmailTemplateDeveloperName =
+  //     location === RediLocation.CYBERSPACE
+  //       ? 'Cyberspace_Mentee_Apply_To_A_Mentor_Reminder_1_1711037205143'
+  //       : 'Mentee_Apply_To_A_Mentor_Reminder_1_1695975263767'
 
-    const template = await this.emailTemplatesService.getEmailTemplate(
-      sfEmailTemplateDeveloperName
-    )
+  //   const template = await this.emailTemplatesService.getEmailTemplate(
+  //     sfEmailTemplateDeveloperName
+  //   )
 
-    if (!template) {
-      throw new Error(
-        `Email template not found: ${sfEmailTemplateDeveloperName}`
-      )
-    }
+  //   if (!template) {
+  //     throw new Error(
+  //       `Email template not found: ${sfEmailTemplateDeveloperName}`
+  //     )
+  //   }
 
-    const sanitizedSubject = template.Subject.replace(
-      /\${menteeFirstName}/g,
-      `${firstName}`
-    )
+  //   const sanitizedSubject = template.Subject.replace(
+  //     /\${menteeFirstName}/g,
+  //     `${firstName}`
+  //   )
 
-    const sanitizedHtml = template.HtmlValue.replace(
-      /\${menteeFirstName}/g,
-      `${firstName}`
-    ).replace(/{{{Recipient\.FirstName}}}/g, `${firstName}`)
+  //   const sanitizedHtml = template.HtmlValue.replace(
+  //     /\${menteeFirstName}/g,
+  //     `${firstName}`
+  //   ).replace(/{{{Recipient\.FirstName}}}/g, `${firstName}`)
 
-    const params = {
-      Destination: {
-        ToAddresses: isProductionOrDemonstration()
-          ? [email]
-          : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
-      },
-      Message: {
-        Body: {
-          Html: { Data: sanitizedHtml },
-        },
-        Subject: { Data: sanitizedSubject },
-      },
-      Source: 'career@redi-school.org',
-    }
+  //   const params = {
+  //     Destination: {
+  //       ToAddresses: isProductionOrDemonstration()
+  //         ? [email]
+  //         : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+  //     },
+  //     Message: {
+  //       Body: {
+  //         Html: { Data: sanitizedHtml },
+  //       },
+  //       Subject: { Data: sanitizedSubject },
+  //     },
+  //     Source: 'career@redi-school.org',
+  //   }
 
-    this.ses.sendEmail(params, (err, data) => {
-      if (err) console.log(err, err.stack)
-      else console.log(data)
-    })
+  //   this.ses.sendEmail(params, (err, data) => {
+  //     if (err) console.log(err, err.stack)
+  //     else console.log(data)
+  //   })
 
-    return { message: 'Email sent' }
-  }
+  //   return { message: 'Email sent' }
+  // }
 
-  async sendApplyToMentorSecondReminder({ email, firstName, location }) {
-    const sfEmailTemplateDeveloperName =
-      location === RediLocation.CYBERSPACE
-        ? 'Cyberspace_Mentee_Apply_To_A_Mentor_Reminder_2_1711109460383'
-        : 'Mentee_Apply_To_A_Mentor_Reminder_2_1695975868066'
+  // async sendApplyToMentorSecondReminder({ email, firstName, location }) {
+  //   const sfEmailTemplateDeveloperName =
+  //     location === RediLocation.CYBERSPACE
+  //       ? 'Cyberspace_Mentee_Apply_To_A_Mentor_Reminder_2_1711109460383'
+  //       : 'Mentee_Apply_To_A_Mentor_Reminder_2_1695975868066'
 
-    const template = await this.emailTemplatesService.getEmailTemplate(
-      sfEmailTemplateDeveloperName
-    )
+  //   const template = await this.emailTemplatesService.getEmailTemplate(
+  //     sfEmailTemplateDeveloperName
+  //   )
 
-    if (!template) {
-      throw new Error(
-        `Email template not found: ${sfEmailTemplateDeveloperName}`
-      )
-    }
+  //   if (!template) {
+  //     throw new Error(
+  //       `Email template not found: ${sfEmailTemplateDeveloperName}`
+  //     )
+  //   }
 
-    const sanitizedHtml = template.HtmlValue.replace(
-      /{{{Recipient\.FirstName}}}/g,
-      `${firstName}`
-    )
+  //   const sanitizedHtml = template.HtmlValue.replace(
+  //     /{{{Recipient\.FirstName}}}/g,
+  //     `${firstName}`
+  //   )
 
-    const params = {
-      Destination: {
-        ToAddresses: isProductionOrDemonstration()
-          ? [email]
-          : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
-      },
-      Message: {
-        Body: {
-          Html: { Data: sanitizedHtml },
-        },
-        Subject: { Data: template.Subject },
-      },
-      Source: 'career@redi-school.org',
-    }
+  //   const params = {
+  //     Destination: {
+  //       ToAddresses: isProductionOrDemonstration()
+  //         ? [email]
+  //         : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+  //     },
+  //     Message: {
+  //       Body: {
+  //         Html: { Data: sanitizedHtml },
+  //       },
+  //       Subject: { Data: template.Subject },
+  //     },
+  //     Source: 'career@redi-school.org',
+  //   }
 
-    this.ses.sendEmail(params, (err, data) => {
-      if (err) console.log(err, err.stack)
-      else console.log(data)
-    })
+  //   this.ses.sendEmail(params, (err, data) => {
+  //     if (err) console.log(err, err.stack)
+  //     else console.log(data)
+  //   })
 
-    return { message: 'Email sent' }
-  }
+  //   return { message: 'Email sent' }
+  // }
 
   async sendMentorshipFollowUpReminder({
     email,
@@ -367,100 +366,100 @@ export class ReminderEmailsService {
     return { message: 'Email sent' }
   }
 
-  async sendMenteesPlatformAndNewMentorsReminder({ email, firstName }) {
-    const sfEmailTemplateDeveloperName =
-      'Mentee_Platform_And_New_Mentors_Reminder_1711367982313'
+  // async sendMenteesPlatformAndNewMentorsReminder({ email, firstName }) {
+  //   const sfEmailTemplateDeveloperName =
+  //     'Mentee_Platform_And_New_Mentors_Reminder_1711367982313'
 
-    const template = await this.emailTemplatesService.getEmailTemplate(
-      sfEmailTemplateDeveloperName
-    )
+  //   const template = await this.emailTemplatesService.getEmailTemplate(
+  //     sfEmailTemplateDeveloperName
+  //   )
 
-    if (!template) {
-      throw new Error(
-        `Email template not found: ${sfEmailTemplateDeveloperName}`
-      )
-    }
+  //   if (!template) {
+  //     throw new Error(
+  //       `Email template not found: ${sfEmailTemplateDeveloperName}`
+  //     )
+  //   }
 
-    const sanitizedHtml = template.HtmlValue.replace(
-      /{{{Recipient\.FirstName}}}/g,
-      `${firstName} ${email}`
-    )
+  //   const sanitizedHtml = template.HtmlValue.replace(
+  //     /{{{Recipient\.FirstName}}}/g,
+  //     `${firstName} ${email}`
+  //   )
 
-    const params = {
-      Destination: {
-        ToAddresses: isProductionOrDemonstration()
-          ? ['anilakarsu93@gmail.com']
-          : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
-      },
-      Message: {
-        Body: {
-          Html: { Data: sanitizedHtml },
-        },
-        Subject: { Data: template.Subject },
-      },
-      Source: 'career@redi-school.org',
-    }
+  //   const params = {
+  //     Destination: {
+  //       ToAddresses: isProductionOrDemonstration()
+  //         ? ['anilakarsu93@gmail.com']
+  //         : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+  //     },
+  //     Message: {
+  //       Body: {
+  //         Html: { Data: sanitizedHtml },
+  //       },
+  //       Subject: { Data: template.Subject },
+  //     },
+  //     Source: 'career@redi-school.org',
+  //   }
 
-    this.ses.sendEmail(params, (err, data) => {
-      if (err) console.log(err, err.stack)
-      else console.log(data)
-    })
+  //   this.ses.sendEmail(params, (err, data) => {
+  //     if (err) console.log(err, err.stack)
+  //     else console.log(data)
+  //   })
 
-    return { message: 'Email sent' }
-  }
+  //   return { message: 'Email sent' }
+  // }
 
-  async sendLogMentoringSessionsReminder({
-    email,
-    firstName,
-    userType,
-    mentorshipMatchAgeInDays,
-  }) {
-    const sfEmailTemplateDeveloperName =
-      userType === UserType.MENTOR
-        ? // Mentor Emails for 2 and 4 weeks
-          mentorshipMatchAgeInDays === 14
-          ? 'Mentor_Log_Mentoring_Sessions_Reminder_1_1711110740940'
-          : 'Mentor_Log_Mentoring_Sessions_Reminder_2_1711112496532'
-        : // Mentee Emails for 2 and 4 weeks
-        mentorshipMatchAgeInDays === 14
-        ? 'Mentee_Log_Mentoring_Sessions_Reminder_1_1711114670729'
-        : 'Mentee_Log_Mentoring_Sessions_Reminder_2_1711115347143'
+  // async sendLogMentoringSessionsReminder({
+  //   email,
+  //   firstName,
+  //   userType,
+  //   mentorshipMatchAgeInDays,
+  // }) {
+  //   const sfEmailTemplateDeveloperName =
+  //     userType === UserType.MENTOR
+  //       ? // Mentor Emails for 2 and 4 weeks
+  //         mentorshipMatchAgeInDays === 14
+  //         ? 'Mentor_Log_Mentoring_Sessions_Reminder_1_1711110740940'
+  //         : 'Mentor_Log_Mentoring_Sessions_Reminder_2_1711112496532'
+  //       : // Mentee Emails for 2 and 4 weeks
+  //       mentorshipMatchAgeInDays === 14
+  //       ? 'Mentee_Log_Mentoring_Sessions_Reminder_1_1711114670729'
+  //       : 'Mentee_Log_Mentoring_Sessions_Reminder_2_1711115347143'
 
-    const template = await this.emailTemplatesService.getEmailTemplate(
-      sfEmailTemplateDeveloperName
-    )
+  //   const template = await this.emailTemplatesService.getEmailTemplate(
+  //     sfEmailTemplateDeveloperName
+  //   )
 
-    if (!template) {
-      throw new Error(
-        `Email template not found: ${sfEmailTemplateDeveloperName}`
-      )
-    }
+  //   if (!template) {
+  //     throw new Error(
+  //       `Email template not found: ${sfEmailTemplateDeveloperName}`
+  //     )
+  //   }
 
-    const sanitizedHtml = template.HtmlValue.replace(
-      /{{{Recipient\.FirstName}}}/g,
-      `${firstName} ${email}`
-    )
+  //   const sanitizedHtml = template.HtmlValue.replace(
+  //     /{{{Recipient\.FirstName}}}/g,
+  //     `${firstName} ${email}`
+  //   )
 
-    const params = {
-      Destination: {
-        ToAddresses: isProductionOrDemonstration()
-          ? ['anilakarsu93@gmail.com']
-          : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
-      },
-      Message: {
-        Body: {
-          Html: { Data: sanitizedHtml },
-        },
-        Subject: { Data: template.Subject },
-      },
-      Source: 'career@redi-school.org',
-    }
+  //   const params = {
+  //     Destination: {
+  //       ToAddresses: isProductionOrDemonstration()
+  //         ? ['anilakarsu93@gmail.com']
+  //         : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+  //     },
+  //     Message: {
+  //       Body: {
+  //         Html: { Data: sanitizedHtml },
+  //       },
+  //       Subject: { Data: template.Subject },
+  //     },
+  //     Source: 'career@redi-school.org',
+  //   }
 
-    this.ses.sendEmail(params, (err, data) => {
-      if (err) console.log(err, err.stack)
-      else console.log(data)
-    })
+  //   this.ses.sendEmail(params, (err, data) => {
+  //     if (err) console.log(err, err.stack)
+  //     else console.log(data)
+  //   })
 
-    return { message: 'Email sent' }
-  }
+  //   return { message: 'Email sent' }
+  // }
 }
