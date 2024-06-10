@@ -25,7 +25,10 @@ import * as Yup from 'yup'
 import Teaser from '../../../components/molecules/Teaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { login } from '../../../services/api/api'
-import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
+import {
+  getAccessTokenFromLocalStorage,
+  purgeAllSessionData,
+} from '../../../services/auth/auth'
 
 interface LoginFormValues {
   username: string
@@ -49,26 +52,53 @@ const validationSchema = Yup.object({
 const myTpDataFetcher = fetcher<MyTpDataQuery, MyTpDataQueryVariables>(
   MyTpDataDocument
 )
-
 export default function Login() {
   const history = useHistory()
   const conProfileSignUpMutation = useConProfileSignUpMutation()
 
   const [loginError, setLoginError] = useState<string>('')
 
+  const checkConProfileStatus = (conProfileStatus: string) => {
+    const isConProfileStatusRejected = conProfileStatus === 'REJECTED'
+    const isConProfileStatusDeactivated = conProfileStatus === 'DEACTIVATED'
+
+    if (isConProfileStatusRejected || isConProfileStatusDeactivated) {
+      purgeAllSessionData()
+      history.push('/front/login-result')
+      return
+    }
+  }
+
   const submitForm = async () => {
     // LOG THE USER IN VIA LOOPBACK
     try {
-      await login(formik.values.username, formik.values.password)
+      const { username, password } = formik.values
+      const { userId } = await login(username, password)
+
+      // Load "outside" of react-query to avoid having to build
+      // a complex logic adhering to the rules-of-hooks.
+
+      const { conProfile } = await fetcher<
+        LoadMyProfileQuery,
+        LoadMyProfileQueryVariables
+      >(LoadMyProfileDocument, {
+        loopbackUserId: userId,
+      })()
+      const conProfileStatus = conProfile?.profileStatus
+      // this will logout and redirect the user to /front/login-result if their profile status is rejected/deactivated
+      checkConProfileStatus(conProfileStatus)
+
+      // TODO: insert proper error handling here and elsewhere. We should cover cases where we
+      // get values usch as myProfileResult.isError. Perhaps we-ure the error boundary logic
+      // that Eric has been looking into.
     } catch (err) {
       console.log(err)
       formik.setSubmitting(false)
       setLoginError('You entered an incorrect email, password, or both.')
       return
     }
-
     const jwtToken = decodeJwt(getAccessTokenFromLocalStorage().jwtToken)
-    if (!jwtToken.emailVerified) {
+    if (!jwtToken?.emailVerified) {
       formik.setSubmitting(false)
       showNotification(
         'Please verify your email address first. Check your inbox.',
@@ -81,17 +111,12 @@ export default function Login() {
     try {
       // Load "outside" of react-query to avoid having to build
       // a complex logic adhering to the rules-of-hooks.
-      const { conProfile } = await fetcher<
-        LoadMyProfileQuery,
-        LoadMyProfileQueryVariables
-      >(LoadMyProfileDocument, {
-        loopbackUserId: getAccessTokenFromLocalStorage().userId,
-      })()
-
-      // Redirects mentee/mentor with status rejected/deactivated to /front/login-result
-      if (conProfile?.profileStatus === 'REJECTED' || `DEACTIVATED`) {
-        return history.push('/front/login-result')
-      }
+      await fetcher<LoadMyProfileQuery, LoadMyProfileQueryVariables>(
+        LoadMyProfileDocument,
+        {
+          loopbackUserId: getAccessTokenFromLocalStorage().userId,
+        }
+      )()
       // TODO: insert proper error handling here and elsewhere. We should cover cases where we
       // get values usch as myProfileResult.isError. Perhaps we-ure the error boundary logic
       // that Eric has been looking into.

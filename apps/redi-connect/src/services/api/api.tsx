@@ -40,7 +40,7 @@ export const login = async (
       RedProduct: 'CON',
     },
   })
-  const accessToken = loginResp.data as AccessToken
+  const accessToken = loginResp?.data as AccessToken
   saveAccessTokenToLocalStorage(accessToken)
   setGraphQlClientAuthHeader(accessToken)
   return accessToken
