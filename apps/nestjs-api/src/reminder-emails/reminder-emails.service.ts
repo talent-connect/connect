@@ -202,7 +202,7 @@ export class ReminderEmailsService {
     const params = {
       Destination: {
         ToAddresses: isProductionOrDemonstration()
-          ? ['anilakarsu93@gmail.com']
+          ? [email]
           : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
       },
       Message: {
@@ -346,7 +346,7 @@ export class ReminderEmailsService {
     const params = {
       Destination: {
         ToAddresses: isProductionOrDemonstration()
-          ? ['anilakarsu93@gmail.com']
+          ? [email]
           : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
       },
       Message: {
