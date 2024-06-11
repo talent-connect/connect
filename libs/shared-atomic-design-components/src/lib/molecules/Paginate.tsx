@@ -14,9 +14,9 @@ interface PaginateProps {
   setCurrentPageNumber: (page: number) => void
 }
 
-const MAX_VISIBLE_PAGES = 5
-
 type ActivePagesType = number | 'ellipsis'
+
+const MAX_VISIBLE_PAGES = 5
 
 const Paginate = ({
   totalPagesNumber,

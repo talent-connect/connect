@@ -42,9 +42,10 @@ import {
   useTpCompanyUnmarkJobseekerAsFavouriteMutation,
 } from './BrowseCompany.generated'
 
+const JOBSEEKER_CARDS_PER_PAGE = 12
+
 export function BrowseCompany() {
   const queryClient = useQueryClient()
-  const JOBSEEKER_CARDS_PER_PAGE = 12
 
   const [currentPageNumber, setCurrentPageNumber] = useState(1)
   const [query, setQuery] = useQueryParams({
@@ -170,7 +171,7 @@ export function BrowseCompany() {
         style={{ flexGrow: 1 }}
       >
         Browse our Talent Pool
-        {jobseekerProfiles?.length ? ` (${jobseekerProfiles.length})` : ''}
+        {totalItems ? ` (${totalItems})` : ''}
       </Element>
       <Element
         renderAs="p"
@@ -178,7 +179,7 @@ export function BrowseCompany() {
         responsive={{ mobile: { textSize: { value: 6 } } }}
         className="oneandhalf-bs"
       >
-        Browse our Jobseeker profiles and find the talent you're looking for.
+        Search our Jobseeker profiles to find the talent you're looking for.
       </Element>
       <div className="filters">
         <div className="filters-inner">
@@ -374,11 +375,13 @@ export function BrowseCompany() {
             )
           })}
       </Columns>
-      <Paginate
-        totalPagesNumber={totalPagesNumber}
-        currentPageNumber={currentPageNumber}
-        setCurrentPageNumber={setCurrentPageNumber}
-      />
+      {totalItems > JOBSEEKER_CARDS_PER_PAGE && (
+        <Paginate
+          totalPagesNumber={totalPagesNumber}
+          currentPageNumber={currentPageNumber}
+          setCurrentPageNumber={setCurrentPageNumber}
+        />
+      )}
     </LoggedIn>
   )
 }
