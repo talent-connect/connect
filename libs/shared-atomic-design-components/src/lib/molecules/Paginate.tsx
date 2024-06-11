@@ -14,7 +14,9 @@ interface PaginateProps {
   setCurrentPageNumber: (page: number) => void
 }
 
-const MAX_VISIBLE_PAGES = 3
+const MAX_VISIBLE_PAGES = 5
+
+type ActivePagesType = number | 'ellipsis'
 
 const Paginate = ({
   totalPagesNumber,
@@ -41,66 +43,49 @@ const Paginate = ({
 
   const renderPages = () => {
     const pageNumbers = [...Array(totalPagesNumber).keys()].map((i) => i + 1)
-    let activePages: number[] = []
+    let activePages: ActivePagesType[] = []
 
-    // Determine pages to display based on the current page and total pages number
-    if (totalPagesNumber <= 5) {
+    // Determine pagination elements with proper ellipsis handling based on the current page's position
+    if (totalPagesNumber <= MAX_VISIBLE_PAGES) {
       activePages = pageNumbers
     } else if (currentPageNumber <= 3) {
-      activePages = [
-        ...pageNumbers.slice(0, MAX_VISIBLE_PAGES),
-        totalPagesNumber,
-      ]
+      activePages = [1, 2, 3, 'ellipsis', totalPagesNumber]
     } else if (currentPageNumber >= totalPagesNumber - 2) {
       activePages = [
         1,
-        ...pageNumbers.slice(totalPagesNumber - MAX_VISIBLE_PAGES),
+        'ellipsis',
+        totalPagesNumber - 2,
+        totalPagesNumber - 1,
+        totalPagesNumber,
       ]
     } else {
       activePages = [
-        ...pageNumbers.slice(currentPageNumber - 2, currentPageNumber + 1),
+        1,
+        'ellipsis',
+        currentPageNumber,
+        'ellipsis',
         totalPagesNumber,
       ]
     }
 
     // Map activePages to rendered pagination items
-    const renderedPages = activePages.map((page) => (
-      <PaginationItem
-        key={page}
-        className={
-          currentPageNumber === page ? 'bg-[#FFEAE2] rounded-full' : ''
-        }
-      >
-        <PaginationLink
-          onClick={() => handlePageClick(page)}
-          // isActive={currentPageNumber === page}
-        >
-          {page}
-        </PaginationLink>
-      </PaginationItem>
-    ))
-
-    // Ellipsis handling
-    if (totalPagesNumber > 5) {
-      if (currentPageNumber <= 3) {
-        // Add ellipsis before the last page if current page is at the beginning
-        renderedPages.splice(
-          renderedPages.length - 1,
-          0,
-          <PaginationEllipsis key="ellipsis-end" />
-        )
-      } else if (currentPageNumber >= totalPagesNumber - 2) {
-        // Add ellipsis after the first page if current page is at the end
-        renderedPages.splice(1, 0, <PaginationEllipsis key="ellipsis-start" />)
-      } else {
-        // Add ellipsis before the last page if current page is in the middle
-        renderedPages.splice(
-          renderedPages.length - 1,
-          0,
-          <PaginationEllipsis key="ellipsis-end" />
-        )
+    const renderedPages = activePages.map((page, index) => {
+      if (page === 'ellipsis') {
+        return <PaginationEllipsis key={`ellipsis-${index}`} />
       }
-    }
+      return (
+        <PaginationItem
+          key={page}
+          className={
+            currentPageNumber === page ? 'bg-[#FFEAE2] rounded-full' : ''
+          }
+        >
+          <PaginationLink onClick={() => handlePageClick(page)}>
+            {page}
+          </PaginationLink>
+        </PaginationItem>
+      )
+    })
 
     return renderedPages
   }
