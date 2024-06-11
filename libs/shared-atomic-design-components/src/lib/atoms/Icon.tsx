@@ -37,6 +37,7 @@ import { ReactComponent as StepDone } from '../../assets/images/step-done.svg'
 import { ReactComponent as StepProgress } from '../../assets/images/step-progress.svg'
 import { ReactComponent as TpPlus } from '../../assets/images/tp-plus.svg'
 import { ReactComponent as Twitter } from '../../assets/images/twitter.svg'
+import { ReactComponent as Save } from '../../assets/images/save.svg'
 import './Icon.scss'
 
 const Icons = {
@@ -77,6 +78,7 @@ const Icons = {
   stepDisabled: StepDisabled,
   stepProgress: StepProgress,
   stepDone: StepDone,
+  save: Save,
 } as const
 
 type IconKey = keyof typeof Icons

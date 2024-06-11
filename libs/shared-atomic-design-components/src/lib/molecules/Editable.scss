@@ -33,3 +33,14 @@
     fill: $grey-light;
   }
 }
+
+.save__button {
+  cursor: pointer;
+  margin-right: 0.2rem;
+  font-weight: bold;
+  color: #ea3f25;
+}
+
+.save__button--disabled {
+  color: $grey-light;
+}

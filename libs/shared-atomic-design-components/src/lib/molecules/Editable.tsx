@@ -39,11 +39,11 @@ function Editable(props: Props) {
             <>
               <div
                 onClick={savePossible ? handleSave : undefined}
-                className={classnames('icon__button', {
-                  'icon__button--disabled': !savePossible,
+                className={classnames('save__button', {
+                  'save__button--disabled': !savePossible,
                 })}
-              >
-                <Icon icon="check" />
+              >Save
+
               </div>
 
               <div className="icon__button" onClick={handleClose}>
@@ -52,6 +52,7 @@ function Editable(props: Props) {
             </>
           ) : (
             <div
+            
               className="icon__button"
               onClick={() => {
                 setIsEditing(true)
