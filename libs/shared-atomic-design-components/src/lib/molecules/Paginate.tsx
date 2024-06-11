@@ -9,83 +9,125 @@ import {
 } from '@talent-connect/shared-shadcn-ui-components'
 
 interface PaginateProps {
-  totalItems: number
-  itemsPerPage: number
-  currentPage: number
-  setCurrentPage: (page: number) => void
+  totalPagesNumber: number
+  currentPageNumber: number
+  setCurrentPageNumber: (page: number) => void
 }
 
+const MAX_VISIBLE_PAGES = 3
+
 const Paginate = ({
-  totalItems,
-  itemsPerPage,
-  currentPage,
-  setCurrentPage,
+  totalPagesNumber,
+  currentPageNumber,
+  setCurrentPageNumber,
 }: PaginateProps) => {
-  // console.log('totalItems', totalItems)
-  const totalPages = Math.ceil(totalItems / itemsPerPage)
-  // console.log('totalPages', totalPages)
-  const pageNumbers = [...Array(totalPages).keys()].map((i) => i + 1)
-  const MAX_NUMBERED_PAGES = 5
+  if (!totalPagesNumber) return null
 
   const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
+    if (currentPageNumber > 1) {
+      setCurrentPageNumber(currentPageNumber - 1)
     }
   }
 
   const handlePageClick = (page: number) => {
-    setCurrentPage(page)
+    setCurrentPageNumber(page)
   }
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1)
+    if (currentPageNumber < totalPagesNumber) {
+      setCurrentPageNumber(currentPageNumber + 1)
     }
   }
 
-  const renderPageNumbers = (totalPages: number, pageNumbers: number[]) => {
-    return (
-      <>
-        {pageNumbers.slice(0, 3).map((page) => (
-          <PaginationItem key={page}>
-            <PaginationLink
-              onClick={() => handlePageClick(page)}
-              isActive={page === currentPage}
-            >
-              {page}
-            </PaginationLink>
-          </PaginationItem>
-        ))}
-        {totalPages > MAX_NUMBERED_PAGES && (
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-        )}
-        <PaginationItem>
-          <PaginationLink
-            onClick={() => handlePageClick(totalPages)}
-            isActive={totalPages === currentPage}
-          >
-            {totalPages}
-          </PaginationLink>
-        </PaginationItem>
-      </>
-    )
+  const renderPages = () => {
+    const pageNumbers = [...Array(totalPagesNumber).keys()].map((i) => i + 1)
+    let activePages: number[] = []
+
+    // Determine pages to display based on the current page and total pages number
+    if (totalPagesNumber <= 5) {
+      activePages = pageNumbers
+    } else if (currentPageNumber <= 3) {
+      activePages = [
+        ...pageNumbers.slice(0, MAX_VISIBLE_PAGES),
+        totalPagesNumber,
+      ]
+    } else if (currentPageNumber >= totalPagesNumber - 2) {
+      activePages = [
+        1,
+        ...pageNumbers.slice(totalPagesNumber - MAX_VISIBLE_PAGES),
+      ]
+    } else {
+      activePages = [
+        ...pageNumbers.slice(currentPageNumber - 2, currentPageNumber + 1),
+        totalPagesNumber,
+      ]
+    }
+
+    // Map activePages to rendered pagination items
+    const renderedPages = activePages.map((page) => (
+      <PaginationItem
+        key={page}
+        className={
+          currentPageNumber === page ? 'bg-[#FFEAE2] rounded-full' : ''
+        }
+      >
+        <PaginationLink
+          onClick={() => handlePageClick(page)}
+          // isActive={currentPageNumber === page}
+        >
+          {page}
+        </PaginationLink>
+      </PaginationItem>
+    ))
+
+    // Ellipsis handling
+    if (totalPagesNumber > 5) {
+      if (currentPageNumber <= 3) {
+        // Add ellipsis before the last page if current page is at the beginning
+        renderedPages.splice(
+          renderedPages.length - 1,
+          0,
+          <PaginationEllipsis key="ellipsis-end" />
+        )
+      } else if (currentPageNumber >= totalPagesNumber - 2) {
+        // Add ellipsis after the first page if current page is at the end
+        renderedPages.splice(1, 0, <PaginationEllipsis key="ellipsis-start" />)
+      } else {
+        // Add ellipsis before the last page if current page is in the middle
+        renderedPages.splice(
+          renderedPages.length - 1,
+          0,
+          <PaginationEllipsis key="ellipsis-end" />
+        )
+      }
+    }
+
+    return renderedPages
   }
 
   return (
     <Pagination>
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious onClick={handlePreviousPage} />
-          </PaginationItem>
-          {renderPageNumbers(totalPages, pageNumbers)}
-          <PaginationItem>
-            <PaginationNext onClick={handleNextPage} />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious
+            onClick={handlePreviousPage}
+            className={
+              currentPageNumber === 1 ? 'pointer-events-none opacity-50' : ''
+            }
+          />
+        </PaginationItem>
+        {renderPages()}
+        <PaginationItem>
+          <PaginationNext
+            onClick={handleNextPage}
+            className={
+              currentPageNumber === totalPagesNumber
+                ? 'pointer-events-none opacity-50'
+                : ''
+            }
+          />
+        </PaginationItem>
+      </PaginationContent>
     </Pagination>
   )
 }

@@ -36,7 +36,6 @@ import {
 } from 'use-query-params'
 import { JobseekerProfileCard } from '../../../components/organisms/JobseekerProfileCard'
 import { LoggedIn } from '../../../components/templates'
-import { useLoading } from '../../../hooks/WithLoading'
 import {
   useTpCompanyFavouritedJobseekerProfilesQuery,
   useTpCompanyMarkJobseekerAsFavouriteMutation,
@@ -45,11 +44,9 @@ import {
 
 export function BrowseCompany() {
   const queryClient = useQueryClient()
-  const { Loading } = useLoading()
   const JOBSEEKER_CARDS_PER_PAGE = 12
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage] = useState(JOBSEEKER_CARDS_PER_PAGE)
+  const [currentPageNumber, setCurrentPageNumber] = useState(1)
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
     desiredLanguages: withDefault(ArrayParam, []),
@@ -81,13 +78,18 @@ export function BrowseCompany() {
         joinsMunich24SummerJobFair,
       },
     })
-  const jobseekerProfiles =
-    jobseekerProfilesQuery.data?.tpJobseekerDirectoryEntriesVisible
-  // console.log('jobseekerProfiles', jobseekerProfiles)
 
-  const lastItemIndex = currentPage * itemsPerPage
-  const firstItemIndex = lastItemIndex - itemsPerPage
+  const jobseekerProfiles =
+    jobseekerProfilesQuery?.data?.tpJobseekerDirectoryEntriesVisible
+
+  const lastItemIndex = currentPageNumber * JOBSEEKER_CARDS_PER_PAGE
+  const firstItemIndex = lastItemIndex - JOBSEEKER_CARDS_PER_PAGE
   const currentItems = jobseekerProfiles?.slice(firstItemIndex, lastItemIndex)
+
+  const totalItems = jobseekerProfiles?.length
+  const totalPagesNumber = totalItems
+    ? Math.ceil(totalItems / JOBSEEKER_CARDS_PER_PAGE)
+    : undefined
 
   const favoritedJobseekersQuery =
     useTpCompanyFavouritedJobseekerProfilesQuery()
@@ -157,8 +159,6 @@ export function BrowseCompany() {
     federalStates.length !== 0 ||
     employmentTypes.length !== 0 ||
     joinsMunich24SummerJobFair
-
-  if (!jobseekerProfiles) return <Loading />
 
   return (
     <LoggedIn>
@@ -375,10 +375,9 @@ export function BrowseCompany() {
           })}
       </Columns>
       <Paginate
-        totalItems={jobseekerProfiles?.length}
-        itemsPerPage={itemsPerPage}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+        totalPagesNumber={totalPagesNumber}
+        currentPageNumber={currentPageNumber}
+        setCurrentPageNumber={setCurrentPageNumber}
       />
     </LoggedIn>
   )
