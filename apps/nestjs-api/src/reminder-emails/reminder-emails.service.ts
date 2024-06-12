@@ -204,6 +204,7 @@ export class ReminderEmailsService {
         ToAddresses: isProductionOrDemonstration()
           ? [email]
           : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+        BccAddresses: ['career@redi-school.org'],
       },
       Message: {
         Body: {
@@ -348,6 +349,7 @@ export class ReminderEmailsService {
         ToAddresses: isProductionOrDemonstration()
           ? [email]
           : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+        BccAddresses: ['career@redi-school.org'],
       },
       Message: {
         Body: {
