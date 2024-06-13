@@ -80,24 +80,37 @@ export function BrowseCompany() {
       },
     })
 
-  const jobseekerProfiles =
-    jobseekerProfilesQuery?.data?.tpJobseekerDirectoryEntriesVisible
-
-  const lastItemIndex = currentPageNumber * JOBSEEKER_CARDS_PER_PAGE
-  const firstItemIndex = lastItemIndex - JOBSEEKER_CARDS_PER_PAGE
-  const currentItems = jobseekerProfiles?.slice(firstItemIndex, lastItemIndex)
-
-  const totalItems = jobseekerProfiles?.length
-  const totalPagesNumber = totalItems
-    ? Math.ceil(totalItems / JOBSEEKER_CARDS_PER_PAGE)
-    : undefined
-
   const favoritedJobseekersQuery =
     useTpCompanyFavouritedJobseekerProfilesQuery()
   const favouriteJobseekerMutation =
     useTpCompanyMarkJobseekerAsFavouriteMutation()
   const unfavouriteJobseekerMutation =
     useTpCompanyUnmarkJobseekerAsFavouriteMutation()
+
+  const jobseekerProfiles =
+    jobseekerProfilesQuery?.data?.tpJobseekerDirectoryEntriesVisible
+
+  // Filter the jobseekerProfiles based on the onlyFavorites flag before pagination
+  const filteredJobseekerProfiles = jobseekerProfiles?.filter((profile) => {
+    if (!onlyFavorites) return true
+    const isFavorite =
+      favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
+        ?.map((p) => p.favoritedTpJobseekerProfileId)
+        ?.includes(profile.id)
+    return isFavorite
+  })
+
+  const lastItemIndex = currentPageNumber * JOBSEEKER_CARDS_PER_PAGE
+  const firstItemIndex = lastItemIndex - JOBSEEKER_CARDS_PER_PAGE
+  const currentItems = filteredJobseekerProfiles?.slice(
+    firstItemIndex,
+    lastItemIndex
+  )
+
+  const totalItems = filteredJobseekerProfiles?.length
+  const totalPagesNumber = totalItems
+    ? Math.ceil(totalItems / JOBSEEKER_CARDS_PER_PAGE)
+    : undefined
 
   const handleFavoriteJobseeker = async (tpJobseekerProfileId: string) => {
     const isFavorite =
@@ -163,6 +176,39 @@ export function BrowseCompany() {
 
   return (
     <LoggedIn>
+      {/* testing Tailwind classes */}
+      <>
+        <div className="bg-indigo-500 p-2 font-mono text-white">
+          Hello TailwindCSS
+        </div>
+        <div className="bg-purple-200">
+          <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
+            <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+              <span className="block">Ready to TailwindCSS?</span>
+              <span className="block text-indigo-600">Start today.</span>
+            </h2>
+            <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
+              <div className="inline-flex rounded-md shadow">
+                <a
+                  href="#"
+                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+                >
+                  Get started
+                </a>
+              </div>
+              <div className="ml-3 inline-flex rounded-md shadow">
+                <a
+                  href="#"
+                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50"
+                >
+                  Learn more
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+      {/* testing Tailwind classes */}
       <Element
         renderAs="h4"
         textSize={3}
@@ -340,40 +386,29 @@ export function BrowseCompany() {
         )}
       </div>
       <Columns>
-        {currentItems
-          ?.filter((profile) => {
-            if (!onlyFavorites) return true
-            const isFavorite =
-              favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
-                ?.map((p) => p.favoritedTpJobseekerProfileId)
-                ?.includes(profile.id)
-            return isFavorite
-          })
-          .map((profile) => {
-            const isFavorite =
-              favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
-                ?.map((p) => p.favoritedTpJobseekerProfileId)
-                ?.includes(profile.id)
+        {currentItems?.map((profile) => {
+          const isFavorite =
+            favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
+              ?.map((p) => p.favoritedTpJobseekerProfileId)
+              ?.includes(profile.id)
 
-            if (!isFavorite && onlyFavorites) return
-
-            return (
-              <Columns.Column
+          return (
+            <Columns.Column
+              key={profile.id}
+              mobile={{ size: 12 }}
+              tablet={{ size: 6 }}
+              desktop={{ size: 4 }}
+            >
+              <JobseekerProfileCard
                 key={profile.id}
-                mobile={{ size: 12 }}
-                tablet={{ size: 6 }}
-                desktop={{ size: 4 }}
-              >
-                <JobseekerProfileCard
-                  key={profile.id}
-                  jobseekerProfile={profile}
-                  linkTo={`/app/jobseeker-profile/${profile.id}`}
-                  toggleFavorite={handleFavoriteJobseeker}
-                  isFavorite={isFavorite}
-                />
-              </Columns.Column>
-            )
-          })}
+                jobseekerProfile={profile}
+                linkTo={`/app/jobseeker-profile/${profile.id}`}
+                toggleFavorite={handleFavoriteJobseeker}
+                isFavorite={isFavorite}
+              />
+            </Columns.Column>
+          )
+        })}
       </Columns>
       {totalItems > JOBSEEKER_CARDS_PER_PAGE && (
         <Paginate
