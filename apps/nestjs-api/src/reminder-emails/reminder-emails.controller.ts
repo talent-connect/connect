@@ -108,21 +108,23 @@ export class ReminderEmailsController {
       await this.reminderEmailsService.getThreeMonthsOldMentorshipMatches()
 
     if (Object.keys(threeMonthsOldMentorshipMatches).length > 0) {
-      threeMonthsOldMentorshipMatches.forEach(async (match) => {
+      Object.keys(threeMonthsOldMentorshipMatches).forEach(async (match) => {
         // Send reminder email to mentee
         await this.reminderEmailsService.sendMentorshipFollowUpReminder({
           userType: UserType.MENTEE,
-          email: match.menteeEmail,
-          firstName: match.menteeFirstName,
-          menteeOrMentorFirstName: match.mentorFirstName,
+          email: threeMonthsOldMentorshipMatches[match].menteeEmail,
+          firstName: threeMonthsOldMentorshipMatches[match].menteeFirstName,
+          menteeOrMentorFirstName:
+            threeMonthsOldMentorshipMatches[match].mentorFirstName,
         })
 
         // Send reminder email to mentor
         await this.reminderEmailsService.sendMentorshipFollowUpReminder({
           userType: UserType.MENTOR,
-          email: match.mentorEmail,
-          firstName: match.mentorFirstName,
-          menteeOrMentorFirstName: match.menteeFirstName,
+          email: threeMonthsOldMentorshipMatches[match].mentorEmail,
+          firstName: threeMonthsOldMentorshipMatches[match].mentorFirstName,
+          menteeOrMentorFirstName:
+            threeMonthsOldMentorshipMatches[match].menteeFirstName,
         })
       })
     }
