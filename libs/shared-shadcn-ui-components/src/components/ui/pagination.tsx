@@ -39,6 +39,7 @@ PaginationItem.displayName = 'PaginationItem'
 
 type PaginationLinkProps = {
   isActive?: boolean
+  disabled?: boolean
 } & Pick<ButtonProps, 'size'> &
   React.ComponentProps<'a'>
 
@@ -52,7 +53,7 @@ const PaginationLink = ({
     aria-current={isActive ? 'page' : undefined}
     className={cn(
       buttonVariants({
-        variant: isActive ? 'outline' : 'ghost',
+        variant: isActive ? 'rounded' : 'link',
         size,
       }),
       className
@@ -64,30 +65,48 @@ PaginationLink.displayName = 'PaginationLink'
 
 const PaginationPrevious = ({
   className,
+  disabled,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to previous page"
-    size="default"
-    className={cn('gap-1 pl-2.5', className)}
+    size="icon"
+    className={cn(
+      'flex items-center justify-center rounded-[3px] border border-[#FF7D55] hover:border-[2px] hover:border-[#FD4D00] transition-colors',
+      disabled ? 'border-[#DADADA] pointer-events-none opacity-50' : '',
+      className
+    )}
     {...props}
   >
-    <Icon icon="chevronLeft" size="small" />
+    <Icon
+      icon="chevronLeft"
+      size="small"
+      className={disabled ? 'icon--disabled' : ''}
+    />
   </PaginationLink>
 )
 PaginationPrevious.displayName = 'PaginationPrevious'
 
 const PaginationNext = ({
   className,
+  disabled,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to next page"
-    size="default"
-    className={cn('gap-1 pr-2.5', className)}
+    size="icon"
+    className={cn(
+      'flex items-center justify-center rounded-[3px] border border-[#FF7D55] transition-colors hover:border-[2px] hover:border-[#FD4D00]',
+      disabled ? 'border-[#DADADA] pointer-events-none opacity-50' : '',
+      className
+    )}
     {...props}
   >
-    <Icon icon="chevronRight" size="small" />
+    <Icon
+      icon="chevronRight"
+      size="small"
+      className={disabled ? 'icon--disabled' : ''}
+    />
   </PaginationLink>
 )
 PaginationNext.displayName = 'PaginationNext'

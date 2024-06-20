@@ -7,6 +7,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@talent-connect/shared-shadcn-ui-components'
+import './Paginate.scss'
 
 interface PaginateProps {
   totalPagesNumber: number
@@ -25,20 +26,27 @@ const Paginate = ({
 }: PaginateProps) => {
   if (!totalPagesNumber) return null
 
+  const scrollToListTop = () => {
+    window.scrollTo({ top: 350, behavior: 'smooth' })
+  }
+
   const handlePreviousPage = () => {
     if (currentPageNumber > 1) {
       setCurrentPageNumber(currentPageNumber - 1)
     }
+    scrollToListTop()
   }
 
   const handlePageClick = (page: number) => {
     setCurrentPageNumber(page)
+    scrollToListTop()
   }
 
   const handleNextPage = () => {
     if (currentPageNumber < totalPagesNumber) {
       setCurrentPageNumber(currentPageNumber + 1)
     }
+    scrollToListTop()
   }
 
   const renderPages = () => {
@@ -74,13 +82,11 @@ const Paginate = ({
         return <PaginationEllipsis key={`ellipsis-${index}`} />
       }
       return (
-        <PaginationItem
-          key={page}
-          className={
-            currentPageNumber === page ? 'bg-[#FFEAE2] rounded-full' : ''
-          }
-        >
-          <PaginationLink onClick={() => handlePageClick(page)}>
+        <PaginationItem key={page}>
+          <PaginationLink
+            onClick={() => handlePageClick(page)}
+            isActive={currentPageNumber === page}
+          >
             {page}
           </PaginationLink>
         </PaginationItem>
@@ -96,20 +102,16 @@ const Paginate = ({
         <PaginationItem>
           <PaginationPrevious
             onClick={handlePreviousPage}
-            className={
-              currentPageNumber === 1 ? 'pointer-events-none opacity-50' : ''
-            }
+            disabled={currentPageNumber === 1}
+            className="icon-hover"
           />
         </PaginationItem>
         {renderPages()}
         <PaginationItem>
           <PaginationNext
             onClick={handleNextPage}
-            className={
-              currentPageNumber === totalPagesNumber
-                ? 'pointer-events-none opacity-50'
-                : ''
-            }
+            disabled={currentPageNumber === totalPagesNumber}
+            className="icon-hover"
           />
         </PaginationItem>
       </PaginationContent>
