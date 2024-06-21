@@ -1,6 +1,7 @@
 import classnames from 'classnames'
 import React, { useState } from 'react'
 import { Caption, Icon } from '../atoms'
+import { Button } from '@talent-connect/shared-atomic-design-components'
 import './Editable.scss'
 
 interface Props {
@@ -37,14 +38,15 @@ function Editable(props: Props) {
         <div className="editable__header__buttons">
           {isEditing ? (
             <>
-              <div
+              <Button
                 onClick={savePossible ? handleSave : undefined}
-                className={classnames('save__button', {
+                className={classnames('save__button',{
                   'save__button--disabled': !savePossible,
                 })}
-              >Save
-
-              </div>
+                simple
+              >
+                Save
+              </Button>
 
               <div className="icon__button" onClick={handleClose}>
                 <Icon icon="cancel" />

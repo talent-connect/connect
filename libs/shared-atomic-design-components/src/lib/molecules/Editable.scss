@@ -37,10 +37,13 @@
 .save__button {
   cursor: pointer;
   margin-right: 0.2rem;
-  font-weight: bold;
-  color: #ea3f25;
+  margin-top: -0.7rem;
+  font-size: $size-5;
+  font-weight: $weight-light;
+  color: $redi-orange-dark;
 }
 
 .save__button--disabled {
-  color: $grey-light;
+  cursor: not-allowed;
+  color: $grey-light!important;
 }

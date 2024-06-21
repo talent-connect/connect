@@ -14,9 +14,7 @@
       }
     ]
   },
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit"
-  },
+  "editor.codeActionsOnSave": { "source.organizeImports": true },
   "explorer.fileNesting.patterns": {
     "*.ts": "${capture}.js, ${capture}.typegen.ts, ${capture}.graphql, ${capture}.generated.ts",
     "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
@@ -25,23 +23,5 @@
     "tsconfig.json": "tsconfig.*.json",
     "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml",
     "*.graphql": "${capture}.generated.ts"
-  },
-  "runOnSave.commands": [
-    {
-        "match": ".*\\.js$", // Regex to match file extensions
-        "command": "eslint --fix ${file}", // Command to run
-        "runIn": "terminal", // Options: "terminal" or "backend"
-        "runningStatusMessage": "Running eslint...",
-        "finishStatusMessage": "eslint complete.",
-        "focusResult": "false"
-    },
-    {
-        "match": ".*\\.ts$", // Regex to match file extensions
-        "command": "tsc ${file}",
-        "runIn": "terminal",
-        "runningStatusMessage": "Compiling TypeScript...",
-        "finishStatusMessage": "TypeScript compilation complete.",
-        "focusResult": "false"
-    }
-]
+  }
 }
