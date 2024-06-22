@@ -40,9 +40,8 @@ function Editable(props: Props) {
             <>
               <Button
                 onClick={savePossible ? handleSave : undefined}
-                className={classnames('save__button',{
-                  'save__button--disabled': !savePossible,
-                })}
+                disabled={!savePossible}
+                className='save__button'
                 simple
               >
                 Save

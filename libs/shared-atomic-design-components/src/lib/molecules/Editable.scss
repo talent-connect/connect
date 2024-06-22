@@ -35,15 +35,9 @@
 }
 
 .save__button {
-  cursor: pointer;
-  margin-right: 0.2rem;
   margin-top: -0.7rem;
   font-size: $size-5;
-  font-weight: $weight-light;
   color: $redi-orange-dark;
-}
-
-.save__button--disabled {
-  cursor: not-allowed;
-  color: $grey-light!important;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
 }
