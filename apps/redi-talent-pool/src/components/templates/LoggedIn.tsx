@@ -6,6 +6,7 @@ import {
 import { Loader } from '@talent-connect/shared-atomic-design-components'
 import { ReactNode } from 'react'
 import { Columns, Container } from 'react-bulma-components'
+import { useLocation } from 'react-router-dom'
 import { useIsBusy } from '../../hooks/useIsBusy'
 import { TpMainNavItem } from '../molecules/TpMainNavItem'
 import { Navbar } from '../organisms'
@@ -25,6 +26,7 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
     myTpData.data?.tpCurrentUserDataGet?.tpJobseekerDirectoryEntry
 
   const isBusy = useIsBusy()
+  const location = useLocation()
 
   // Determine user type (jobseeker, company representative, or undefined), then
   // inform Hotjar about it (we're using its IDENTIFY API)
