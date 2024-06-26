@@ -138,7 +138,6 @@ function ModalForm({
   const myData = useMyTpDataQuery()
   const companyProfile = myData?.data?.tpCurrentUserDataGet?.representedCompany
   const mutation = usePatchTpCompanyProfileMutation()
-  console.log(myData)
   const initialValues: Partial<EditableNamePhotoLocationProfilePropFragment> =
     useMemo(
       () => ({
