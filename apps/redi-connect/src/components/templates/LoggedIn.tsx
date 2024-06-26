@@ -107,11 +107,31 @@ function LoggedIn({ children }: Props) {
                     })}
                   </RediNotification>
                 )}
+              {profile?.userType === 'MENTEE' &&
+                profile?.profileStatus === ConnectProfileStatus.Rejected && (
+                  <RediNotification>
+                    {t('loggedInArea.profile.notification.rejectedMentee', {
+                      name: profile.firstName,
+                      email:
+                        '<a href="mailto:career@redi-school.org">career@redi-school.org</a>',
+                    })}
+                  </RediNotification>
+                )}
               {profile?.userType === 'MENTOR' &&
                 profile?.profileStatus === ConnectProfileStatus.Deactivated && (
                   <RediNotification>
                     {t('loggedInArea.profile.notification.deactivatedMentor', {
                       name: profile?.firstName,
+                      email:
+                        '<a href="mailto:career@redi-school.org">career@redi-school.org</a>',
+                    })}
+                  </RediNotification>
+                )}
+              {profile?.userType === 'MENTOR' &&
+                profile?.profileStatus === ConnectProfileStatus.Rejected && (
+                  <RediNotification>
+                    {t('loggedInArea.profile.notification.rejectedMentor', {
+                      name: profile.firstName,
                       email:
                         '<a href="mailto:career@redi-school.org">career@redi-school.org</a>',
                     })}
