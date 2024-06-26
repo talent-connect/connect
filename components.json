@@ -5,7 +5,7 @@
   "tsx": true,
   "tailwind": {
     "config": "libs/shared-shadcn-ui-components/src/lib/utils/tailwind.config.js",
-    "css": "apps/redi-connect/src/styles/main.scss",
+    "css": "libs/shared-atomic-design-components/src/lib/styles/global.scss",
     "baseColor": "slate",
     "cssVariables": true
   },
