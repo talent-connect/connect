@@ -1,7 +1,7 @@
+import { Button } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'classnames'
 import React, { useState } from 'react'
 import { Caption, Icon } from '../atoms'
-import { Button } from '@talent-connect/shared-atomic-design-components'
 import './Editable.scss'
 
 interface Props {
@@ -41,7 +41,7 @@ function Editable(props: Props) {
               <Button
                 onClick={savePossible ? handleSave : undefined}
                 disabled={!savePossible}
-                className='save__button'
+                className="save__button"
                 simple
               >
                 Save
@@ -53,7 +53,6 @@ function Editable(props: Props) {
             </>
           ) : (
             <div
-            
               className="icon__button"
               onClick={() => {
                 setIsEditing(true)
