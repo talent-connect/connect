@@ -33,3 +33,11 @@
     fill: $grey-light;
   }
 }
+
+.save__button {
+  margin-top: -0.7rem;
+  font-size: $size-5;
+  color: $redi-orange-dark;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+}
