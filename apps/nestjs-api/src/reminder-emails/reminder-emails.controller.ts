@@ -54,53 +54,49 @@ export class ReminderEmailsController {
     }
   }
 
-  /**
-   * Following reminders are implemented but not working as expected.
-   * They will be tested and fixed in the next iterations.
-   */
+  @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentees-apply-to-mentor')
+  async sendMenteeApplyToMentorReminders() {
+    const firstReminderMentees =
+      await this.reminderEmailsService.getApprovedMenteesWithNoMentorApplicationsByDays(
+        {
+          daysAgo: '7d',
+        }
+      )
 
-  // @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentees-apply-to-mentor')
-  // async sendMenteeApplyToMentorReminders() {
-  //   const firstReminderMentees =
-  //     await this.reminderEmailsService.getApprovedMenteesWithNoMentorApplicationsByDays(
-  //       {
-  //         daysAgo: '7d',
-  //       }
-  //     )
+    if (firstReminderMentees.length > 0) {
+      // send reminder emails
+      firstReminderMentees.forEach(async (mentee) => {
+        await this.reminderEmailsService.sendApplyToMentorReminder({
+          email: mentee.props.email,
+          firstName: mentee.props.firstName,
+          location: mentee.props.rediLocation,
+        })
+      })
+    }
 
-  //   if (firstReminderMentees.length > 0) {
-  //     // send reminder emails
-  //     firstReminderMentees.forEach(async (mentee) => {
-  //       await this.reminderEmailsService.sendApplyToMentorFirstReminder({
-  //         email: mentee.props.email,
-  //         firstName: mentee.props.firstName,
-  //         location: mentee.props.rediLocation,
-  //       })
-  //     })
-  //   }
+    const secondReminderMentees =
+      await this.reminderEmailsService.getApprovedMenteesWithNoMentorApplicationsByDays(
+        {
+          daysAgo: '14d',
+        }
+      )
 
-  //   const secondReminderMentees =
-  //     await this.reminderEmailsService.getApprovedMenteesWithNoMentorApplicationsByDays(
-  //       {
-  //         daysAgo: '14d',
-  //       }
-  //     )
+    if (secondReminderMentees.length > 0) {
+      // send reminder emails
+      secondReminderMentees.forEach(async (mentee) => {
+        await this.reminderEmailsService.sendApplyToMentorReminder({
+          email: mentee.props.email,
+          firstName: mentee.props.firstName,
+          location: mentee.props.rediLocation,
+          isSecondReminder: true,
+        })
+      })
+    }
 
-  //   if (secondReminderMentees.length > 0) {
-  //     // send reminder emails
-  //     secondReminderMentees.forEach(async (mentee) => {
-  //       await this.reminderEmailsService.sendApplyToMentorSecondReminder({
-  //         email: mentee.props.email,
-  //         firstName: mentee.props.firstName,
-  //         location: mentee.props.rediLocation,
-  //       })
-  //     })
-  //   }
-
-  //   return {
-  //     message: `First reminder emails to apply to a mentor sent to ${firstReminderMentees.length} mentees. Second reminder emails to apply to a mentor sent to ${secondReminderMentees.length} mentees`,
-  //   }
-  // }
+    return {
+      message: `First reminder emails to apply to a mentor sent to ${firstReminderMentees.length} mentees. Second reminder emails to apply to a mentor sent to ${secondReminderMentees.length} mentees`,
+    }
+  }
 
   @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentorship-follow-up')
   async sendMentorshipFollowUpReminders() {
@@ -108,21 +104,23 @@ export class ReminderEmailsController {
       await this.reminderEmailsService.getThreeMonthsOldMentorshipMatches()
 
     if (Object.keys(threeMonthsOldMentorshipMatches).length > 0) {
-      threeMonthsOldMentorshipMatches.forEach(async (match) => {
+      Object.keys(threeMonthsOldMentorshipMatches).forEach(async (match) => {
         // Send reminder email to mentee
         await this.reminderEmailsService.sendMentorshipFollowUpReminder({
           userType: UserType.MENTEE,
-          email: match.menteeEmail,
-          firstName: match.menteeFirstName,
-          menteeOrMentorFirstName: match.mentorFirstName,
+          email: threeMonthsOldMentorshipMatches[match].menteeEmail,
+          firstName: threeMonthsOldMentorshipMatches[match].menteeFirstName,
+          menteeOrMentorFirstName:
+            threeMonthsOldMentorshipMatches[match].mentorFirstName,
         })
 
         // Send reminder email to mentor
         await this.reminderEmailsService.sendMentorshipFollowUpReminder({
           userType: UserType.MENTOR,
-          email: match.mentorEmail,
-          firstName: match.mentorFirstName,
-          menteeOrMentorFirstName: match.menteeFirstName,
+          email: threeMonthsOldMentorshipMatches[match].mentorEmail,
+          firstName: threeMonthsOldMentorshipMatches[match].mentorFirstName,
+          menteeOrMentorFirstName:
+            threeMonthsOldMentorshipMatches[match].menteeFirstName,
         })
       })
     }

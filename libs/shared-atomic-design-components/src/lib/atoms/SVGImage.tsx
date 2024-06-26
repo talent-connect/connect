@@ -5,6 +5,8 @@ import { ReactComponent as HeroMentor } from '../../assets/images/hero-mentor.sv
 import { ReactComponent as Hero } from '../../assets/images/hero.svg'
 import { ReactComponent as Mentee } from '../../assets/images/mentee.svg'
 import { ReactComponent as Mentor } from '../../assets/images/mentor.svg'
+import { ReactComponent as Location } from '../../assets/images/location.svg'
+import { FunctionComponent, SVGProps } from 'react'
 
 export type SVGTypes = 'heroMentee' | 'heroMentor'
 
@@ -16,13 +18,22 @@ export type SVGImages =
   | 'hero'
   | 'hello'
   | 'helloMobile'
+  | 'location'
 
+type ImageProp = SVGImages | SVGTypes
 interface Props {
-  image: SVGImages | SVGTypes
+  image: ImageProp
   className?: string
 }
 
-const Images = {
+// to match the interface declaration of *.svg
+type svgImageType = FunctionComponent<
+  SVGProps<SVGSVGElement> & {
+    title?: string
+  }
+>
+
+const Images: Record<ImageProp, svgImageType> = {
   heroMentee: HeroMentee,
   heroMentor: HeroMentor,
   mentee: Mentee,
@@ -32,6 +43,7 @@ const Images = {
   hero: Hero,
   hello: Hello,
   helloMobile: HelloMobile,
+  location: Location,
 }
 
 const SVGImage = ({ image, className }: Props) => {

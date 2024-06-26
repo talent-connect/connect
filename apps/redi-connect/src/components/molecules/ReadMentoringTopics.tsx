@@ -7,10 +7,10 @@ import {
 import {
   Caption,
   Placeholder,
+  Chip,
 } from '@talent-connect/shared-atomic-design-components'
 import { CATEGORIES_MAP } from '@talent-connect/shared-config'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
-import Chip from '../../../../../libs/shared-atomic-design-components/src/lib/atoms/Chip'
 import './ReadMentoringTopics.scss'
 
 interface ReadMentoringProps {

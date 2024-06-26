@@ -3,10 +3,12 @@ import { ConfigService } from '@nestjs/config'
 import {
   ConnectProfileStatus,
   MentorshipMatchStatus,
+  RediLocation,
   UserType,
 } from '@talent-connect/common-types'
 import * as AWS from 'aws-sdk'
 import * as jsforce from 'jsforce'
+import difference from 'lodash/difference'
 import transform from 'lodash/transform'
 import { ConMentorshipMatchesService } from '../con-mentorship-matches/con-mentorship-matches.service'
 import { ConProfilesService } from '../con-profiles/con-profiles.service'
@@ -45,24 +47,55 @@ export class ReminderEmailsService {
     })
   }
 
-  // async getApprovedMenteesWithNoMentorApplicationsByDays({
-  //   daysAgo,
-  // }: {
-  //   daysAgo: '7d' | '14d'
-  // }) {
-  //   const approvedDate = new Date()
-  //   approvedDate.setDate(approvedDate.getDate() - parseInt(daysAgo)) // Interestingly, parseInt is able to parse 7d and 14d to 7 and 14 respectively
+  async getApprovedMenteesWithNoMentorApplicationsByDays({
+    daysAgo,
+  }: {
+    daysAgo: '7d' | '14d'
+  }) {
+    const approvedDate = new Date()
+    approvedDate.setDate(approvedDate.getDate() - parseInt(daysAgo)) // Interestingly, parseInt is able to parse 7d and 14d to 7 and 14 respectively
 
-  //   return this.conProfilesService.findAll({
-  //     'RecordType.DeveloperName': UserType.MENTEE,
-  //     Profile_Status__c: ConnectProfileStatus.APPROVED,
-  //     Profile_First_Approved_At__c: {
-  //       $eq: jsforce.SfDate.toDateLiteral(approvedDate),
-  //     },
-  //     // When there are no applications, this field is not 0 but null/undefined
-  //     'Contact__r.ReDI_Active_Mentorship_Matches_Mentee__c': null,
-  //   })
-  // }
+    // 1st Step: Get all approved mentees from the last 7 or 14 days
+    const approvedMentees = await this.conProfilesService.findAll({
+      'RecordType.DeveloperName': UserType.MENTEE,
+      Profile_Status__c: ConnectProfileStatus.APPROVED,
+      Profile_First_Approved_At__c: {
+        $eq: jsforce.SfDate.toDateLiteral(approvedDate),
+      },
+    })
+
+    const approvedMenteeIds = approvedMentees.map(
+      (mentee) => mentee.props.userId
+    )
+
+    if (approvedMenteeIds.length === 0) return []
+
+    // 2nd Step: Get all mentorship matches where the mentee is one of the approved mentees above
+    const mentorshipMatches = await this.conMentorshipMatchesService.findAll({
+      'Mentee__r.id': {
+        $in: approvedMenteeIds,
+      },
+    })
+
+    const mentorshipMatchMenteeIds = mentorshipMatches.map(
+      (match) => match.props.menteeId
+    )
+
+    // 3rd Step: Find approved mentees that do not have a mentorship match
+    const menteeIdsWithoutMentorshipMatch = difference(
+      approvedMenteeIds,
+      mentorshipMatchMenteeIds
+    )
+
+    // 4th Step: Return approved mentees that do not have a mentorship match
+    if (menteeIdsWithoutMentorshipMatch.length > 0) {
+      return approvedMentees.filter((mentee) =>
+        menteeIdsWithoutMentorshipMatch.includes(mentee.props.userId)
+      )
+    }
+
+    return []
+  }
 
   async getThreeMonthsOldMentorshipMatches() {
     const threeMonthsOldMentorshipMatches =
@@ -202,8 +235,9 @@ export class ReminderEmailsService {
     const params = {
       Destination: {
         ToAddresses: isProductionOrDemonstration()
-          ? ['anilakarsu93@gmail.com']
+          ? [email]
           : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+        BccAddresses: ['career@redi-school.org'],
       },
       Message: {
         Body: {
@@ -222,98 +256,63 @@ export class ReminderEmailsService {
     return { message: 'Email sent' }
   }
 
-  // async sendApplyToMentorFirstReminder({ email, firstName, location }) {
-  //   const sfEmailTemplateDeveloperName =
-  //     location === RediLocation.CYBERSPACE
-  //       ? 'Cyberspace_Mentee_Apply_To_A_Mentor_Reminder_1_1711037205143'
-  //       : 'Mentee_Apply_To_A_Mentor_Reminder_1_1695975263767'
+  async sendApplyToMentorReminder({
+    email,
+    firstName,
+    location,
+    isSecondReminder = false,
+  }) {
+    const sfEmailTemplateDeveloperName = !isSecondReminder
+      ? location === RediLocation.CYBERSPACE
+        ? 'Cyberspace_Mentee_Apply_To_A_Mentor_Reminder_1_1711037205143'
+        : 'Mentee_Apply_To_A_Mentor_Reminder_1_1695975263767'
+      : location === RediLocation.CYBERSPACE
+      ? 'Cyberspace_Mentee_Apply_To_A_Mentor_Reminder_2_1711109460383'
+      : 'Mentee_Apply_To_A_Mentor_Reminder_2_1695975868066'
 
-  //   const template = await this.emailTemplatesService.getEmailTemplate(
-  //     sfEmailTemplateDeveloperName
-  //   )
+    const template = await this.emailTemplatesService.getEmailTemplate(
+      sfEmailTemplateDeveloperName
+    )
 
-  //   if (!template) {
-  //     throw new Error(
-  //       `Email template not found: ${sfEmailTemplateDeveloperName}`
-  //     )
-  //   }
+    if (!template) {
+      throw new Error(
+        `Email template not found: ${sfEmailTemplateDeveloperName}`
+      )
+    }
 
-  //   const sanitizedSubject = template.Subject.replace(
-  //     /\${menteeFirstName}/g,
-  //     `${firstName}`
-  //   )
+    const sanitizedSubject = template.Subject.replace(
+      /\${menteeFirstName}/g,
+      `${firstName}`
+    )
 
-  //   const sanitizedHtml = template.HtmlValue.replace(
-  //     /\${menteeFirstName}/g,
-  //     `${firstName}`
-  //   ).replace(/{{{Recipient\.FirstName}}}/g, `${firstName}`)
+    const sanitizedHtml = template.HtmlValue.replace(
+      /\${menteeFirstName}/g,
+      `${firstName}`
+    ).replace(/{{{Recipient\.FirstName}}}/g, `${firstName}`)
 
-  //   const params = {
-  //     Destination: {
-  //       ToAddresses: isProductionOrDemonstration()
-  //         ? [email]
-  //         : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
-  //     },
-  //     Message: {
-  //       Body: {
-  //         Html: { Data: sanitizedHtml },
-  //       },
-  //       Subject: { Data: sanitizedSubject },
-  //     },
-  //     Source: 'career@redi-school.org',
-  //   }
+    const params = {
+      Destination: {
+        ToAddresses: isProductionOrDemonstration()
+          ? [email]
+          : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+        BccAddresses: ['career@redi-school.org'],
+      },
+      Message: {
+        Body: {
+          Html: { Data: sanitizedHtml },
+        },
+        Subject: { Data: sanitizedSubject },
+      },
+      Source: 'career@redi-school.org',
+    }
 
-  //   this.ses.sendEmail(params, (err, data) => {
-  //     if (err) console.log(err, err.stack)
-  //     else console.log(data)
-  //   })
+    this.ses.sendEmail(params, (err, data) => {
+      if (err) console.log(err, err.stack)
+      else console.log(data)
+    })
 
-  //   return { message: 'Email sent' }
-  // }
-
-  // async sendApplyToMentorSecondReminder({ email, firstName, location }) {
-  //   const sfEmailTemplateDeveloperName =
-  //     location === RediLocation.CYBERSPACE
-  //       ? 'Cyberspace_Mentee_Apply_To_A_Mentor_Reminder_2_1711109460383'
-  //       : 'Mentee_Apply_To_A_Mentor_Reminder_2_1695975868066'
-
-  //   const template = await this.emailTemplatesService.getEmailTemplate(
-  //     sfEmailTemplateDeveloperName
-  //   )
-
-  //   if (!template) {
-  //     throw new Error(
-  //       `Email template not found: ${sfEmailTemplateDeveloperName}`
-  //     )
-  //   }
-
-  //   const sanitizedHtml = template.HtmlValue.replace(
-  //     /{{{Recipient\.FirstName}}}/g,
-  //     `${firstName}`
-  //   )
-
-  //   const params = {
-  //     Destination: {
-  //       ToAddresses: isProductionOrDemonstration()
-  //         ? [email]
-  //         : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
-  //     },
-  //     Message: {
-  //       Body: {
-  //         Html: { Data: sanitizedHtml },
-  //       },
-  //       Subject: { Data: template.Subject },
-  //     },
-  //     Source: 'career@redi-school.org',
-  //   }
-
-  //   this.ses.sendEmail(params, (err, data) => {
-  //     if (err) console.log(err, err.stack)
-  //     else console.log(data)
-  //   })
-
-  //   return { message: 'Email sent' }
-  // }
+    return { message: 'Email sent' }
+  }
 
   async sendMentorshipFollowUpReminder({
     email,
@@ -346,8 +345,9 @@ export class ReminderEmailsService {
     const params = {
       Destination: {
         ToAddresses: isProductionOrDemonstration()
-          ? ['anilakarsu93@gmail.com']
+          ? [email]
           : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+        BccAddresses: ['career@redi-school.org'],
       },
       Message: {
         Body: {
