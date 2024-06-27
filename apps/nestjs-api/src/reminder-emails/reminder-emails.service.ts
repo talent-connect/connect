@@ -105,7 +105,7 @@ export class ReminderEmailsService {
 
   async getUnmatchedMenteesFor45Days() {
     const approvedDate = new Date()
-    approvedDate.setDate(approvedDate.getDate() - 9)
+    approvedDate.setDate(approvedDate.getDate() - 45)
 
     // 1st Step: Get all approved mentees from the last 7 or 14 days
     const approvedMentees = await this.conProfilesService.findAll({
