@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import {
+  ConProfileEntity,
   ConnectProfileStatus,
   MentorshipMatchStatus,
   RediLocation,
   UserType,
 } from '@talent-connect/common-types'
 import * as AWS from 'aws-sdk'
+import { format as formatDate } from 'date-fns'
 import * as jsforce from 'jsforce'
 import { union } from 'lodash'
 import difference from 'lodash/difference'
@@ -265,6 +267,73 @@ export class ReminderEmailsService {
   //   return []
   // }
 
+  async getPendingMentorshipMatches() {
+    const threeMonthsOldMentorshipMatches =
+      await this.conMentorshipMatchesService.findAll({
+        Mentorship_Match_Age_In_Days__c: 13,
+        Status__c: MentorshipMatchStatus.APPLIED,
+      })
+
+    const reducedMatches = threeMonthsOldMentorshipMatches.reduce(
+      (acc, match) => {
+        acc[match.props.id] = {
+          matchDate: match.props.createdAt,
+          menteeId: match.props.menteeId,
+          mentorId: match.props.mentorId,
+        }
+
+        return acc
+      },
+      {}
+    )
+
+    const menteeIds = threeMonthsOldMentorshipMatches.map(
+      (match) => match.props.menteeId
+    )
+    const mentorIds = threeMonthsOldMentorshipMatches.map(
+      (match) => match.props.mentorId
+    )
+
+    let matchConProfiles: ConProfileEntity[] = []
+
+    if ([...menteeIds, ...mentorIds].length > 0) {
+      matchConProfiles = await this.conProfilesService.findAll({
+        'Contact__r.Id': {
+          $in: [...menteeIds, ...mentorIds],
+        },
+      })
+    }
+
+    /**
+     * Some holy moly is happening here. The idea is, transforming the map of mentorship matches
+     * to a map of mentorship matches with the first names and emails of the mentee and mentor.
+     * See here for lodash/transform: https://lodash.com/docs/4.17.15#transform
+     */
+    const transformedReducedMatches = transform(
+      reducedMatches,
+      (result, value, key) => {
+        const mentee = matchConProfiles.find(
+          (profile) => profile?.props.userId === value['menteeId']
+        )
+
+        const mentor = matchConProfiles.find(
+          (profile) => profile?.props.userId === value['mentorId']
+        )
+
+        result[key] = {
+          mentorEmail: mentor?.props.email,
+          mentorFirstName: mentor?.props.firstName,
+          menteeFirstName: mentee?.props.firstName,
+          menteeFullName: mentee?.props.fullName,
+          matchDate: formatDate(new Date(value['matchDate']), 'PPP'),
+        }
+      },
+      []
+    )
+
+    return transformedReducedMatches
+  }
+
   async sendCompleteProfileReminder({
     userType,
     email,
@@ -518,6 +587,57 @@ export class ReminderEmailsService {
         Subject: { Data: template.Subject },
       },
       Source: 'career@redi-school.org',
+    }
+
+    this.ses.sendEmail(params, (err, data) => {
+      if (err) console.log(err, err.stack)
+      else console.log(data)
+    })
+
+    return { message: 'Email sent' }
+  }
+
+  async sendMentorPendingApplicationReminder({ match }) {
+    const sfEmailTemplateDeveloperName =
+      'Mentor_Pending_Mentorship_Application_Reminder_1711365045962'
+
+    const template = await this.emailTemplatesService.getEmailTemplate(
+      sfEmailTemplateDeveloperName
+    )
+
+    if (!template) {
+      throw new Error(
+        `Email template not found: ${sfEmailTemplateDeveloperName}`
+      )
+    }
+
+    const sanitizedSubject = template.Subject.replace(
+      /\${menteeFullName}/g,
+      `${match.menteeFullName}`
+    )
+
+    const sanitizedHtml = template.HtmlValue.replace(
+      /\${menteeFullName}/g,
+      `${match.menteeFullName}`
+    )
+      .replace(/{{{Recipient.FirstName}}}/g, `${match?.mentorFirstName}`)
+      .replace(/\${matchRequestedDate}/g, `${match.matchDate}`)
+      .replace(/\${menteeFirstName}/g, `${match.menteeFirstName}`)
+
+    const params = {
+      Destination: {
+        ToAddresses: isProductionOrDemonstration()
+          ? [match.mentorEmail]
+          : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+        BccAddresses: [SENDER_EMAIL],
+      },
+      Message: {
+        Body: {
+          Html: { Data: sanitizedHtml },
+        },
+        Subject: { Data: sanitizedSubject },
+      },
+      Source: `${SENDER_NAME} <${SENDER_EMAIL}>`,
     }
 
     this.ses.sendEmail(params, (err, data) => {
