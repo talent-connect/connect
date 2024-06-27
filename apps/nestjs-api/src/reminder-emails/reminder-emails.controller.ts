@@ -132,45 +132,45 @@ export class ReminderEmailsController {
     }
   }
 
-  // @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentees-platform-and-new-mentors')
-  // async sendUnmatchedMenteesReminder() {
-  //   const unmatchedMenteesWithApprovedProfiles =
-  //     await this.reminderEmailsService.getUnmatchedMenteesWithApprovedProfiles()
+  @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentees-platform-and-new-mentors')
+  async sendUnmatchedMenteesReminder() {
+    const unmatchedMenteesFor45Days =
+      await this.reminderEmailsService.getUnmatchedMenteesFor45Days()
 
-  //   if (unmatchedMenteesWithApprovedProfiles.length > 0) {
-  //     // send reminder emails
-  //     unmatchedMenteesWithApprovedProfiles.forEach(async (mentee) => {
-  //       await this.reminderEmailsService.sendMenteesPlatformAndNewMentorsReminder(
-  //         {
-  //           email: mentee.props.email,
-  //           firstName: mentee.props.firstName,
-  //         }
-  //       )
-  //     })
-  //   }
+    if (Object.keys(unmatchedMenteesFor45Days).length > 0) {
+      unmatchedMenteesFor45Days.forEach(async (mentee) => {
+        // Send reminder email to mentee
+        await this.reminderEmailsService.sendMenteesPlatformAndNewMentorsReminder(
+          {
+            email: mentee.props.email,
+            firstName: mentee.props.firstName,
+          }
+        )
+      })
+    }
 
-  //   return {
-  //     message: `Reminder emails sent to ${unmatchedMenteesWithApprovedProfiles.length} unmatched mentees with approved profiles`,
-  //   }
-  // }
-
-  // @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentoring-sessions-logging')
-  // async sendMentoringSessionsLoggingReminder() {
-  //   const conProfilesWithMentoringSessionsToLog =
-  //     await this.reminderEmailsService.getConProfilesWithMentorshipMatchesWithoutMentoringSessions(
-  //       { mentorshipMatchAgeInDays: 402 }
-  //     )
-
-  //   if (conProfilesWithMentoringSessionsToLog.length > 0) {
-  //     // send reminder emails
-  //     conProfilesWithMentoringSessionsToLog.forEach(async (profile) => {
-  //       await this.reminderEmailsService.sendLogMentoringSessionsReminder({
-  //         email: profile.props.email,
-  //         firstName: profile.props.firstName,
-  //         userType: profile.props.userType,
-  //         mentorshipMatchAgeInDays: 14,
-  //       })
-  //     })
-  //   }
-  // }
+    return {
+      message: `Reminder emails sent to ${unmatchedMenteesFor45Days.length} unmatched mentees with approved profiles`,
+    }
+  }
 }
+
+// @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentoring-sessions-logging')
+// async sendMentoringSessionsLoggingReminder() {
+//   const conProfilesWithMentoringSessionsToLog =
+//     await this.reminderEmailsService.getConProfilesWithMentorshipMatchesWithoutMentoringSessions(
+//       { mentorshipMatchAgeInDays: 402 }
+//     )
+
+//   if (conProfilesWithMentoringSessionsToLog.length > 0) {
+//     // send reminder emails
+//     conProfilesWithMentoringSessionsToLog.forEach(async (profile) => {
+//       await this.reminderEmailsService.sendLogMentoringSessionsReminder({
+//         email: profile.props.email,
+//         firstName: profile.props.firstName,
+//         userType: profile.props.userType,
+//         mentorshipMatchAgeInDays: 14,
+//       })
+//     })
+//   }
+// }
