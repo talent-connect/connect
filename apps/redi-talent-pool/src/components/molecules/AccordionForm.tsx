@@ -39,7 +39,7 @@ export function AccordionForm({
         </Columns.Column>
         <Columns.Column narrow>
           <Icon
-            icon="chevron"
+            icon="chevronDown"
             size="small"
             className={classnames({ 'icon--rotate': isOpen })}
           />

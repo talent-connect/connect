@@ -1,7 +1,5 @@
 // custom variable overwrites for bulma
-@import '_variables.scss';
-
-@import '_global.scss';
+@import '_variables';
 
 // bulma global dependencies
 @import '~bulma/sass/utilities/_all';
@@ -22,9 +20,59 @@
 @import '~bulma/sass/elements/notification.sass';
 @import '~bulma-checkradio/src/sass/index.sass';
 
-//custom modifiers
-@import '_fonts.scss';
-@import '_forms.scss';
+// custom modifiers
+@import '_fonts';
+@import '_forms';
+
+// directives for each of Tailwind’s layers
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 215 20.2% 65.1%;
+
+    --radius: 0.5rem;
+  }
+}
+
+// @layer base {
+//   * {
+//     @apply border-border;
+//   }
+//   body {
+//     @apply bg-background text-foreground;
+//     font-feature-settings: 'rlig' 1, 'calt' 1;
+//   }
+// }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -58,10 +106,16 @@ select {
 
 a {
   font-weight: 800;
+  // color: $redi-orange-dark;
 }
 
 a:hover {
   text-decoration: underline;
+  // color: $black;
+}
+
+.color-secondary {
+  color: $redi-blue-dark;
 }
 
 .field:not(:last-child) {
@@ -128,6 +182,7 @@ a:hover {
 .column--main-content {
   min-height: 40rem;
   position: relative;
+  overflow: hidden;
 }
 
 .color-side-menu {
@@ -172,5 +227,21 @@ a:hover {
 
   &__icon {
     flex-shrink: 0;
+  }
+}
+
+.block-separator {
+  .block-separator {
+    @include mobile() {
+      padding-bottom: 1.5rem;
+      margin-bottom: -0.5rem;
+      border-bottom: 1px solid $grey-light;
+    }
+  }
+
+  &:not(:last-child) {
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid $grey-light;
   }
 }

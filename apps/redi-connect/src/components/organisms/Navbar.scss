@@ -16,7 +16,7 @@
     }
   }
 
-  // since the default a:hover behaviour is defined as underline (main.scss) we had
+  // since the default a:hover behaviour is defined as underline (global.scss) we had
   // to define this class for the logo and the !important explictly for safari browser
   &__logo:hover {
     text-decoration: none !important;

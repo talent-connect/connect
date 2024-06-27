@@ -95,7 +95,7 @@ function MobileApplicationCard({ application }: Props) {
           </Columns.Column>
           <Columns.Column className="mobile-application-card-dropdown">
             <Icon
-              icon="chevron"
+              icon="chevronDown"
               size="small"
               className={classnames({ 'icon--rotate': showDetails })}
             />
