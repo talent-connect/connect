@@ -27,7 +27,7 @@ export class ReminderEmailsController {
     }
 
     return {
-      message: `Complete Profile reminder emails sent to ${mentorsWithDraftingProfile.length} mentors`,
+      message: `Complete Profile Reminder Emails sent to Mentors: ${mentorsWithDraftingProfile.length}`,
     }
   }
 
@@ -50,7 +50,7 @@ export class ReminderEmailsController {
     }
 
     return {
-      message: `Complete Profile reminder emails sent to ${menteesWithDrafingProfile.length} mentees`,
+      message: `Complete Profile Reminder Emails Sent to Mentees: ${menteesWithDrafingProfile.length}`,
     }
   }
 
@@ -94,7 +94,7 @@ export class ReminderEmailsController {
     }
 
     return {
-      message: `First reminder emails to apply to a mentor sent to ${firstReminderMentees.length} mentees. Second reminder emails to apply to a mentor sent to ${secondReminderMentees.length} mentees`,
+      message: `Apply To a Mentor Reminder Emails sent: ${firstReminderMentees.length} first reminders, ${secondReminderMentees.length} second reminders`,
     }
   }
 
@@ -126,9 +126,9 @@ export class ReminderEmailsController {
     }
 
     return {
-      message: `Follow-up reminder emails sent to ${
+      message: `Mentorship Follow-up Reminder Emails Sent: ${
         Object.keys(threeMonthsOldMentorshipMatches).length
-      } mentorship matches`,
+      }`,
     }
   }
 
@@ -150,7 +150,7 @@ export class ReminderEmailsController {
     }
 
     return {
-      message: `Reminder emails sent to ${unmatchedMenteesFor45Days.length} unmatched mentees with approved profiles`,
+      message: `Platform Update Reminder Emails Sent to Mentees: ${unmatchedMenteesFor45Days.length}`,
     }
   }
 
@@ -169,9 +169,9 @@ export class ReminderEmailsController {
     }
 
     return {
-      message: `Pending Mentorship Reminder emails sent to ${
+      message: `Pending Mentorship Reminder emails sent to Mentors: ${
         Object.keys(pendingMentorshipMatches).length
-      } mentors`,
+      }`,
     }
   }
 
