@@ -190,9 +190,7 @@
     "profile": {
       "notification": {
         "deactivatedMentee": "Dear {{ name }}, your ReDI Connect profile has been deactivated by the ReDI Talent Success Team. This could be for a number of reasons. If you think this has been done by mistake, please contact us at {{ email }}. Thank you!",
-        "deactivatedMentor": "Dear {{ name }}, your ReDI Connect profile has been deactivated by the ReDI Talent Success Team. Likely you have not been active for a while. This means you are not visible to prospective mentees. If you want to become active as a mentor again, please contact {{ email }}. Speak soon!",
-        "rejectedMentee": "Dear {{ name }}, your ReDI Connect profile has been rejected by the ReDI Talent Success Team. This could be for a number of reasons. If you think this has been done by mistake, please contact us at {{ email }}. Thank you!",
-        "rejectedMentor": "Dear {{ name }}, your ReDI Connect profile has been rejected by the ReDI Talent Success Team. Likely you have not been active for a while. This means you are not visible to prospective mentees. If you want to become active as a mentor again, please contact {{ email }}. Speak soon!"
+        "deactivatedMentor": "Dear {{ name }}, your ReDI Connect profile has been deactivated by the ReDI Talent Success Team. Likely you have not been active for a while. This means you are not visible to prospective mentees. If you want to become active as a mentor again, please contact {{ email }}. Speak soon!"
       }
     }
   },
