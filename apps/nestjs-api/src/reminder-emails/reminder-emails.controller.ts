@@ -155,22 +155,22 @@ export class ReminderEmailsController {
   }
 
   @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/pending-mentorships')
-  async sendPendingMentorshipsReminder() {
-    const pendingMentorshipMatches =
-      await this.reminderEmailsService.getPendingMentorshipMatches()
+  async sendPendingMenteeApplicationReminder() {
+    const pendingMenteeApplications =
+      await this.reminderEmailsService.getpendingMenteeApplications()
 
-    if (Object.keys(pendingMentorshipMatches).length > 0) {
-      Object.keys(pendingMentorshipMatches).forEach(async (match) => {
+    if (Object.keys(pendingMenteeApplications).length > 0) {
+      Object.keys(pendingMenteeApplications).forEach(async (match) => {
         // Send reminder email to mentee
         await this.reminderEmailsService.sendMentorPendingApplicationReminder({
-          match: pendingMentorshipMatches[match],
+          match: pendingMenteeApplications[match],
         })
       })
     }
 
     return {
-      message: `Pending Mentorship Reminder emails sent to Mentors: ${
-        Object.keys(pendingMentorshipMatches).length
+      message: `Pending Mentee Applications Reminder emails sent to Mentors: ${
+        Object.keys(pendingMenteeApplications).length
       }`,
     }
   }

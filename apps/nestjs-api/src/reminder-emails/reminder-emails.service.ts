@@ -267,7 +267,7 @@ export class ReminderEmailsService {
   //   return []
   // }
 
-  async getPendingMentorshipMatches() {
+  async getpendingMenteeApplications() {
     const threeMonthsOldMentorshipMatches =
       await this.conMentorshipMatchesService.findAll({
         Mentorship_Match_Age_In_Days__c: 13,
