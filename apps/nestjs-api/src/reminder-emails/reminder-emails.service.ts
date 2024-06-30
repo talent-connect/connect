@@ -270,7 +270,7 @@ export class ReminderEmailsService {
   async getpendingMenteeApplications() {
     const threeMonthsOldMentorshipMatches =
       await this.conMentorshipMatchesService.findAll({
-        Mentorship_Match_Age_In_Days__c: 13,
+        Mentorship_Match_Age_In_Days__c: 90,
         Status__c: MentorshipMatchStatus.APPLIED,
       })
 
@@ -550,11 +550,11 @@ export class ReminderEmailsService {
   }) {
     const sfEmailTemplateDeveloperName =
       userType === UserType.MENTOR
-        ? // Mentor Emails for 2 and 4 weeks
+        ? // Mentor Emails for 2 weeks (14 days) and 4 weeks (28 days)
           mentorshipMatchAgeInDays === 14
           ? 'Mentor_Log_Mentoring_Sessions_Reminder_1_1711110740940'
           : 'Mentor_Log_Mentoring_Sessions_Reminder_2_1711112496532'
-        : // Mentee Emails for 2 and 4 weeks
+        : // Mentee Emails for 2 weeks (14 days) and 4 weeks (28 days)
         mentorshipMatchAgeInDays === 14
         ? 'Mentee_Log_Mentoring_Sessions_Reminder_1_1711114670729'
         : 'Mentee_Log_Mentoring_Sessions_Reminder_2_1711115347143'
@@ -577,8 +577,9 @@ export class ReminderEmailsService {
     const params = {
       Destination: {
         ToAddresses: isProductionOrDemonstration()
-          ? ['anilakarsu93@gmail.com']
+          ? [email]
           : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+        BccAddresses: [SENDER_EMAIL],
       },
       Message: {
         Body: {
@@ -586,7 +587,7 @@ export class ReminderEmailsService {
         },
         Subject: { Data: template.Subject },
       },
-      Source: 'career@redi-school.org',
+      Source: `${SENDER_NAME} <${SENDER_EMAIL}>`,
     }
 
     this.ses.sendEmail(params, (err, data) => {
