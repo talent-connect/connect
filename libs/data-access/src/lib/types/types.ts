@@ -486,6 +486,7 @@ export enum MentoringTopic {
   CareerOrientationAndPlanning = 'careerOrientationAndPlanning',
   CodingChallengePreparation = 'codingChallengePreparation',
   ComputerNetworking = 'computerNetworking',
+  Cybersecurity = 'cybersecurity',
   DataAnalytics = 'dataAnalytics',
   DevOpsCloud = 'devOpsCloud',
   DigitalMarketing = 'digitalMarketing',
