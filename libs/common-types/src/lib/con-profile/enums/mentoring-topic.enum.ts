@@ -16,6 +16,7 @@ export enum MentoringTopic {
   'iot' = 'iot',
   'computerNetworking' = 'computerNetworking',
   'blockchain' = 'blockchain',
+  'cybersecurity' = 'cybersecurity',
   'productManagement' = 'productManagement',
   'projectManagement' = 'projectManagement',
   'digitalMarketing' = 'digitalMarketing',

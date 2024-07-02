@@ -60,6 +60,7 @@ export const CATEGORIES = [
     group: 'softwareEngineering',
   },
   { id: 'blockchain', label: 'Blockchain', group: 'softwareEngineering' },
+  { id: 'cybersecurity', label: 'Cybersecurity', group: 'softwareEngineering' },
   {
     id: 'productManagement',
     label: 'Product Management',

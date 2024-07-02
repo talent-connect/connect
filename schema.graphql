@@ -464,6 +464,7 @@ enum MentoringTopic {
   careerOrientationAndPlanning
   codingChallengePreparation
   computerNetworking
+  cybersecurity
   dataAnalytics
   devOpsCloud
   digitalMarketing
