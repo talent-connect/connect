@@ -135,13 +135,13 @@ export class ReminderEmailsService {
       (match) => match.props.menteeId
     )
 
-    // 4th Step: Find approved mentees that do not have a mentorship match or waiting applied
+    // 3rd Step: Find approved mentees that do not have a mentorship match or waiting applied
     const menteeIdsWithoutMentorshipMatch = difference(
       approvedMenteeIds,
       mentorshipMatchMenteeIds
     )
 
-    // 5th Step: Return approved mentees that do not have a mentorship match or waiting applied
+    // 4th Step: Return approved mentees that do not have a mentorship match or waiting applied
     if (menteeIdsWithoutMentorshipMatch.length > 0) {
       return approvedMenteesFrom45DaysAgo.filter((mentee) =>
         menteeIdsWithoutMentorshipMatch.includes(mentee.props.userId)
