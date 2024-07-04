@@ -157,7 +157,7 @@ export class ReminderEmailsController {
   @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/pending-mentorships')
   async sendPendingMenteeApplicationReminder() {
     const pendingMenteeApplications =
-      await this.reminderEmailsService.getpendingMenteeApplications()
+      await this.reminderEmailsService.getPendingMenteeApplications()
 
     if (Object.keys(pendingMenteeApplications).length > 0) {
       Object.keys(pendingMenteeApplications).forEach(async (match) => {

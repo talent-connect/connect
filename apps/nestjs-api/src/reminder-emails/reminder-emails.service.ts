@@ -10,7 +10,6 @@ import {
 import * as AWS from 'aws-sdk'
 import { format as formatDate } from 'date-fns'
 import * as jsforce from 'jsforce'
-import { union } from 'lodash'
 import difference from 'lodash/difference'
 import transform from 'lodash/transform'
 import { ConMentorshipMatchesService } from '../con-mentorship-matches/con-mentorship-matches.service'
@@ -105,10 +104,10 @@ export class ReminderEmailsService {
 
   async getUnmatchedMenteesFor45Days() {
     const approvedDate = new Date()
-    approvedDate.setDate(approvedDate.getDate() - 45)
+    approvedDate.setDate(approvedDate.getDate() - 44)
 
-    // 1st Step: Get all approved mentees from the last 7 or 14 days
-    const approvedMentees = await this.conProfilesService.findAll({
+    // 1st Step: Get all mentees that have been approved 45 days ago
+    const approvedMenteesFrom45DaysAgo = await this.conProfilesService.findAll({
       'RecordType.DeveloperName': UserType.MENTEE,
       Profile_Status__c: ConnectProfileStatus.APPROVED,
       Profile_First_Approved_At__c: {
@@ -116,7 +115,7 @@ export class ReminderEmailsService {
       },
     })
 
-    const approvedMenteeIds = approvedMentees.map(
+    const approvedMenteeIds = approvedMenteesFrom45DaysAgo.map(
       (mentee) => mentee.props.userId
     )
 
@@ -124,39 +123,28 @@ export class ReminderEmailsService {
 
     // 2nd Step: Get all mentorship matches where the mentee is one of the approved mentees above
     const mentorshipMatches = await this.conMentorshipMatchesService.findAll({
+      Status__c: {
+        $ne: MentorshipMatchStatus.APPLIED,
+      },
       'Mentee__r.id': {
         $in: approvedMenteeIds,
       },
     })
 
-    // 3rd Step: Get all mentorship matches where the mentee is
-    // one of the approved mentees above and the staus is APPLIED
-    const appliedMentorshipMatches =
-      await this.conMentorshipMatchesService.findAll({
-        Status__c: MentorshipMatchStatus.APPLIED,
-        'Mentee__r.id': {
-          $in: approvedMenteeIds,
-        },
-      })
-
     const mentorshipMatchMenteeIds = mentorshipMatches.map(
       (match) => match.props.menteeId
     )
 
-    const appliedMentorshipMatchMenteeIds = appliedMentorshipMatches.map(
-      (match) => match.props.menteeId
-    )
-
     // 4th Step: Find approved mentees that do not have a mentorship match or waiting applied
-    const menteeIdsWithoutMentorshipMatchOrApplied = union(
-      difference(approvedMenteeIds, mentorshipMatchMenteeIds),
-      appliedMentorshipMatchMenteeIds
+    const menteeIdsWithoutMentorshipMatch = difference(
+      approvedMenteeIds,
+      mentorshipMatchMenteeIds
     )
 
     // 5th Step: Return approved mentees that do not have a mentorship match or waiting applied
-    if (menteeIdsWithoutMentorshipMatchOrApplied.length > 0) {
-      return approvedMentees.filter((mentee) =>
-        menteeIdsWithoutMentorshipMatchOrApplied.includes(mentee.props.userId)
+    if (menteeIdsWithoutMentorshipMatch.length > 0) {
+      return approvedMenteesFrom45DaysAgo.filter((mentee) =>
+        menteeIdsWithoutMentorshipMatch.includes(mentee.props.userId)
       )
     }
 
@@ -267,7 +255,7 @@ export class ReminderEmailsService {
   //   return []
   // }
 
-  async getpendingMenteeApplications() {
+  async getPendingMenteeApplications() {
     const threeMonthsOldMentorshipMatches =
       await this.conMentorshipMatchesService.findAll({
         Mentorship_Match_Age_In_Days__c: 90,
