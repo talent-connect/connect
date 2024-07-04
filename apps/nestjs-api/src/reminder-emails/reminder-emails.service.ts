@@ -256,13 +256,13 @@ export class ReminderEmailsService {
   // }
 
   async getPendingMenteeApplications() {
-    const threeMonthsOldMentorshipMatches =
+    const pendingMentorshipApplications =
       await this.conMentorshipMatchesService.findAll({
-        Mentorship_Match_Age_In_Days__c: 90,
+        Mentorship_Match_Age_In_Days__c: 14,
         Status__c: MentorshipMatchStatus.APPLIED,
       })
 
-    const reducedMatches = threeMonthsOldMentorshipMatches.reduce(
+    const reducedMatches = pendingMentorshipApplications.reduce(
       (acc, match) => {
         acc[match.props.id] = {
           matchDate: match.props.createdAt,
@@ -275,10 +275,10 @@ export class ReminderEmailsService {
       {}
     )
 
-    const menteeIds = threeMonthsOldMentorshipMatches.map(
+    const menteeIds = pendingMentorshipApplications.map(
       (match) => match.props.menteeId
     )
-    const mentorIds = threeMonthsOldMentorshipMatches.map(
+    const mentorIds = pendingMentorshipApplications.map(
       (match) => match.props.mentorId
     )
 
