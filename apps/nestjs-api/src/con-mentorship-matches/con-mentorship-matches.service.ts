@@ -105,12 +105,12 @@ export class ConMentorshipMatchesService {
       rediLocation: menteeProfile.props.rediLocation,
     })
 
-    const menteependingMenteeApplications = await this.findAll({
+    const menteePendingMenteeApplications = await this.findAll({
       Mentee__c: menteeProfile.props.userId,
       Status__c: MentorshipMatchStatus.APPLIED,
     })
 
-    menteependingMenteeApplications.forEach(async (match) => {
+    menteePendingMenteeApplications.forEach(async (match) => {
       match.props.status =
         MentorshipMatchStatus.INVALIDATED_AS_OTHER_MENTOR_ACCEPTED
       this.api.update(this.mapper.toPersistence(match))
