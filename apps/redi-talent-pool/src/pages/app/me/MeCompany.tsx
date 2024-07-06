@@ -54,14 +54,19 @@ export function MeCompany() {
     queryClient.invalidateQueries()
   }
 
-  const onMunich24SummerJobFairParticipateChange = async () => {
-    await mutation.mutateAsync({
-      input: {
-        joinsMunich24SummerJobFair: !companyProfile.joinsMunich24SummerJobFair,
-      },
-    })
-    queryClient.invalidateQueries()
-  }
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next method when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
+  // const onMunich24SummerJobFairParticipateChange = async () => {
+  //   await mutation.mutateAsync({
+  //     input: {
+  //       joinsMunich24SummerJobFair: !companyProfile.joinsMunich24SummerJobFair,
+  //     },
+  //   })
+  //   queryClient.invalidateQueries()
+  // }
 
   const isProfileApproved =
     companyProfile.state === CompanyTalentPoolState.ProfileApproved
@@ -114,7 +119,12 @@ export function MeCompany() {
             )}
           </div>
           <EditableNamePhotoLocation companyProfile={companyProfile} />
-          <div style={{ marginBottom: '1.5rem' }}>
+          {/*
+           * Job Fair Boolean Field(s)
+           * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next div when there's an upcoming Job Fair
+           * Duplicate if there are multiple Job Fairs coming
+           */}
+          {/* <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
               checked={companyProfile.joinsMunich24SummerJobFair}
               customOnChange={onMunich24SummerJobFairParticipateChange}
@@ -122,7 +132,7 @@ export function MeCompany() {
               My company will attend the <b>ReDI Summer Job Fair in Munich</b>{' '}
               on <b>01/07/2024</b>.
             </Checkbox>
-          </div>
+          </div> */}
           {companyProfile.isCareerPartner ? (
             <CareerPartnerBanner
               partnerSince={new Date(2024, 0, 1)} // Passing a date in 2024. The Day and Month are ignored
