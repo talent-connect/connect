@@ -324,6 +324,8 @@ export function BrowseJobseeker() {
             ReDI Munich Summer Job Fair 2024
           </Checkbox>
         </div> */}
+        {/* Next Div is to keep three filters sizing for two checkboxes. Remove if necessary */}
+        <div className="filters-inner"></div>
       </div>
 
       <div className="active-filters">
