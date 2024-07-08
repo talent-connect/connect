@@ -161,7 +161,7 @@ export class ReminderEmailsController {
 
     if (Object.keys(pendingMenteeApplications).length > 0) {
       Object.keys(pendingMenteeApplications).forEach(async (match) => {
-        // Send reminder email to mentee
+        // Send reminder email to mentor
         await this.reminderEmailsService.sendMentorPendingApplicationReminder({
           match: pendingMenteeApplications[match],
         })
