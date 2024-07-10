@@ -29,8 +29,13 @@ export class TpCompanyProfileMapper
     props.state = raw.props.ReDI_Talent_Pool_State__c as CompanyTalentPoolState
     props.isProfileVisibleToJobseekers = raw.props.ReDI_Visible_to_Jobseekers__c
     props.isCareerPartner = raw.props.ReDI_Career_Partner__c
-    props.joinsMunich24SummerJobFair =
-      raw.props.ReDI_Joins_Munich_24_Summer_Job_Fair__c
+
+    /**
+     * Job Fair Boolean Field(s)
+     * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+     * Duplicate if there are multiple Job Fairs coming
+     */
+    // props.joinsMunich24SummerJobFair = raw.props.ReDI_Joins_Munich_24_Summer_Job_Fair__c
 
     props.createdAt = raw.props.CreatedDate
     props.updatedAt = raw.props.LastModifiedDate
@@ -57,8 +62,13 @@ export class TpCompanyProfileMapper
     props.Description = srcProps.about
     props.ReDI_Talent_Pool_State__c = srcProps.state
     props.ReDI_Visible_to_Jobseekers__c = srcProps.isProfileVisibleToJobseekers
-    props.ReDI_Joins_Munich_24_Summer_Job_Fair__c =
-      srcProps.joinsMunich24SummerJobFair
+
+    /**
+     * Job Fair Boolean Field(s)
+     * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+     * Duplicate if there are multiple Job Fairs coming
+     */
+    // props.ReDI_Joins_Munich_24_Summer_Job_Fair__c = srcProps.joinsMunich24SummerJobFair
 
     props.CreatedDate = srcProps.createdAt
     props.LastModifiedDate = srcProps.updatedAt

@@ -220,7 +220,6 @@ input FindAllVisibleTpJobListingsArgsFilter {
   employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
   isRemotePossible: Boolean
-  joinsMunich24SummerJobFair: Boolean
   relatesToPositions: [TpDesiredPosition!]
   skills: [TpTechnicalSkill!]
 }
@@ -230,7 +229,6 @@ input FindAllVisibleTpJobseekerDirectoryEntriesFilter {
   desiredPositions: [TpDesiredPosition!]
   employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
-  joinsMunich24SummerJobFair: Boolean
   name: String
   skills: [TpTechnicalSkill!]
 }
@@ -646,12 +644,17 @@ type TpCompanyProfile {
   about: String
   companyName: String!
   companyRepresentatives: [UserContact!]!
+
+  """
+  Job Fair Boolean Field(s)
+  Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+  Duplicate if there are multiple Job Fairs coming
+  """
   createdAt: DateTime!
   id: ID!
   industry: String
   isCareerPartner: Boolean!
   isProfileVisibleToJobseekers: Boolean!
-  joinsMunich24SummerJobFair: Boolean
   linkedInUrl: String
   location: String
   profileAvatarImageS3Key: String
@@ -667,7 +670,6 @@ input TpCompanyProfilePatchInput {
   companyName: String
   industry: String
   isProfileVisibleToJobseekers: Boolean
-  joinsMunich24SummerJobFair: Boolean
   linkedInUrl: String
   location: String
   profileAvatarImageS3Key: String
@@ -1091,8 +1093,13 @@ type TpJobseekerDirectoryEntry {
   id: ID!
   ifAvailabilityIsDate_date: DateTime
   immigrationStatus: ImmigrationStatus
+
+  """
+  Job Fair Boolean Field(s)
+  Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+  Duplicate if there are multiple Job Fairs coming
+  """
   isProfileVisibleToCompanies: Boolean!
-  joinsMunich24SummerJobFair: Boolean
   lastName: String!
   linkedInUrl: String
   location: String
@@ -1146,8 +1153,13 @@ type TpJobseekerProfile {
   id: ID!
   ifAvailabilityIsDate_date: DateTime
   immigrationStatus: ImmigrationStatus
+
+  """
+  Job Fair Boolean Field(s)
+  Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+  Duplicate if there are multiple Job Fairs coming
+  """
   isProfileVisibleToCompanies: Boolean!
-  joinsMunich24SummerJobFair: Boolean
   location: String
   profileAvatarImageS3Key: String
   rediLocation: RediLocation
@@ -1295,8 +1307,13 @@ input TpJobseekerProfilePatchInput {
   federalState: FederalState
   ifAvailabilityIsDate_date: DateTime
   immigrationStatus: ImmigrationStatus
+
+  """
+  Job Fair Boolean Field(s)
+  Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+  Duplicate if there are multiple Job Fairs coming
+  """
   isProfileVisibleToCompanies: Boolean
-  joinsMunich24SummerJobFair: Boolean
   location: String
   profileAvatarImageS3Key: String
   rediLocation: RediLocation

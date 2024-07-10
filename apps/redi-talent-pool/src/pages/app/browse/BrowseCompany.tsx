@@ -58,7 +58,12 @@ export function BrowseCompany() {
     skills: withDefault(ArrayParam, []),
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
-    joinsMunich24SummerJobFair: withDefault(BooleanParam, undefined),
+    /**
+     * Job Fair Boolean Field(s)
+     * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+     * Duplicate if there are multiple Job Fairs coming
+     */
+    // joinsMunich24SummerJobFair: withDefault(BooleanParam, undefined),
   })
   const name = query.name
   const desiredLanguages = query.desiredLanguages as Language[]
@@ -67,7 +72,13 @@ export function BrowseCompany() {
   const skills = query.skills as TpTechnicalSkill[]
   const federalStates = query.federalStates as FederalState[]
   const onlyFavorites = query.onlyFavorites
-  const joinsMunich24SummerJobFair = query.joinsMunich24SummerJobFair
+
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
+  // const joinsMunich24SummerJobFair = query.joinsMunich24SummerJobFair
 
   const jobseekerProfilesQuery =
     useTpJobseekerDirectoryEntriesFindAllVisibleQuery({
@@ -78,7 +89,12 @@ export function BrowseCompany() {
         employmentTypes,
         skills,
         federalStates,
-        joinsMunich24SummerJobFair,
+        /**
+         * Job Fair Boolean Field(s)
+         * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+         * Duplicate if there are multiple Job Fairs coming
+         */
+        //joinsMunich24SummerJobFair,
       },
     })
   const jobseekerProfiles =
@@ -122,12 +138,17 @@ export function BrowseCompany() {
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  const toggleMunich24SummerJobFairFilter = () =>
-    setQuery((latestQuery) => ({
-      ...latestQuery,
-      joinsMunich24SummerJobFair:
-        joinsMunich24SummerJobFair === undefined ? true : undefined,
-    }))
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next method when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
+  // const toggleMunich24SummerJobFairFilter = () =>
+  //   setQuery((latestQuery) => ({
+  //     ...latestQuery,
+  //     joinsMunich24SummerJobFair:
+  //       joinsMunich24SummerJobFair === undefined ? true : undefined,
+  //   }))
 
   const setName = (value) => {
     setQuery((latestQuery) => ({ ...latestQuery, name: value || undefined }))
@@ -141,7 +162,12 @@ export function BrowseCompany() {
       desiredPositions: [],
       employmentTypes: [],
       federalStates: [],
-      joinsMunich24SummerJobFair: undefined,
+      /**
+       * Job Fair Boolean Field(s)
+       * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+       * Duplicate if there are multiple Job Fairs coming
+       */
+      // joinsMunich24SummerJobFair: undefined,
     }))
   }
 
@@ -150,8 +176,13 @@ export function BrowseCompany() {
     skills.length !== 0 ||
     desiredPositions.length !== 0 ||
     federalStates.length !== 0 ||
-    employmentTypes.length !== 0 ||
-    joinsMunich24SummerJobFair
+    employmentTypes.length !== 0
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
+  // || joinsMunich24SummerJobFair
 
   return (
     <LoggedIn>
@@ -252,7 +283,12 @@ export function BrowseCompany() {
             size="small"
           />
         </div>
-        <div className="filters-inner">
+        {/*
+         * Job Fair Boolean Field(s)
+         * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next div when there's an upcoming Job Fair
+         * Duplicate if there are multiple Job Fairs coming
+         */}
+        {/* <div className="filters-inner">
           <Checkbox
             name="joinsMunich24SummerJobFair"
             checked={joinsMunich24SummerJobFair || false}
@@ -260,7 +296,7 @@ export function BrowseCompany() {
           >
             ReDI Munich Summer Job Fair 2024
           </Checkbox>
-        </div>
+        </div> */}
         {/* Next Div is to keep three filters sizing for two checkboxes. Remove if necessary */}
         <div className="filters-inner"></div>
       </div>
@@ -316,14 +352,19 @@ export function BrowseCompany() {
                 }
               />
             ))}
-            {joinsMunich24SummerJobFair && (
+            {/*
+             * Job Fair Boolean Field(s)
+             * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next FilterTag when there's an upcoming Job Fair
+             * Duplicate if there are multiple Job Fairs coming
+             */}
+            {/* {joinsMunich24SummerJobFair && (
               <FilterTag
                 key="redi-munich-summer-job-fair-2024-filter"
                 id="redi-munich-summer-job-fair-2024-filter"
                 label="ReDI Munich Summer Job Fair 2024"
                 onClickHandler={toggleMunich24SummerJobFairFilter}
               />
-            )}
+            )} */}
             <span className="active-filters__clear-all" onClick={clearFilters}>
               Delete all filters
               <Icon icon="cancel" size="small" space="left" />
