@@ -1,8 +1,5 @@
-@import '_variables.scss';
-@import 'global.scss';
-
-$tp-light-blue: #58adc4;
-$tp-blue: #eff6f8;
+@import '_variables';
+@import '~bulma/sass/utilities/_all';
 
 .onboarding-steps {
   display: flex;
@@ -17,7 +14,7 @@ $tp-blue: #eff6f8;
     margin-bottom: 2.5rem;
   }
 
-  border: 1px solid #d8d8d8;
+  border: 1px solid $grey-light;
 
   &--header {
     display: flex;
@@ -45,9 +42,9 @@ $tp-blue: #eff6f8;
     }
   }
   &--item.current-step {
-    background-color: $tp-blue;
+    background-color: $redi-blue-light;
   }
   &--item.completed-step {
-    color: $tp-light-blue;
+    color: $redi-blue-dark;
   }
 }

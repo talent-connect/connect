@@ -253,7 +253,8 @@
             "styles": [],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "libs/shared-atomic-design-components/src/lib/styles"
+                "libs/shared-atomic-design-components/src/lib/styles",
+                "libs/shared-atomic-design-components/src/assets/fonts"
               ]
             },
             "extractCss": true,
