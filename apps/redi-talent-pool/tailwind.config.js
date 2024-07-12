@@ -1,9 +1,11 @@
-/** @type {import('tailwindcss').Config} */
+const { join } = require('path')
+
 module.exports = {
-  content: [],
+  content: [
+    join(__dirname, './src/**/*!(*.stories|*.spec).{js,ts,jsx,tsx,html}'),
+  ],
   theme: {
     extend: {},
   },
   plugins: [],
 }
-
