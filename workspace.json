@@ -137,7 +137,7 @@
             "polyfills": "apps/redi-connect/src/polyfills.ts",
             "tsConfig": "apps/redi-connect/tsconfig.app.json",
             "assets": ["apps/redi-connect/src/assets"],
-            "styles": [],
+            "styles": ["apps/redi-connect/src/main.scss"],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "libs/shared-atomic-design-components/src/lib/styles",
@@ -146,7 +146,8 @@
             },
             "extractCss": true,
             "scripts": [],
-            "webpackConfig": "@nrwl/react/plugins/webpack"
+            "webpackConfig": "@nrwl/react/plugins/webpack",
+            "postcssConfig": "apps/redi-connect/postcss.config.js"
           },
           "configurations": {
             "production": {
@@ -250,7 +251,7 @@
               "apps/redi-talent-pool/src/favicon.ico",
               "apps/redi-talent-pool/src/assets"
             ],
-            "styles": [],
+            "styles": ["apps/redi-talent-pool/src/main.scss"],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "libs/shared-atomic-design-components/src/lib/styles",
@@ -259,7 +260,8 @@
             },
             "extractCss": true,
             "scripts": [],
-            "webpackConfig": "apps/redi-talent-pool/custom-webpack-config.js"
+            "webpackConfig": "apps/redi-talent-pool/custom-webpack-config.js",
+            "postcssConfig": "apps/redi-connect/postcss.config.js"
           },
           "configurations": {
             "production": {
@@ -441,6 +443,31 @@
           "outputs": ["coverage/libs/shared-config"],
           "options": {
             "jestConfig": "libs/shared-config/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "shared-shadcn-ui-components": {
+      "root": "libs/shared-shadcn-ui-components",
+      "sourceRoot": "libs/shared-shadcn-ui-components/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared-shadcn-ui-components/**/*.{ts,tsx,js,jsx}"
+            ]
+          },
+          "outputs": ["{options.outputFile}"]
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared-shadcn-ui-components"],
+          "options": {
+            "jestConfig": "libs/shared-shadcn-ui-components/jest.config.js",
             "passWithNoTests": true
           }
         }

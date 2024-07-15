@@ -10,6 +10,7 @@ import {
   Checkbox,
   FilterDropdown,
   Icon,
+  Paginate,
   SearchField,
 } from '@talent-connect/shared-atomic-design-components'
 import { LANGUAGES } from '@talent-connect/shared-config'
@@ -23,6 +24,7 @@ import {
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
+import { useState } from 'react'
 import { Columns, Element, Tag } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import {
@@ -40,16 +42,12 @@ import {
   useTpCompanyUnmarkJobseekerAsFavouriteMutation,
 } from './BrowseCompany.generated'
 
-const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
-  ([value, label]) => ({
-    value,
-    label,
-  })
-)
+const JOBSEEKER_CARDS_PER_PAGE = 12
 
 export function BrowseCompany() {
   const queryClient = useQueryClient()
 
+  const [currentPageNumber, setCurrentPageNumber] = useState(1)
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, ''),
     desiredLanguages: withDefault(ArrayParam, []),
@@ -97,8 +95,6 @@ export function BrowseCompany() {
         //joinsMunich24SummerJobFair,
       },
     })
-  const jobseekerProfiles =
-    jobseekerProfilesQuery.data?.tpJobseekerDirectoryEntriesVisible
 
   const favoritedJobseekersQuery =
     useTpCompanyFavouritedJobseekerProfilesQuery()
@@ -106,6 +102,31 @@ export function BrowseCompany() {
     useTpCompanyMarkJobseekerAsFavouriteMutation()
   const unfavouriteJobseekerMutation =
     useTpCompanyUnmarkJobseekerAsFavouriteMutation()
+
+  const jobseekerProfiles =
+    jobseekerProfilesQuery?.data?.tpJobseekerDirectoryEntriesVisible
+
+  // Filter the jobseekerProfiles based on the onlyFavorites flag before pagination
+  const filteredJobseekerProfiles = jobseekerProfiles?.filter((profile) => {
+    if (!onlyFavorites) return true
+    const isFavorite =
+      favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
+        ?.map((p) => p.favoritedTpJobseekerProfileId)
+        ?.includes(profile.id)
+    return isFavorite
+  })
+
+  const lastItemIndex = currentPageNumber * JOBSEEKER_CARDS_PER_PAGE
+  const firstItemIndex = lastItemIndex - JOBSEEKER_CARDS_PER_PAGE
+  const currentItems = filteredJobseekerProfiles?.slice(
+    firstItemIndex,
+    lastItemIndex
+  )
+
+  const totalItems = filteredJobseekerProfiles?.length
+  const totalPagesNumber = totalItems
+    ? Math.ceil(totalItems / JOBSEEKER_CARDS_PER_PAGE)
+    : undefined
 
   const handleFavoriteJobseeker = async (tpJobseekerProfileId: string) => {
     const isFavorite =
@@ -186,6 +207,39 @@ export function BrowseCompany() {
 
   return (
     <LoggedIn>
+      {/* testing Tailwind classes */}
+      <>
+        <div className="bg-indigo-500 p-2 font-mono text-white">
+          Hello TailwindCSS
+        </div>
+        <div className="bg-purple-200">
+          <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
+            <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+              <span className="block">Ready to TailwindCSS?</span>
+              <span className="block text-indigo-600">Start today.</span>
+            </h2>
+            <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
+              <div className="inline-flex rounded-md shadow">
+                <a
+                  href="#"
+                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+                >
+                  Get started
+                </a>
+              </div>
+              <div className="ml-3 inline-flex rounded-md shadow">
+                <a
+                  href="#"
+                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50"
+                >
+                  Learn more
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+      {/* testing Tailwind classes */}
       <Element
         renderAs="h4"
         textSize={3}
@@ -194,7 +248,7 @@ export function BrowseCompany() {
         style={{ flexGrow: 1 }}
       >
         Browse our Talent Pool
-        {jobseekerProfiles?.length ? ` (${jobseekerProfiles.length})` : ''}
+        {totalItems ? ` (${totalItems})` : ''}
       </Element>
       <Element
         renderAs="p"
@@ -202,7 +256,7 @@ export function BrowseCompany() {
         responsive={{ mobile: { textSize: { value: 6 } } }}
         className="oneandhalf-bs"
       >
-        Browse our Jobseeker profiles and find the talent you're looking for.
+        Search our Jobseeker profiles to find the talent you're looking for.
       </Element>
       <div className="filters">
         <div className="filters-inner">
@@ -373,41 +427,37 @@ export function BrowseCompany() {
         )}
       </div>
       <Columns>
-        {jobseekerProfiles
-          ?.filter((profile) => {
-            if (!onlyFavorites) return true
-            const isFavorite =
-              favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
-                ?.map((p) => p.favoritedTpJobseekerProfileId)
-                ?.includes(profile.id)
-            return isFavorite
-          })
-          .map((profile) => {
-            const isFavorite =
-              favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
-                ?.map((p) => p.favoritedTpJobseekerProfileId)
-                ?.includes(profile.id)
+        {currentItems?.map((profile) => {
+          const isFavorite =
+            favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
+              ?.map((p) => p.favoritedTpJobseekerProfileId)
+              ?.includes(profile.id)
 
-            if (!isFavorite && onlyFavorites) return
-
-            return (
-              <Columns.Column
+          return (
+            <Columns.Column
+              key={profile.id}
+              mobile={{ size: 12 }}
+              tablet={{ size: 6 }}
+              desktop={{ size: 4 }}
+            >
+              <JobseekerProfileCard
                 key={profile.id}
-                mobile={{ size: 12 }}
-                tablet={{ size: 6 }}
-                desktop={{ size: 4 }}
-              >
-                <JobseekerProfileCard
-                  key={profile.id}
-                  jobseekerProfile={profile}
-                  linkTo={`/app/jobseeker-profile/${profile.id}`}
-                  toggleFavorite={handleFavoriteJobseeker}
-                  isFavorite={isFavorite}
-                />
-              </Columns.Column>
-            )
-          })}
+                jobseekerProfile={profile}
+                linkTo={`/app/jobseeker-profile/${profile.id}`}
+                toggleFavorite={handleFavoriteJobseeker}
+                isFavorite={isFavorite}
+              />
+            </Columns.Column>
+          )
+        })}
       </Columns>
+      {totalItems > JOBSEEKER_CARDS_PER_PAGE && (
+        <Paginate
+          totalPagesNumber={totalPagesNumber}
+          currentPageNumber={currentPageNumber}
+          setCurrentPageNumber={setCurrentPageNumber}
+        />
+      )}
     </LoggedIn>
   )
 }
@@ -422,6 +472,12 @@ const employmentTypesOptions = employmentTypes.map(({ id, label }) => ({
   label,
 }))
 const desiredLanguagesOptions = Object.entries(LANGUAGES).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+)
+const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
   ([value, label]) => ({
     value,
     label,

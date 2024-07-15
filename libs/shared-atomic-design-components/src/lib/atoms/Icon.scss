@@ -32,4 +32,8 @@
   &--active {
     cursor: pointer;
   }
+
+  &--disabled path {
+    fill: $grey-light;
+  }
 }

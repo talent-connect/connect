@@ -9,7 +9,7 @@ import { formSelectStyles } from './FormSelect.styles'
 
 export const DropdownIndicator = (props: any) => (
   <components.DropdownIndicator {...props}>
-    <Icon icon="chevron" size="small" />
+    <Icon icon="chevronDown" size="small" />
   </components.DropdownIndicator>
 )
 

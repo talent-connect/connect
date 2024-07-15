@@ -23,7 +23,7 @@ function FaqItem({ question, answer }: Props) {
         </Columns.Column>
         <Columns.Column narrow>
           <Icon
-            icon="chevron"
+            icon="chevronDown"
             size="small"
             className={classnames({ 'icon--rotate': showAnswer })}
           />

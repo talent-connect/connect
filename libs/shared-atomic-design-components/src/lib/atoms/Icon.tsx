@@ -11,11 +11,14 @@ import { ReactComponent as Career } from '../../assets/images/career.svg'
 import { ReactComponent as Certificate } from '../../assets/images/certificate.svg'
 import { ReactComponent as Chat } from '../../assets/images/chat.svg'
 import { ReactComponent as Checkmark } from '../../assets/images/checkmark.svg'
-import { ReactComponent as Chevron } from '../../assets/images/chevron.svg'
+import { ReactComponent as ChevronDown } from '../../assets/images/chevron-down.svg'
+import { ReactComponent as ChevronLeft } from '../../assets/images/chevron-left.svg'
+import { ReactComponent as ChevronRight } from '../../assets/images/chevron-right.svg'
 import { ReactComponent as Clipboard } from '../../assets/images/clipboard.svg'
 import { ReactComponent as Delete } from '../../assets/images/delete.svg'
 import { ReactComponent as EditLightGrey } from '../../assets/images/edit-lightgrey.svg'
 import { ReactComponent as Edit } from '../../assets/images/edit.svg'
+import { ReactComponent as EllipsisHorizontal } from '../../assets/images/ellipsis-horizontal.svg'
 import { ReactComponent as Ellipsis } from '../../assets/images/ellipsis.svg'
 import { ReactComponent as Fb } from '../../assets/images/fb.svg'
 import { ReactComponent as Hamburger } from '../../assets/images/hamburger.svg'
@@ -49,11 +52,14 @@ const Icons = {
   edit: Edit,
   editLightGrey: EditLightGrey,
   ellipsis: Ellipsis,
+  ellipsisHorizontal: EllipsisHorizontal,
   delete: Delete,
   refresh: Refresh,
   link: Link,
   cancel: Cancel,
-  chevron: Chevron,
+  chevronDown: ChevronDown,
+  chevronLeft: ChevronLeft,
+  chevronRight: ChevronRight,
   heart: Heart,
   heartFilled: HeartFilled,
   clipboard: Clipboard,

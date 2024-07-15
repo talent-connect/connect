@@ -51,7 +51,7 @@ const FilterDropdown = ({
       >
         Filter by {label}
         <Icon
-          icon="chevron"
+          icon="chevronDown"
           size="small"
           className={classnames({
             'icon--rotate': showDropdown,
