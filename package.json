@@ -132,6 +132,7 @@
     "regenerator-runtime": "0.13.7",
     "rxjs": "^7.0.0",
     "stream-browserify": "^3.0.0",
+    "tslib": "^2.0.0",
     "use-query-params": "^1.2.2",
     "uuid": "^8.3.2",
     "winston": "^3.3.3",
