@@ -39,8 +39,14 @@ export class TpJobseekerProfileMapper
     props.topSkills =
       (raw.props.Top_Skills__c?.split(';') as TpTechnicalSkill[]) ?? undefined
     props.state = raw.props.Profile_Status__c as JobseekerProfileStatus
-    props.joinsMunich24SummerJobFair =
-      raw.props.Joins_Munich_24_Summer_Job_Fair__c
+
+    /**
+     * Job Fair Boolean Field(s)
+     * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+     * Duplicate if there are multiple Job Fairs coming
+     */
+    // props.joinsMunich24SummerJobFair = raw.props.Joins_Munich_24_Summer_Job_Fair__c
+
     props.isProfileVisibleToCompanies = raw.props.Is_Visible_to_Companies__c
     props.federalState = raw.props.Federal_State__c as FederalState
     props.willingToRelocate = raw.props.Willing_to_Relocate__c
@@ -76,8 +82,13 @@ export class TpJobseekerProfileMapper
     props.About_Yourself__c = source.props.aboutYourself
     props.Top_Skills__c = source.props?.topSkills?.join(';')
     props.Profile_Status__c = source.props.state
-    props.Joins_Munich_24_Summer_Job_Fair__c =
-      source.props.joinsMunich24SummerJobFair
+
+    /**
+     * Job Fair Boolean Field(s)
+     * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+     * Duplicate if there are multiple Job Fairs coming
+     */
+    //  props.Joins_Munich_24_Summer_Job_Fair__c = source.props.joinsMunich24SummerJobFair
     props.Is_Visible_to_Companies__c = source.props.isProfileVisibleToCompanies
     props.Federal_State__c = source.props.federalState
     props.Willing_to_Relocate__c = source.props.willingToRelocate

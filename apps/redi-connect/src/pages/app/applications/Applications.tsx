@@ -13,7 +13,12 @@ import DesktopView from './DesktopView'
 import MobileView from './MobileView'
 
 function Applications() {
-  const mentorshipMatchesQuery = useGetMentorshipMatchesQuery()
+  // Refetch mentorship applications every 60 seconds to handle potential invalidation
+  // when another mentor accepts an application from the same mentee.
+  const mentorshipMatchesQuery = useGetMentorshipMatchesQuery(
+    {},
+    { refetchInterval: 60 * 1000 }
+  )
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const history = useHistory()

@@ -45,14 +45,19 @@ export function JobseekerProfileForJobseekerEyes() {
     queryClient.invalidateQueries()
   }
 
-  const onMunich24SummerJobFairParticipateChange = async () => {
-    await mutation.mutateAsync({
-      input: {
-        joinsMunich24SummerJobFair: !profile?.joinsMunich24SummerJobFair,
-      },
-    })
-    queryClient.invalidateQueries()
-  }
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next method when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
+  // const onMunich24SummerJobFairParticipateChange = async () => {
+  //   await mutation.mutateAsync({
+  //     input: {
+  //       joinsMunich24SummerJobFair: !profile?.joinsMunich24SummerJobFair,
+  //     },
+  //   })
+  //   queryClient.invalidateQueries()
+  // }
 
   const isProfileApproved =
     profile?.state === JobseekerProfileStatus.ProfileApproved
@@ -87,7 +92,12 @@ export function JobseekerProfileForJobseekerEyes() {
             {!isProfileApproved && <OnboardingSteps />}
           </div>
           <EditableNamePhotoLocation profile={profile} />
-          <div style={{ marginBottom: '1.5rem' }}>
+          {/*
+           * Job Fair Boolean Field(s)
+           * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next div when there's an upcoming Job Fair
+           * Duplicate if there are multiple Job Fairs coming
+           */}
+          {/* <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
               checked={profile?.joinsMunich24SummerJobFair}
               customOnChange={onMunich24SummerJobFairParticipateChange}
@@ -95,7 +105,7 @@ export function JobseekerProfileForJobseekerEyes() {
               I will attend the <b>ReDI Summer Job Fair in Munich</b> on{' '}
               <b>01/07/2024</b>.
             </Checkbox>
-          </div>
+          </div> */}
           <EditableOverview profile={profile} />
           <EditableSummary profile={profile} />
           <EditableProfessionalExperience profile={profile} />

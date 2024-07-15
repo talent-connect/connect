@@ -9,6 +9,7 @@ import { ConMentorshipMatchesModule } from '../con-mentorship-matches/con-mentor
 import { ConProblemReportModule } from '../con-problem-report/con-problem-report.module'
 import { ConProfilesModule } from '../con-profiles/con-profiles.module'
 import { EmailModule } from '../email/email.module'
+import { ReminderEmailsModule } from '../reminder-emails/reminder-emails.module'
 import { SfApiModule } from '../salesforce-api/sf-api.module'
 import { SalesforceRecordEventsListenerModule } from '../salesforce-record-events-listener/salesforce-record-events-listener.module'
 import { TpCompanyFavoritedJobseekerProfilesModule } from '../tp-company-favorited-jobseeker-profiles/tp-company-favorited-jobseeker-profiles.module'
@@ -57,6 +58,7 @@ import { AppService } from './app.service'
     TpJobseekerCvModule,
     TpJobseekerFavoritedJobListingsModule,
     TpCompanyFavoritedJobseekerProfilesModule,
+    ReminderEmailsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

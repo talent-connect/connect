@@ -57,6 +57,9 @@ const ConfirmMentorship = ({ match }: ConfirmMentorshipProps) => {
       queryClient.invalidateQueries()
     } catch (error) {
       console.log('error ', error)
+      // Very crude
+      alert('An error occurred. The page will now reload.')
+      window.location.reload()
     }
   }
 

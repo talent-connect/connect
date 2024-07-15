@@ -73,6 +73,13 @@ export class ConMentorshipMatchesService {
   async acceptMentorship(input: ConMentorshipMatchesAcceptMentorshipInputDto) {
     // TODO: enforce auth
     const mentorshipMatch = await this.findOneById(input.mentorshipMatchId)
+
+    if (mentorshipMatch.props.status !== MentorshipMatchStatus.APPLIED) {
+      throw new Error(
+        'Mentorship match is not in APPLIED state and cannot be accepted.'
+      )
+    }
+
     const [menteeProfile, mentorProfile] = await Promise.all([
       this.conProfilesServices.findOne({
         'Contact__r.Id': mentorshipMatch.props.menteeId,

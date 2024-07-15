@@ -1,3 +1,4 @@
+import formbricks from '@formbricks/js/website'
 import { initSentry } from '@talent-connect/shared-utils'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -11,6 +12,18 @@ import './services/i18n/i18n'
 // here to window so that cookie banner can call as needed.
 // prettier-ignore
 (window as any).initSentry = initSentry
+
+const environmentId =
+  process.env.NODE_ENV === 'production'
+    ? 'clxii0o4r01bt7f3o9zm71or8'
+    : 'clxii0o4r01bt7f3o9zm71or8'
+
+if (typeof window !== 'undefined') {
+  formbricks.init({
+    environmentId: environmentId,
+    apiHost: 'https://app.formbricks.com',
+  })
+}
 
 ReactDOM.render(
   <React.StrictMode>

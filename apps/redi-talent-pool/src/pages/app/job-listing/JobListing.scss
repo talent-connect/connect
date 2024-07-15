@@ -1,3 +1,6 @@
+@import '_variables.scss';
+@import '~bulma/sass/utilities/_all';
+
 .quill-editor-output .ql-align-left {
   text-align: left;
 }
@@ -26,4 +29,209 @@
 
 .quill-editor-output ol > li {
   margin-top: 0.25rem;
+}
+
+.profile-section {
+  font-family: 'Avenir LT Std';
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-size: 16px;
+
+  @include mobile() {
+    font-size: 14px;
+  }
+
+  &--title {
+    font-weight: 700;
+    line-height: 150%; /* 24px */
+    letter-spacing: 2px;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid $grey-light;
+    margin-bottom: 24px;
+  }
+
+  &--body {
+    div {
+      margin-bottom: 24px;
+      @include mobile() {
+        margin-bottom: 16px;
+      }
+    }
+  }
+
+  &--detail-section {
+    width: 100%;
+  }
+
+  &--caption {
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  &--content {
+    @include mobile() {
+      font-size: 14px;
+    }
+  }
+
+  &--tag-container {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  margin-bottom: 1.5rem;
+}
+
+.responsive-section {
+  @include tablet-only() {
+    .profile-section--body {
+      display: flex;
+      flex-wrap: wrap;
+
+      div {
+        flex-basis: 50%;
+      }
+    }
+  }
+  @include from(1025px) {
+    .profile-section--body {
+      display: block;
+    }
+  }
+}
+
+.jobListing {
+  display: flex;
+  max-width: 964px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 48px;
+  flex-shrink: 0;
+  font-family: 'Avenir LT Std';
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-size: 16px;
+  margin-left: 12px;
+  margin-top: 40px;
+
+  @include mobile() {
+    gap: 32px;
+    margin-top: 24px;
+  }
+
+  &--columns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+
+    &--mobile {
+      width: 100%;
+    }
+  }
+
+  &--left-column {
+    max-width: 530px;
+    div {
+      .profile-section {
+        margin-bottom: 48px;
+      }
+    }
+  }
+
+  &--right-column {
+    max-width: 265px;
+    margin-right: 29px;
+  }
+
+  &-header {
+    display: flex;
+    max-height: 162px;
+    flex-direction: row;
+    gap: 24px;
+    flex-shrink: 0;
+    align-items: center;
+
+    @include tablet() {
+      flex-wrap: wrap;
+      text-overflow: ellipsis;
+      white-space: none;
+    }
+
+    @include mobile() {
+      flex-direction: column;
+      align-items: flex-start;
+      max-height: fit-content;
+    }
+
+    &--avatar {
+      width: 160px;
+      height: 160px;
+      flex-shrink: 0;
+
+      @include mobile() {
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+    &--title {
+      font-family: 'Jubilat';
+      font-size: 32px;
+      line-height: 40px;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2; /* Limits the text to 2 lines */
+      text-overflow: ellipsis;
+      max-height: 80px;
+
+      @include mobile() {
+        font-size: 24px;
+        line-height: 120%; /* 28.8px */
+      }
+    }
+
+    &--subtitle {
+      line-height: 30px;
+      margin: 8px 0px;
+
+      @include mobile() {
+        font-size: 14px;
+        margin: 12px 0px 3px;
+      }
+    }
+
+    &--location {
+      &-container {
+        display: flex;
+        flex-direction: row;
+        gap: 4px;
+        align-items: center;
+
+        @include mobile {
+          //margin-bottom: 16px;
+        }
+      }
+
+      &-icon {
+        position: relative;
+        left: -3px;
+      }
+
+      &-text {
+        line-height: 30px; /* 184.375% */
+
+        @include mobile() {
+          font-size: 14px;
+          line-height: 100%; /* 14px */
+        }
+      }
+    }
+  }
+
+  &--body {
+    font-weight: 550;
+    line-height: 180%; /* 28.8px */
+  }
 }

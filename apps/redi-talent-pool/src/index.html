@@ -62,6 +62,12 @@
     <script src="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0-rc.17/dist/cookieconsent.umd.js"></script>
 
     <!-- Trigger CookieConsent popover and only enable HotJar and Google Analytics if approved-->
+    <style>
+      /* style the accept button */
+      #cc-main .cm__btn[data-role='all'] {
+        background-color: #58adc5;
+      }
+    </style>
     <script async defer>
       window.addEventListener('load', () => {
         setupCookieConsent()
@@ -95,9 +101,8 @@
                 consentModal: {
                   title: '🍪 Cookie Information: Welcome to ReDI Talent Pool.',
                   description:
-                    'To create the best mentoring experience on ReDI Talent Pool, we use cookies. These cookies are crucial for the smooth operation of our platform and provide insights into how you engage with mentoring content.<br /><br /><em>Your Choices Matter:</em><br /> Click "Accept all" to allow the use of all cookies. If you prefer a personalized approach, select "Cookie Preferences" to manage your preferences.',
+                    'To enhance your experience on Talent Pool, we use cookies. These cookies are crucial for the smooth operation of our platform and provide insights into how you engage with mentoring content.<br /><br /><em>Your Choices Matter:</em><br /> Click "Accept all" to allow the use of all cookies. If you prefer a personalized approach, select "Cookie Preferences" to manage your preferences.',
                   acceptAllBtn: 'Accept all',
-                  acceptNecessaryBtn: 'Reject all',
                   showPreferencesBtn: 'Manage Cookie Preferences',
                 },
                 preferencesModal: {
