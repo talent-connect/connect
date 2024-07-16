@@ -146,8 +146,7 @@
             },
             "extractCss": true,
             "scripts": [],
-            "webpackConfig": "@nrwl/react/plugins/webpack",
-            "postcssConfig": "apps/redi-connect/postcss.config.js"
+            "webpackConfig": "@nrwl/react/plugins/webpack"
           },
           "configurations": {
             "production": {
@@ -260,8 +259,7 @@
             },
             "extractCss": true,
             "scripts": [],
-            "webpackConfig": "apps/redi-talent-pool/custom-webpack-config.js",
-            "postcssConfig": "apps/redi-connect/postcss.config.js"
+            "webpackConfig": "apps/redi-talent-pool/custom-webpack-config.js"
           },
           "configurations": {
             "production": {
