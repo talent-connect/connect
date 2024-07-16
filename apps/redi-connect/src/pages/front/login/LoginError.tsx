@@ -24,10 +24,10 @@ export default function LoginError() {
           <Content size="large" renderAs="div">
             <p>
               Oops! It seems like your access to the platform has changed. If
-              you believe this is a mistake or have any questions, please reach
-              out to Janis at{' '}
+              you believe this is a mistake or have any questions, please get in
+              touch with us at{' '}
               <a href="mailto:partner@redi-school.org">
-                partner@redi-school.org
+                career@redi-school.org
               </a>
               . We're here to help!
             </p>

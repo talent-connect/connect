@@ -50,8 +50,6 @@ function Me() {
     },
     {
       onSuccess: (profile) => {
-        console.log('Me loaded it')
-
         if (
           profile?.conProfile?.profileStatus ===
             ConnectProfileStatus.Rejected ||
