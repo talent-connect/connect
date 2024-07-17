@@ -2,18 +2,18 @@ import {
   MentoringTopic,
   useLoadMyProfileQuery,
   usePatchMyProfileMutation,
+  UserType as ProfileUserType,
 } from '@talent-connect/data-access'
 import {
-  Checkbox,
   Editable,
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import { CATEGORIES, CATEGORY_GROUPS } from '@talent-connect/shared-config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
-import { FormikValues, useFormik } from 'formik'
+import { useFormik } from 'formik'
 
 import groupBy from 'lodash/groupBy'
-import { Columns, Content, Element, Heading } from 'react-bulma-components'
+import { Content } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
@@ -44,41 +44,13 @@ const categoriesByGroup = groupBy(CATEGORIES, (category) => category.group)
 
 const formCategoryGroups = objectEntries(CATEGORY_GROUPS)
 
-const formSelectItemsConverter = (category) => {
-  return category.map((entry) => {
-    return { name: entry.label, value: entry.id, label: entry.label }
-  })
-}
-
-function EditableMentoringTopics() {
-  const loopbackUserId = getAccessTokenFromLocalStorage().userId
-  const queryClient = useQueryClient()
-  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
-  const patchMyProfileMutation = usePatchMyProfileMutation()
-
-  const profile = myProfileQuery.data?.conProfile
-
-  const userType = profile?.userType
-  const categories = profile?.categories
-
-  const submitForm = async (values: MentoringFormValues) => {
-    const newArr = []
-    const keysOfValues = Object.keys(values)
-
-    for (let i = 0; i < keysOfValues.length; i++) {
-      keysOfValues[i] !== 'isMentor' && newArr.push(values[keysOfValues[i]])
-    }
-    const flattenedArr = [...new Set(newArr.flat())]
-
-    const cleanValues = { categories: flattenedArr }
-    const mutationResult = await patchMyProfileMutation.mutateAsync({
-      input: cleanValues,
-    })
-    queryClient.setQueryData(useLoadMyProfileQuery.getKey({ loopbackUserId }), {
-      conProfile: mutationResult.patchConProfile,
-    })
-  }
-
+const getInitialValues = ({
+  userType,
+  categories,
+}: {
+  userType: ProfileUserType
+  categories: MentoringTopic[]
+}) => {
   const groups = Object.keys(
     CATEGORY_GROUPS
   ) as unknown as (keyof typeof CATEGORY_GROUPS)[]
@@ -105,8 +77,49 @@ function EditableMentoringTopics() {
     }
   }
 
+  return initialValues
+}
+
+const getFormSelectItemsFromCategory = (category) => {
+  return category.map((entry) => {
+    return { name: entry.label, value: entry.id, label: entry.label }
+  })
+}
+
+function EditableMentoringTopics() {
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+  const queryClient = useQueryClient()
+  const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+  const patchMyProfileMutation = usePatchMyProfileMutation()
+
+  const profile = myProfileQuery.data?.conProfile
+
+  const userType = profile?.userType
+  const categories = profile?.categories
+
+  const submitForm = async (values: MentoringFormValues) => {
+    const { isMentor, ...formCategories } = values
+
+    const valuesOfCategories = Object.entries(formCategories)
+      .map(([, value]) => value)
+      .flat()
+
+    const uniqueCategories = {
+      categories: [...new Set(valuesOfCategories)],
+    }
+    const mutationResult = await patchMyProfileMutation.mutateAsync({
+      input: uniqueCategories,
+    })
+    queryClient.setQueryData(useLoadMyProfileQuery.getKey({ loopbackUserId }), {
+      conProfile: mutationResult.patchConProfile,
+    })
+  }
+
   const formik = useFormik<MentoringFormValues>({
-    initialValues,
+    initialValues: getInitialValues({
+      userType,
+      categories,
+    }),
     enableReinitialize: true,
     validationSchema,
     onSubmit: submitForm,
@@ -134,7 +147,7 @@ function EditableMentoringTopics() {
           label={groupLabel}
           name={groupId}
           key={groupId}
-          items={formSelectItemsConverter(categoriesByGroup[groupId])}
+          items={getFormSelectItemsFromCategory(categoriesByGroup[groupId])}
           multiselect
           placeholder="Start typing and select a Topic"
           formik={formik}
