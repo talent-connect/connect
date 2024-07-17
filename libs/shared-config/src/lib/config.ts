@@ -8,12 +8,12 @@ export const REDI_LOCATION_NAMES = {
 } as const
 
 export const CATEGORY_GROUPS = {
-  softwareEngineering: '👩‍💻 Software Engineering',
-  design: '🎨 Design',
-  otherProfessions: '🏄‍♀️ Other Professions',
-  careerSupport: '✋ Career Support',
-  language: '🗣️ Language Support',
-  other: '🤗 Other',
+  softwareEngineering: 'Software Engineering',
+  design: 'Design',
+  otherProfessions: 'Other Professions',
+  careerSupport: 'Career Support',
+  language: 'Language Support',
+  other: 'Other',
 } as const
 
 export const CATEGORIES = [
