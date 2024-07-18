@@ -1,5 +1,6 @@
 import { useMyTpDataQuery } from '@talent-connect/data-access'
 import { Loader } from '@talent-connect/shared-atomic-design-components'
+import { purgeAllSessionData } from 'apps/redi-connect/src/services/auth/auth'
 import { Redirect, useHistory } from 'react-router-dom'
 import { MeCompany } from './MeCompany'
 
@@ -28,6 +29,7 @@ function Me() {
       break
     case 'REJECTED':
     case 'DEACTIVATED':
+      purgeAllSessionData()
       history.push('/front/login-result')
       break
     case 'APPROVED':
