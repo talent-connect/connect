@@ -50,47 +50,25 @@ export class ConProfilesService {
 
   whenMultipleProfilesExcludeDeactivatedOnes(profiles: ConProfileEntity[]) {
     const groupedProfiles = groupBy(profiles, (profile) => profile.props.userId)
+    const selectedProfiles: ConProfileEntity[] = []
+
     for (const key in groupedProfiles) {
-      let profileGroup = groupedProfiles[key].sort((a, b) => {
-        // Sort by createdDate, so that the most recent profile is first
-        return (
+      const profileGroup = groupedProfiles[key].sort(
+        (a, b) =>
           new Date(b.props.createdAt).getTime() -
           new Date(a.props.createdAt).getTime()
-        )
-      })
+      )
 
-      let selectedProfile: ConProfileEntity
+      const selectedProfile =
+        profileGroup.find(
+          (profile) =>
+            profile.props.profileStatus !== ConnectProfileStatus.DEACTIVATED
+        ) || profileGroup[0]
 
-      for (const profile of profileGroup) {
-        if (!selectedProfile) {
-          selectedProfile = profile
-          return
-        }
-        if (
-          selectedProfile.props.profileStatus ===
-            ConnectProfileStatus.DEACTIVATED &&
-          profile.props.profileStatus !== ConnectProfileStatus.DEACTIVATED
-        ) {
-          selectedProfile = profile
-          return
-        }
-      }
-
-      let deactivatedProfilePreviouslyFound = false
-      profileGroup = profileGroup.filter((profile) => {
-        const isThisProfileDeactivated =
-          profile.props.profileStatus === ConnectProfileStatus.DEACTIVATED
-        if (isThisProfileDeactivated && deactivatedProfilePreviouslyFound) {
-          return false
-        }
-        if (isThisProfileDeactivated) {
-          deactivatedProfilePreviouslyFound = true
-        }
-        return true
-      })
+      selectedProfiles.push(selectedProfile)
     }
 
-    return Array.from(profileMap.values())
+    return selectedProfiles
   }
 
   async findAllAvailableMentors(_filter: FindConProfilesArgs) {
