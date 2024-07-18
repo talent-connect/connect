@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import {
   AccountContactRecord,
+  AccountRecord,
   ContactRecord,
   ContactRecordProps,
   TpCompanyProfileEntity,
@@ -23,12 +24,12 @@ export class TpCompanyProfileSignUpUseCase {
   constructor(
     private readonly mapper: TpCompanyProfileMapper,
     private readonly sfService: SfApiTpCompanyProfilesService,
-    private readonly tpCompanyProfileksService: TpCompanyProfilesService,
+    private readonly tpCompanyProfilesService: TpCompanyProfilesService,
     private readonly emailService: EmailService,
     private readonly sfApi: SfApiRepository
   ) {}
 
-  // TODO: use a mapper here for more elegnat conversion
+  // TODO: use a mapper here for more elegant conversion
 
   // TOOD: ugh, this whole TpCompanyProfile module, related Contact, Account
   // and AccountContact are all messy. I need to review all again, and cleanly model
@@ -50,7 +51,8 @@ export class TpCompanyProfileSignUpUseCase {
     await this.upsertAccountContactRelationship(
       input,
       companyEntity,
-      currentUser
+      currentUser,
+      contactRecord
     )
 
     switch (input.operationType) {
@@ -88,7 +90,7 @@ export class TpCompanyProfileSignUpUseCase {
     if (
       operationType === TpCompanyProfileSignUpOperationType.EXISTING_COMPANY
     ) {
-      companyEntity = await this.tpCompanyProfileksService.findOneById(
+      companyEntity = await this.tpCompanyProfilesService.findOneById(
         companyIdOrName
       )
 
@@ -147,7 +149,8 @@ export class TpCompanyProfileSignUpUseCase {
   async upsertAccountContactRelationship(
     input: TpCompanyProfileSignUpMutationInputDto,
     companyEntity: TpCompanyProfileEntity,
-    currentUser: CurrentUserInfo
+    currentUser: CurrentUserInfo,
+    contactRecord: ContactRecord
   ) {
     console.log('stop here')
     const accountContactRecords = await this.sfApi.findRecordsOfObject({
@@ -198,5 +201,33 @@ export class TpCompanyProfileSignUpUseCase {
         accountContactRecord.Id
       )
     }
+
+    /**
+     * Updating the contact's Account from Household account to the Company account
+     * and deleting the unassigned Household account
+     */
+    const householdAccountIdToBeDeleted = contactRecord.props.AccountId
+
+    const newContactRecordProps = new ContactRecordProps()
+    newContactRecordProps.Id = currentUser.userId
+    newContactRecordProps.AccountId = companyEntity.props.id
+
+    await this.sfService.updateContact(
+      ContactRecord.create(newContactRecordProps)
+    )
+    await this.cleanUpUnassignedHouseholdAccount(householdAccountIdToBeDeleted)
+  }
+
+  async cleanUpUnassignedHouseholdAccount(recordId: string) {
+    await this.sfApi.deleteRecord(
+      AccountRecord.metadata.SALESFORCE_OBJECT_NAME,
+      recordId
+    )
+
+    console.log(
+      '[TpCompanyProfileSignUpUseCase]',
+      'deleted household account record',
+      recordId
+    )
   }
 }

@@ -185,8 +185,9 @@ export type ConProfileSignUpInput = {
 export enum ConnectProfileStatus {
   Approved = 'APPROVED',
   Deactivated = 'DEACTIVATED',
-  Pending = 'PENDING',
-  Rejected = 'REJECTED'
+  DraftingProfile = 'DRAFTING_PROFILE',
+  Rejected = 'REJECTED',
+  SubmittedForReview = 'SUBMITTED_FOR_REVIEW'
 }
 
 export type CreateConMentoringSessionInput = {
@@ -241,8 +242,6 @@ export type FindAllVisibleTpJobListingsArgsFilter = {
   employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
   federalStates?: InputMaybe<Array<FederalState>>;
   isRemotePossible?: InputMaybe<Scalars['Boolean']>;
-  joinsDusseldorf24WinterJobFair?: InputMaybe<Scalars['Boolean']>;
-  joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   relatesToPositions?: InputMaybe<Array<TpDesiredPosition>>;
   skills?: InputMaybe<Array<TpTechnicalSkill>>;
 };
@@ -252,8 +251,6 @@ export type FindAllVisibleTpJobseekerDirectoryEntriesFilter = {
   desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
   employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
   federalStates?: InputMaybe<Array<FederalState>>;
-  joinsDusseldorf24WinterJobFair?: InputMaybe<Scalars['Boolean']>;
-  joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   skills?: InputMaybe<Array<TpTechnicalSkill>>;
 };
@@ -487,6 +484,7 @@ export enum MentoringTopic {
   CareerOrientationAndPlanning = 'careerOrientationAndPlanning',
   CodingChallengePreparation = 'codingChallengePreparation',
   ComputerNetworking = 'computerNetworking',
+  Cybersecurity = 'cybersecurity',
   DataAnalytics = 'dataAnalytics',
   DevOpsCloud = 'devOpsCloud',
   DigitalMarketing = 'digitalMarketing',
@@ -516,6 +514,7 @@ export enum MentoringTopic {
   React = 'react',
   Sales = 'sales',
   Salesforce = 'salesforce',
+  Swedish = 'swedish',
   UserExperienceDesign = 'userExperienceDesign',
   UserInterfaceDesign = 'userInterfaceDesign'
 }
@@ -540,6 +539,7 @@ export type Mutation = {
   conMentorshipMatchesDeclineMentorship: ConMentorshipMatchesDeclineMentorshipOutputDto;
   conProblemReportCreate: OkResponseMutationOutputDto;
   conProfileSignUp: OkIdResponseMutationOutputDto;
+  conProfileSubmitForReview: ConProfile;
   createConMentoringSession: ConMentoringSession;
   patchConProfile: ConProfile;
   tpCompanyFavoritedJobseekerProfileCreate: TpCompanyFavoritedJobseekerProfileCreateMutationOutputDto;
@@ -925,6 +925,7 @@ export enum RediLocation {
   Berlin = 'BERLIN',
   Cyberspace = 'CYBERSPACE',
   Hamburg = 'HAMBURG',
+  Malmo = 'MALMO',
   Munich = 'MUNICH',
   Nrw = 'NRW'
 }
@@ -969,13 +970,16 @@ export type TpCompanyProfile = {
   about?: Maybe<Scalars['String']>;
   companyName: Scalars['String'];
   companyRepresentatives: Array<UserContact>;
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   industry?: Maybe<Scalars['String']>;
   isCareerPartner: Scalars['Boolean'];
   isProfileVisibleToJobseekers: Scalars['Boolean'];
-  joinsDusseldorf24WinterJobFair?: Maybe<Scalars['Boolean']>;
-  joinsMunich24SummerJobFair?: Maybe<Scalars['Boolean']>;
   linkedInUrl?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
@@ -991,8 +995,6 @@ export type TpCompanyProfilePatchInput = {
   companyName?: InputMaybe<Scalars['String']>;
   industry?: InputMaybe<Scalars['String']>;
   isProfileVisibleToJobseekers?: InputMaybe<Scalars['Boolean']>;
-  joinsDusseldorf24WinterJobFair?: InputMaybe<Scalars['Boolean']>;
-  joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   linkedInUrl?: InputMaybe<Scalars['String']>;
   location?: InputMaybe<Scalars['String']>;
   profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
@@ -1113,6 +1115,7 @@ export enum TpEmploymentType {
   Freelance = 'freelance',
   FullTime = 'fullTime',
   PartTime = 'partTime',
+  ProjectBased = 'projectBased',
   Traineeship = 'traineeship',
   Werkstudium = 'werkstudium'
 }
@@ -1122,6 +1125,10 @@ export type TpJobListing = {
   companyName: Scalars['String'];
   companyProfile: TpCompanyProfile;
   companyProfileId: Scalars['ID'];
+  contactEmailAddress?: Maybe<Scalars['String']>;
+  contactFirstName?: Maybe<Scalars['String']>;
+  contactLastName?: Maybe<Scalars['String']>;
+  contactPhoneNumber?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   employmentType?: Maybe<TpEmploymentType>;
   expiresAt?: Maybe<Scalars['DateTime']>;
@@ -1142,6 +1149,10 @@ export type TpJobListing = {
 };
 
 export type TpJobListingCreateInput = {
+  contactEmailAddress?: InputMaybe<Scalars['String']>;
+  contactFirstName?: InputMaybe<Scalars['String']>;
+  contactLastName?: InputMaybe<Scalars['String']>;
+  contactPhoneNumber?: InputMaybe<Scalars['String']>;
   employmentType?: InputMaybe<TpEmploymentType>;
   federalState?: InputMaybe<FederalState>;
   idealTechnicalSkills?: InputMaybe<Array<TpTechnicalSkill>>;
@@ -1159,6 +1170,10 @@ export type TpJobListingDeleteInput = {
 };
 
 export type TpJobListingPatchInput = {
+  contactEmailAddress?: InputMaybe<Scalars['String']>;
+  contactFirstName?: InputMaybe<Scalars['String']>;
+  contactLastName?: InputMaybe<Scalars['String']>;
+  contactPhoneNumber?: InputMaybe<Scalars['String']>;
   employmentType?: InputMaybe<TpEmploymentType>;
   expiresAt?: InputMaybe<Scalars['DateTime']>;
   federalState?: InputMaybe<FederalState>;
@@ -1412,10 +1427,12 @@ export type TpJobseekerDirectoryEntry = {
   id: Scalars['ID'];
   ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
   immigrationStatus?: Maybe<ImmigrationStatus>;
-  isHired: Scalars['Boolean'];
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
   isProfileVisibleToCompanies: Scalars['Boolean'];
-  joinsDusseldorf24WinterJobFair?: Maybe<Scalars['Boolean']>;
-  joinsMunich24SummerJobFair?: Maybe<Scalars['Boolean']>;
   lastName: Scalars['String'];
   linkedInUrl?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
@@ -1473,10 +1490,12 @@ export type TpJobseekerProfile = {
   id: Scalars['ID'];
   ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
   immigrationStatus?: Maybe<ImmigrationStatus>;
-  isHired: Scalars['Boolean'];
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
   isProfileVisibleToCompanies: Scalars['Boolean'];
-  joinsDusseldorf24WinterJobFair?: Maybe<Scalars['Boolean']>;
-  joinsMunich24SummerJobFair?: Maybe<Scalars['Boolean']>;
   location?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
   rediLocation?: Maybe<RediLocation>;
@@ -1627,10 +1646,12 @@ export type TpJobseekerProfilePatchInput = {
   federalState?: InputMaybe<FederalState>;
   ifAvailabilityIsDate_date?: InputMaybe<Scalars['DateTime']>;
   immigrationStatus?: InputMaybe<ImmigrationStatus>;
-  isHired?: InputMaybe<Scalars['Boolean']>;
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
   isProfileVisibleToCompanies?: InputMaybe<Scalars['Boolean']>;
-  joinsDusseldorf24WinterJobFair?: InputMaybe<Scalars['Boolean']>;
-  joinsMunich24SummerJobFair?: InputMaybe<Scalars['Boolean']>;
   location?: InputMaybe<Scalars['String']>;
   profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
   rediLocation?: InputMaybe<RediLocation>;

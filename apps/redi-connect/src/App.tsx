@@ -1,4 +1,7 @@
-import { Loader } from '@talent-connect/shared-atomic-design-components'
+import {
+  AppNotification,
+  Loader,
+} from '@talent-connect/shared-atomic-design-components'
 import { Suspense } from 'react'
 import {
   QueryClient,
@@ -8,33 +11,27 @@ import {
 } from 'react-query'
 import { Route } from 'react-router-dom'
 import { QueryParamProvider } from 'use-query-params'
-import AppNotification from './components/AppNotification'
 import { Routes } from './components/Routes'
-import LocationPicker from './pages/front/landing/LocationPicker'
 import {
   getAccessTokenFromLocalStorage,
   isLoggedIn,
   setGraphQlClientAuthHeader,
 } from './services/auth/auth'
 import { Router, history } from './services/history/history'
-import { envRediLocation } from './utils/env-redi-location'
 import { useConfetti } from './utils/useConfetti'
 
 function App() {
   useConfetti({ keybind: 'm i r i a m a l w a y s r e d i' })
   useConfetti({ keybind: 'a s y a a l w a y s r e d i' })
 
-  switch (envRediLocation()) {
-    case 'location-picker':
-      return (
-        <Suspense fallback={<Loader loading={true} />}>
-          <LocationPicker />
-        </Suspense>
-      )
-
-    default:
-      return <NormalRediConnectWrapper />
-  }
+  return (
+    <Suspense fallback={<Loader loading={true} />}>
+      <AppNotification />
+      <QueryClientProvider client={queryClient}>
+        <NormalRediConnect />
+      </QueryClientProvider>
+    </Suspense>
+  )
 }
 
 // TODO: put this into a lib
@@ -54,17 +51,6 @@ const queryClient = new QueryClient({
 
 if (isLoggedIn()) {
   setGraphQlClientAuthHeader(getAccessTokenFromLocalStorage())
-}
-
-function NormalRediConnectWrapper() {
-  return (
-    <>
-      <AppNotification />
-      <QueryClientProvider client={queryClient}>
-        <NormalRediConnect />
-      </QueryClientProvider>
-    </>
-  )
 }
 
 function NormalRediConnect() {

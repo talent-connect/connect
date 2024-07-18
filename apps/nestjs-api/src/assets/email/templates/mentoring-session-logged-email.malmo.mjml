@@ -1,0 +1,45 @@
+<mjml>
+  <mj-include path="./head.mjml" />
+  <mj-body mj-class="body">
+    <mj-wrapper background-color="#F0F0F0">
+      <mj-section />
+      <mj-section css-class="section">
+        <mj-column>
+          <mj-text mj-class="headline"
+            >Thank you for logging your session(s) with
+            ${menteeFirstName}!</mj-text
+          >
+          <mj-divider mj-class="divider-top" css-class="divider" />
+
+          <mj-text mj-class="text" padding="0 0 20px 0"
+            >Hi ${mentorName},</mj-text
+          >
+          <mj-text mj-class="text paragraph" 
+            >Thank you for logging the session(s) you had with
+            ${menteeFirstName}!</mj-text
+          >
+          <mj-text mj-class="text paragraph" 
+            >This is super helpful because it's currently the only way for us to
+            track the progress of your mentorship.
+          </mj-text>
+          <mj-text mj-class="text paragraph" 
+            >Please keep logging your sessions!</mj-text
+          >
+          <mj-image
+            src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/log-next-session.png"
+            align="left"
+            padding="10px 0 30px"
+            target="_blank"
+            width="250px"
+            href="${loginUrl}"
+          />
+
+          <mj-text mj-class="text">All the best,</mj-text>
+          <mj-text mj-class="text">ReDI Malmö Team</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-include path="./footer.malmo.team.mjml" />
+      <mj-section />
+    </mj-wrapper>
+  </mj-body>
+</mjml>

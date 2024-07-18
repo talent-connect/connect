@@ -44,7 +44,10 @@ export const ApplicationsFilterContextProvider = ({
 }: ApplicationsFilterContextProviderProps) => {
   const [activeFilter, setActiveFilter] = useState<ActiveFilterType>('all')
 
-  const mentorshipMatchesQuery = useGetMentorshipMatchesQuery()
+  const mentorshipMatchesQuery = useGetMentorshipMatchesQuery(
+    {},
+    { refetchInterval: 60 * 1000 }
+  )
 
   const applicants = mentorshipMatchesQuery.data?.conMentorshipMatches
 

@@ -35,8 +35,8 @@
         "name": "Transparency"
       },
       {
-        "url": "https://www.redi-school.org/imprint/",
-        "name": "Cookie policy"
+        "name": "Cookie settings",
+        "triggerCookieSettingsGlobalFunction": true
       },
       {
         "url": "https://www.redi-school.org/data-privacy-policy/",
@@ -84,8 +84,8 @@
             "answer": "The talent pool is exclusively open to individuals who are learners with ReDI School of Digital Integration, and are located in Germany. This includes current learners who are actively enrolled in a ReDI course as well as past students (Alumni) who have completed their course. "
           },
           {
-            "question": "Do I have to meet with someone from the Talent Success Team before I can start?",
-            "answer": "You are not required to meet with anyone from the ReDI Career Support Team before getting started. Simply create a user account as a job seeker, log in, and begin building your profile. Once you've completed all the necessary fields and are ready, you can click the button to submit it for review."
+            "question": "Do I have to meet with someone from the ReDI Talent Success Team before I can start?",
+            "answer": "You are not required to meet with anyone from the ReDI Talent Success Team before getting started. Simply create a user account as a job seeker, log in, and begin building your profile. Once you've completed all the necessary fields and are ready, you can click the button to submit it for review."
           },
           {
             "question": "How can I create a good profile as a Job Seeker?",

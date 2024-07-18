@@ -95,11 +95,11 @@ function EditableMenteeCount() {
       read={<ReadMenteeCount.Me />}
     >
       <FormSelect
-        label="How many mentees would you be willing to mentor this semester?"
+        label="How many mentees would you be willing to mentor this semester?*"
         name="menteeCountCapacity"
         placeholder="Mentee count"
         items={formMenteeCountCapacityOptions}
-        {...formik}
+        formik={formik}
       />
       <Checkbox.Form
         name="optOutOfMenteesFromOtherRediLocation"

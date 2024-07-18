@@ -61,7 +61,11 @@ export function BrowseJobseeker() {
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
     isRemotePossible: withDefault(BooleanParam, undefined),
-    joinsDusseldorf24WinterJobFair: withDefault(BooleanParam, undefined),
+    /**
+     * Job Fair Boolean Field(s)
+     * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+     * Duplicate if there are multiple Job Fairs coming
+     */
     // joinsMunich24SummerJobFair: withDefault(BooleanParam, undefined),
   })
   const relatedPositions = query.relatedPositions as TpDesiredPosition[]
@@ -70,7 +74,11 @@ export function BrowseJobseeker() {
   const federalStates = query.federalStates as FederalState[]
   const onlyFavorites = query.onlyFavorites
   const isRemotePossible = query.isRemotePossible
-  const joinsDusseldorf24WinterJobFair = query.joinsDusseldorf24WinterJobFair
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
   // const joinsMunich24SummerJobFair = query.joinsMunich24SummerJobFair
 
   const jobListingsQuery = useTpJobListingFindAllVisibleQuery({
@@ -80,7 +88,11 @@ export function BrowseJobseeker() {
       employmentTypes: employmentType,
       federalStates,
       isRemotePossible,
-      joinsDusseldorf24WinterJobFair,
+      /**
+       * Job Fair Boolean Field(s)
+       * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+       * Duplicate if there are multiple Job Fairs coming
+       */
       // joinsMunich24SummerJobFair,
     },
   })
@@ -131,14 +143,11 @@ export function BrowseJobseeker() {
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
   }
 
-  const toggleDusseldorf24WinterJobFair = () =>
-    setQuery((latestQuery) => ({
-      ...latestQuery,
-      joinsDusseldorf24WinterJobFair:
-        joinsDusseldorf24WinterJobFair === undefined ? true : undefined,
-    }))
-
-  // Hidden until the new date announced
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next method when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
   // const toggleMunich24SummerJobFairFilter = () =>
   //   setQuery((latestQuery) => ({
   //     ...latestQuery,
@@ -154,7 +163,11 @@ export function BrowseJobseeker() {
       employmentType: [],
       federalStates: [],
       isRemotePossible: undefined,
-      joinsDusseldorf24WinterJobFair: undefined,
+      /**
+       * Job Fair Boolean Field(s)
+       * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+       * Duplicate if there are multiple Job Fairs coming
+       */
       // joinsMunich24SummerJobFair: undefined,
     }))
   }
@@ -164,8 +177,12 @@ export function BrowseJobseeker() {
     idealTechnicalSkills.length !== 0 ||
     employmentType.length !== 0 ||
     federalStates.length !== 0 ||
-    isRemotePossible ||
-    joinsDusseldorf24WinterJobFair
+    isRemotePossible
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
   // || joinsMunich24SummerJobFair
 
   // Redirect to homepage if user is not supposed to be browsing yet
@@ -197,7 +214,7 @@ export function BrowseJobseeker() {
       <Element
         renderAs="h4"
         textSize={3}
-        responsive={{ mobile: { textSize: { value: 7 } } }}
+        responsive={{ mobile: { textSize: { value: 4 } } }}
         className="is-flex-grow-1"
         style={{ flexGrow: 1 }}
       >
@@ -207,7 +224,7 @@ export function BrowseJobseeker() {
       <Element
         renderAs="p"
         textSize={4}
-        responsive={{ mobile: { textSize: { value: 5 } } }}
+        responsive={{ mobile: { textSize: { value: 6 } } }}
         className="oneandhalf-bs"
       >
         Your profile has been approved and you can now browse job listings
@@ -293,29 +310,23 @@ export function BrowseJobseeker() {
             size="small"
           />
         </div>
-        <div className="filters-inner">
+        {/*
+         * Job Fair Boolean Field(s)
+         * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next div when there's an upcoming Job Fair
+         * Duplicate if there are multiple Job Fairs coming
+         */}
+        {/* <div className="filters-inner">
           <Checkbox
-            name="joinsDuesseldorf24WinterJobFair"
-            checked={joinsDusseldorf24WinterJobFair || false}
-            handleChange={toggleDusseldorf24WinterJobFair}
-          >
-            ReDI Düsseldorf Winter Job Fair 2024
-          </Checkbox>
-        </div>
-      </div>
-      {/* Hidden until the next Job Fair date announced */}
-      {/* <div className="filters"> */}
-      {/* <div className="filters-inner"> */}
-      {/* <Checkbox
             name="joinsMuich24WinterJobFair"
             checked={joinsMunich24SummerJobFair || false}
             handleChange={toggleMunich24SummerJobFairFilter}
           >
-            ReDI Munich Winter Job Fair 2024
-          </Checkbox> */}
-      {/* </div> */}
-      {/* <div className="filters-inner"></div> */}
-      {/* </div> */}
+            ReDI Munich Summer Job Fair 2024
+          </Checkbox>
+        </div> */}
+        {/* Next Div is to keep three filters sizing for two checkboxes. Remove if necessary */}
+        <div className="filters-inner"></div>
+      </div>
 
       <div className="active-filters">
         {shouldShowFilters && (
@@ -372,19 +383,16 @@ export function BrowseJobseeker() {
                 onClickHandler={toggleRemoteAvailableFilter}
               />
             )}
-            {joinsDusseldorf24WinterJobFair && (
-              <FilterTag
-                key="redi-dusseldorf-winter-job-fair-2024-filter"
-                id="redi-dusseldorf-winter-job-fair-2024-filter"
-                label="ReDI Düsseldorf Winter Job Fair 2024"
-                onClickHandler={toggleDusseldorf24WinterJobFair}
-              />
-            )}
+            {/*
+             * Job Fair Boolean Field(s)
+             * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next FilterTag when there's an upcoming Job Fair
+             * Duplicate if there are multiple Job Fairs coming
+             */}
             {/* {joinsMunich24SummerJobFair && (
               <FilterTag
-                key="redi-munich-winter-job-fair-2024-filter"
-                id="redi-munich-winter-job-fair-2024-filter"
-                label="ReDI Munich Winter Job Fair 2024"
+                key="redi-munich-summer-job-fair-2024-filter"
+                id="redi-munich-summer-job-fair-2024-filter"
+                label="ReDI Munich Summer Job Fair 2024"
                 onClickHandler={toggleMunich24SummerJobFairFilter}
               />
             )} */}
@@ -419,19 +427,18 @@ export function BrowseJobseeker() {
             if (!isFavorite && onlyFavorites) return
 
             return (
-              <Columns.Column size={12}>
+              <Columns.Column key={jobListing.id} size={12}>
                 <JobListingCard
-                  key={jobListing.id}
                   jobListing={jobListing}
                   linkTo={`/app/job-listing/${jobListing.id}`}
                   renderCTA={() => renderFavoriteCTA(jobListing.id, isFavorite)}
-                  timestamp={formatDistance(
+                  timestamp={`Last updated ${formatDistance(
                     new Date(jobListing.updatedAt),
                     new Date(),
                     {
                       addSuffix: true,
                     }
-                  )}
+                  )}`}
                 />
               </Columns.Column>
             )

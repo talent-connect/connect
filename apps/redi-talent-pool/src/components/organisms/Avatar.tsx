@@ -17,8 +17,8 @@ import placeholderImage from '../../assets/img-placeholder.png'
 import { ReactComponent as UploadImage } from '../../assets/uploadImage.svg'
 import './Avatar.scss'
 
-import { IconButton, Tooltip } from '@material-ui/core'
-import { ZoomIn, ZoomOut, ZoomOutMap } from '@material-ui/icons'
+import { ZoomIn, ZoomOut, ZoomOutMap } from '@mui/icons-material'
+import { IconButton, Tooltip } from '@mui/material'
 import classnames from 'classnames'
 import { useCallback, useRef, useState } from 'react'
 import Resizer from 'react-image-file-resizer'
@@ -234,7 +234,7 @@ const AvatarEditable = ({
           <Element
             renderAs="span"
             className="avatar__button"
-            textSize={7}
+            textSize={6}
             textTransform="uppercase"
           >
             Edit Photo

@@ -29,7 +29,7 @@
               href="mailto:career@redi-school.org"
               class="text-link"
               >career@redi-school.org</a
-            >) or message us on slack.</mj-text
+            >) or message us on Slack.</mj-text
           >
           <mj-text mj-class="text paragraph"
             >We wish you a successful and fun mentorship with
@@ -37,7 +37,7 @@
           >
 
           <mj-text mj-class="text">All the best,</mj-text>
-          <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
+          <mj-text mj-class="text">Your ReDI Talent Success Team</mj-text>
         </mj-column>
       </mj-section>
       <mj-include path="./footer.career.support.team.mjml" />

@@ -73,6 +73,13 @@ export class ConMentorshipMatchesService {
   async acceptMentorship(input: ConMentorshipMatchesAcceptMentorshipInputDto) {
     // TODO: enforce auth
     const mentorshipMatch = await this.findOneById(input.mentorshipMatchId)
+
+    if (mentorshipMatch.props.status !== MentorshipMatchStatus.APPLIED) {
+      throw new Error(
+        'Mentorship match is not in APPLIED state and cannot be accepted.'
+      )
+    }
+
     const [menteeProfile, mentorProfile] = await Promise.all([
       this.conProfilesServices.findOne({
         'Contact__r.Id': mentorshipMatch.props.menteeId,
@@ -95,6 +102,7 @@ export class ConMentorshipMatchesService {
       mentorName: mentorProfile.props.firstName,
       menteeName: menteeProfile.props.firstName,
       mentorReplyMessageOnAccept: input.mentorReplyMessageOnAccept,
+      rediLocation: menteeProfile.props.rediLocation,
     })
 
     const menteePendingMentorshipMatches = await this.findAll({
@@ -119,6 +127,7 @@ export class ConMentorshipMatchesService {
           recipient: mentorProfile.props.email,
           mentorName: mentorProfile.props.firstName,
           menteeName: menteeProfile.props.fullName,
+          rediLocation: mentorProfile.props.rediLocation,
         }
       )
     })
@@ -161,6 +170,7 @@ export class ConMentorshipMatchesService {
         input.ifDeclinedByMentor_ifReasonIsOther_freeText,
       ifDeclinedByMentor_optionalMessageToMentee:
         input.ifDeclinedByMentor_optionalMessageToMentee,
+      rediLocation: menteeProfile.props.rediLocation,
     })
 
     return result
@@ -189,12 +199,14 @@ export class ConMentorshipMatchesService {
       recipient: mentorProfile.props.email,
       mentorFirstName: mentorProfile.props.firstName,
       menteeFirstName: menteeProfile.props.firstName,
+      rediLocation: mentorProfile.props.rediLocation,
     })
 
     this.emailService.sendMentorshipCompletionEmailToMentee({
       recipient: menteeProfile.props.email,
       mentorFirstName: mentorProfile.props.firstName,
       menteeFirstName: menteeProfile.props.firstName,
+      rediLocation: menteeProfile.props.rediLocation,
     })
 
     return result
@@ -234,7 +246,7 @@ export class ConMentorshipMatchesService {
       mentorName: mentorProfile.props.firstName,
       menteeFullName: menteeProfile.props.fullName,
       menteeRediLocation: menteeProfile.props.rediLocation,
-      mentorRediLocation: mentorProfile.props.rediLocation,
+      rediLocation: mentorProfile.props.rediLocation,
     })
 
     return result

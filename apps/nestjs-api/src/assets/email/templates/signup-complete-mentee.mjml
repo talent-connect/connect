@@ -11,9 +11,7 @@
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Hi ${firstName},</mj-text
           >
-          <mj-text mj-class="text paragraph"
-            >Thank you for signing up!</mj-text
-          >
+          <mj-text mj-class="text paragraph">Thank you for signing up!</mj-text>
           <mj-text mj-class="text paragraph"
             >Your next step is to watch a short
             <strong>onboarding tutorial</strong> to get a good overview of the
@@ -47,49 +45,23 @@
             css-class="button-mobile"
             href="https://www.youtube.com/watch?v=M3nwS3QfdMM"
           />
-          <mj-text mj-class="text paragraph" 
-            >Your <strong>final step</strong> after watching this video will be
-            your <strong>activation call</strong> with our Mentorship Community
-            Manager, <strong>Hadeer</strong>, who will be happy to answer any
-            remaining questions and will then activate your account - only then
-            will you be able to fully use the platform and search for a
-            mentor.</mj-text
+          <mj-text mj-class="text paragraph"
+            >After watching the video, please
+            <a href="${loginPageUrl}" class="text-link"
+              >log into your account</a
+            >
+            and complete all the steps from the stepper at the top of your
+            profile page. After sending your profile for review, you will need
+            to wait a bit until our Mentorship Program Manager approves it. Once
+            approved, you will be able to find a mentor and start your
+            mentorship journey immediately.</mj-text
           >
-          <mj-text mj-class="text paragraph" 
-            ><strong>Schedule your activation call now</strong> and make sure to
-            watch the onboarding tutorial <strong>before</strong> attending your
-            activation call - there won’t be time to explain everything from
-            scratch during this call.</mj-text
-          >
-          <mj-image
-            src="https://redi-connect-email-assets.s3.eu-west-1.amazonaws.com/schedule-activation-call-now-button.png"
-            align="center"
-            padding="10px 0 30px 0"
-            target="_blank"
-            width="358px"
-            css-class="button-desktop"
-            href="https://calendly.com/hadeertalentsucess/redi-connect-mentees-activation-call"
-          />
-          <mj-image
-            src="https://redi-connect-email-assets.s3.eu-west-1.amazonaws.com/schedule-activation-call-now-button.png"
-            align="left"
-            padding="10px 0 30px 0"
-            target="_blank"
-            css-class="button-mobile"
-            href="https://calendly.com/hadeertalentsucess/redi-connect-mentees-activation-call"
-          />
-           <mj-text mj-class="text paragraph" 
-            >In case of any questions, you can
-            <strong>message Hadeer on Slack</strong> or send us an
-            <strong>e-mail</strong> at
-            <a href="mailto:career@redi-school.org" class="text-link">career@redi-school.org</a>.</mj-text
-          >
-          <mj-text mj-class="text paragraph" 
+          <mj-text mj-class="text paragraph"
             >We’re looking forward to getting to know you soon!
           </mj-text>
 
           <mj-text mj-class="text">All the best,</mj-text>
-          <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
+          <mj-text mj-class="text">Your ReDI Talent Success Team</mj-text>
         </mj-column>
       </mj-section>
       <mj-include path="./footer.career.support.team.mjml" />

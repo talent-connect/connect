@@ -14,24 +14,18 @@ import {
   Button,
   FormInput,
   Heading,
+  showNotification,
 } from '@talent-connect/shared-atomic-design-components'
-import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
-import { buildFrontendUrl, decodeJwt } from '@talent-connect/shared-utils'
+import { decodeJwt } from '@talent-connect/shared-utils'
 import { useFormik } from 'formik'
-import { capitalize } from 'lodash'
 import { useState } from 'react'
-import { Columns, Content, Form, Notification } from 'react-bulma-components'
+import { Columns, Content, Form } from 'react-bulma-components'
 import { Link, useHistory } from 'react-router-dom'
 import * as Yup from 'yup'
-import { showNotification } from '../../../components/AppNotification'
 import Teaser from '../../../components/molecules/Teaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { login } from '../../../services/api/api'
-import {
-  getAccessTokenFromLocalStorage,
-  purgeAllSessionData,
-} from '../../../services/auth/auth'
-import { envRediLocation } from '../../../utils/env-redi-location'
+import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 
 interface LoginFormValues {
   username: string
@@ -55,26 +49,12 @@ const validationSchema = Yup.object({
 const myTpDataFetcher = fetcher<MyTpDataQuery, MyTpDataQueryVariables>(
   MyTpDataDocument
 )
-// Same for the useLoadMyProfileQuery that loads CON data:
-const buildMyConProfileDataFetcher = () =>
-  fetcher<LoadMyProfileQuery, LoadMyProfileQueryVariables>(
-    LoadMyProfileDocument,
-    { loopbackUserId: getAccessTokenFromLocalStorage()?.userId }
-  )
 
 export default function Login() {
   const history = useHistory()
   const conProfileSignUpMutation = useConProfileSignUpMutation()
 
   const [loginError, setLoginError] = useState<string>('')
-  const [isWrongRediLocationError, setIsWrongRediLocationError] =
-    useState<boolean>(false)
-
-  const [conProfile, setConProfile] = useState<
-    LoadMyProfileQuery['conProfile'] | null
-  >(null)
-  const [tpProfileLocation, setTpProfileLocation] =
-    useState<RediLocation | null>(null)
 
   const submitForm = async () => {
     // LOG THE USER IN VIA LOOPBACK
@@ -92,7 +72,7 @@ export default function Login() {
       formik.setSubmitting(false)
       showNotification(
         'Please verify your email address first. Check your inbox.',
-        { variant: 'error', autoHideDuration: 8000 }
+        { autoHideDuration: 8000 }
       )
       return
     }
@@ -101,31 +81,17 @@ export default function Login() {
     try {
       // Load "outside" of react-query to avoid having to build
       // a complex logic adhering to the rules-of-hooks.
-      const myProfileResult = await fetcher<
-        LoadMyProfileQuery,
-        LoadMyProfileQueryVariables
-      >(LoadMyProfileDocument, {
-        loopbackUserId: getAccessTokenFromLocalStorage().userId,
-      })()
+      await fetcher<LoadMyProfileQuery, LoadMyProfileQueryVariables>(
+        LoadMyProfileDocument,
+        {
+          loopbackUserId: getAccessTokenFromLocalStorage().userId,
+        }
+      )()
 
       // TODO: insert proper error handling here and elsewhere. We should cover cases where we
       // get values usch as myProfileResult.isError. Perhaps we-ure the error boundary logic
       // that Eric has been looking into.
-
-      const conProfile = myProfileResult?.conProfile
-      const isWrongRediLocationError =
-        conProfile.rediLocation !== envRediLocation()
-
-      if (isWrongRediLocationError) {
-        purgeAllSessionData()
-        setIsWrongRediLocationError(true)
-        setConProfile(conProfile)
-        return
-      }
-
-      const urlParams = new URLSearchParams(window.location.search)
-      const goto = urlParams.get('goto') ?? '/app/me'
-      return history.push(goto)
+      return history.push('/app/me')
     } catch (err) {
       console.log(err)
     }
@@ -140,18 +106,6 @@ export default function Login() {
       const userHasATpJobseekerProfile = Boolean(tpJobseekerDirectoryEntry)
 
       if (userHasATpJobseekerProfile) {
-        const isWrongRediLocationError =
-          tpJobseekerDirectoryEntry.rediLocation !== envRediLocation()
-
-        if (isWrongRediLocationError) {
-          purgeAllSessionData()
-          setIsWrongRediLocationError(true)
-          setTpProfileLocation(
-            tpJobseekerDirectoryEntry.rediLocation as RediLocation
-          )
-          return
-        }
-
         await conProfileSignUpMutation.mutateAsync({
           input: {
             email: tpJobseekerDirectoryEntry.email,
@@ -199,7 +153,7 @@ export default function Login() {
       console.log(err)
       formik.setSubmitting(false)
       setLoginError(
-        'Something unexpected happened, please try again or contact the ReDI Career Support Team at career@redi-school.org'
+        'Something unexpected happened, please try again or contact the ReDI Talent Success Team at career@redi-school.org'
       )
       return
     }
@@ -230,37 +184,6 @@ export default function Login() {
             Got a ReDI Talent Pool user account? You can use the same username
             and password here.
           </Content>
-
-          {isWrongRediLocationError && (
-            <Notification color="info" className="is-light">
-              You've tried to log into ReDI Connect{' '}
-              <strong>
-                {
-                  REDI_LOCATION_NAMES[
-                    process.env.NX_REDI_CONNECT_REDI_LOCATION as RediLocation
-                  ]
-                }
-              </strong>
-              , but your account is linked to ReDI Connect{' '}
-              <strong>
-                {capitalize(conProfile?.rediLocation || tpProfileLocation)}
-              </strong>
-              . To access ReDI Connect{' '}
-              <strong>
-                {capitalize(conProfile?.rediLocation || tpProfileLocation)}
-              </strong>
-              , go{' '}
-              <a
-                href={buildFrontendUrl(
-                  process.env.NODE_ENV,
-                  conProfile?.rediLocation || tpProfileLocation
-                )}
-              >
-                here
-              </a>
-              .
-            </Notification>
-          )}
 
           <form onSubmit={(e) => e.preventDefault()}>
             <FormInput

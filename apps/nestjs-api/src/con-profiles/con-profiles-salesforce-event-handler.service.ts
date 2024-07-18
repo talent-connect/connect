@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
-import { ConnectProfileStatus, ConProfileEntity, UserType } from '@talent-connect/common-types'
+import {
+  ConnectProfileStatus,
+  ConProfileEntity,
+  UserType,
+} from '@talent-connect/common-types'
 import {
   ConProfileCreatedInternalEventDto,
   ConProfileStatusChangedInternalEventDto,
-  SalesforceRecordEvents
+  SalesforceRecordEvents,
 } from '@talent-connect/salesforce-record-events'
 import { EmailService } from '../email/email.service'
 import { ConProfilesService } from './con-profiles.service'
@@ -25,14 +29,14 @@ export class ConProfilesSalesforceEventHandlerService {
       payload.conProfileId
     )
 
-    const isStatusPendingToApproved =
-      payload.oldStatus === ConnectProfileStatus.PENDING &&
+    const isStatusSubmittedForReviewToApproved =
+      payload.oldStatus === ConnectProfileStatus.SUBMITTED_FOR_REVIEW &&
       payload.newStatus === ConnectProfileStatus.APPROVED
-    const isStatusPendingToRejected =
-      payload.oldStatus === ConnectProfileStatus.PENDING &&
+    const isStatusDraftingToRejected =
+      payload.oldStatus === ConnectProfileStatus.DRAFTING_PROFILE &&
       payload.newStatus === ConnectProfileStatus.REJECTED
 
-    if (isStatusPendingToApproved) {
+    if (isStatusSubmittedForReviewToApproved) {
       const conProfile = await this.service.findOneById(payload.conProfileId)
       const updatedConProfileProps = Object.assign({}, conProfile.props, {
         userActivatedAt: new Date().toISOString(),
@@ -43,32 +47,34 @@ export class ConProfilesSalesforceEventHandlerService {
     const conProfile = await this.service.findOneById(payload.conProfileId)
     switch (conProfile.props.userType) {
       case UserType.MENTEE:
-        if (isStatusPendingToApproved)
+        if (isStatusSubmittedForReviewToApproved)
           this.emailService.sendMenteePendingReviewAcceptedEmail({
             recipient: conProfile.props.email,
             firstName: conProfile.props.firstName,
             rediLocation: conProfile.props.rediLocation,
           })
-        if (isStatusPendingToRejected)
+        if (isStatusDraftingToRejected)
           this.emailService.sendPendingReviewDeclinedEmail({
             recipient: conProfile.props.email,
             firstName: conProfile.props.firstName,
             userType: conProfile.props.userType,
+            rediLocation: conProfile.props.rediLocation,
           })
         break
 
       case UserType.MENTOR:
-        if (isStatusPendingToApproved)
+        if (isStatusSubmittedForReviewToApproved)
           this.emailService.sendMentorPendingReviewAcceptedEmail({
             recipient: conProfile.props.email,
             firstName: conProfile.props.firstName,
             rediLocation: conProfile.props.rediLocation,
           })
-        if (isStatusPendingToRejected)
+        if (isStatusDraftingToRejected)
           this.emailService.sendPendingReviewDeclinedEmail({
             recipient: conProfile.props.email,
             firstName: conProfile.props.firstName,
             userType: conProfile.props.userType,
+            rediLocation: conProfile.props.rediLocation,
           })
         break
     }
@@ -87,7 +93,7 @@ export class ConProfilesSalesforceEventHandlerService {
         this.emailService.sendMenteeSignupCompleteEmail({
           recipient: conProfile.props.email,
           firstName: conProfile.props.firstName,
-          rediLocation: conProfile.props.rediLocation
+          rediLocation: conProfile.props.rediLocation,
         })
         break
 
@@ -96,6 +102,7 @@ export class ConProfilesSalesforceEventHandlerService {
           recipient: conProfile.props.email,
           firstName: conProfile.props.firstName,
           isPartnershipMentor: conProfile.props.mentor_isPartnershipMentor,
+          rediLocation: conProfile.props.rediLocation,
         })
         break
     }

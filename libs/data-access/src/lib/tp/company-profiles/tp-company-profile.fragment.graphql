@@ -12,8 +12,12 @@ fragment AllTpCompanyProfileFields on TpCompanyProfile {
   state
   isProfileVisibleToJobseekers
   isCareerPartner
-  joinsDusseldorf24WinterJobFair
-  joinsMunich24SummerJobFair
+
+  # Job Fair Boolean Field(s)
+  # Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+  # Duplicate if there are multiple Job Fairs coming
+  # joinsMunich24SummerJobFair
+
   createdAt
   updatedAt
 }

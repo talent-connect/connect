@@ -1,11 +1,14 @@
-import { RediLocation, UserType } from '@talent-connect/data-access'
+import { UserType } from '@talent-connect/data-access'
 import {
   Button,
   Checkbox,
   FormInput,
+  FormSelect,
   Heading,
 } from '@talent-connect/shared-atomic-design-components'
+import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { toPascalCaseAndTrim } from '@talent-connect/shared-utils'
+import { objectEntries } from '@talent-connect/typescript-utilities'
 import { FormikHelpers as FormikActions, FormikValues, useFormik } from 'formik'
 import { useState } from 'react'
 import { Columns, Content, Form, Notification } from 'react-bulma-components'
@@ -15,8 +18,14 @@ import Teaser from '../../../components/molecules/Teaser'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { signUpLoopback } from '../../../services/api/api'
 import { history } from '../../../services/history/history'
-import { envRediLocation } from '../../../utils/env-redi-location'
 import { SignUpPageType } from './signup-page.type'
+
+const formRediLocations = objectEntries(REDI_LOCATION_NAMES).map(
+  ([id, label]) => ({
+    value: id,
+    label,
+  })
+)
 
 export const validationSchema = Yup.object({
   firstName: Yup.string()
@@ -39,6 +48,10 @@ export const validationSchema = Yup.object({
   passwordConfirm: Yup.string()
     .required('Please confirm your password')
     .oneOf([Yup.ref('password')], 'Passwords do not match'),
+  rediLocation: Yup.string()
+    .required()
+    .oneOf(formRediLocations.map((loc) => loc.value))
+    .label('Current ReDI Location'),
   agreesWithCodeOfConduct: Yup.boolean().required().oneOf([true]),
   gaveGdprConsent: Yup.boolean().required().oneOf([true]),
   mentor_isPartnershipMentor: Yup.boolean(),
@@ -89,7 +102,7 @@ export default function SignUp() {
         firstName: values.firstName,
         lastName: values.lastName,
         userType: type.toUpperCase() as UserType,
-        rediLocation: envRediLocation() as RediLocation,
+        rediLocation: values.rediLocation,
         productSignupSource: 'CON',
         ...(type === 'mentor'
           ? {
@@ -180,6 +193,14 @@ export default function SignUp() {
               type="password"
               placeholder="Repeat your password"
               {...formik}
+            />
+
+            <FormSelect
+              label="Current ReDI Location"
+              name="rediLocation"
+              placeholder="Choose your ReDI Location"
+              items={formRediLocations}
+              formik={formik}
             />
 
             {type === 'mentor' && (

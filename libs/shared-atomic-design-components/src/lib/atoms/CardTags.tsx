@@ -1,8 +1,7 @@
-import './CardTags.scss'
-import React, { useState, useEffect } from 'react'
+import { useMediaQuery } from '@mui/material'
 import { debounce } from 'lodash'
-import { useMediaQuery } from '@material-ui/core'
-import { log } from 'console'
+import React, { useEffect, useState } from 'react'
+import './CardTags.scss'
 
 export interface CardTagsProps {
   items: string[]
@@ -85,7 +84,7 @@ const MultilineTags = ({ items }: { items: CardTagsProps['items'] }) => {
   const hasAdditionalTags = additionalTagsCount > 0
 
   return (
-    <div className="wrapper__mobile">
+    <div className="wrapper__profile">
       {shortItemsList.map((chip, i) => {
         const currentTag = (
           <p key={chip} className="chip">
@@ -95,9 +94,9 @@ const MultilineTags = ({ items }: { items: CardTagsProps['items'] }) => {
         const isLastVisibleTag = i === 2
 
         return hasAdditionalTags && isLastVisibleTag ? (
-          <div className="wrapper__mobile last_row" key={chip}>
+          <div className="wrapper__profile last_row" key={chip}>
             {currentTag}
-            <p key={`restNr-${i}`} className="chip">
+            <p key={`restNr-${i}`} className="chip plus">
               {'+' + additionalTagsCount}
             </p>
           </div>

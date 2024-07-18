@@ -1,6 +1,7 @@
 export const REDI_LOCATION_NAMES = {
   BERLIN: 'Berlin',
   HAMBURG: 'Hamburg',
+  MALMO: 'Malmö',
   MUNICH: 'Munich',
   NRW: 'NRW',
   CYBERSPACE: 'Cyberspace',
@@ -59,6 +60,7 @@ export const CATEGORIES = [
     group: 'softwareEngineering',
   },
   { id: 'blockchain', label: 'Blockchain', group: 'softwareEngineering' },
+  { id: 'cybersecurity', label: 'Cybersecurity', group: 'softwareEngineering' },
   {
     id: 'productManagement',
     label: 'Product Management',
@@ -88,6 +90,7 @@ export const CATEGORIES = [
   { id: 'basicGerman', label: 'Basic German 🇩🇪', group: 'language' },
   { id: 'businessGerman', label: 'Business German 🇩🇪', group: 'language' },
   { id: 'english', label: 'English 🇬🇧', group: 'language' },
+  { id: 'swedish', label: 'Swedish 🇸🇪', group: 'language' },
   { id: 'graphicDesign', label: 'Graphic Design', group: 'design' },
   {
     id: 'userInterfaceDesign',
@@ -374,3 +377,13 @@ export const API_URL = process.env.NX_API_URL
 export const S3_UPLOAD_SIGN_URL = process.env.NX_S3_UPLOAD_SIGN_URL
   ? process.env.NX_S3_UPLOAD_SIGN_URL
   : 'http://localhost:3003/s3/sign'
+export const TALENT_POOL_URL = (() => {
+  switch (process.env.NODE_ENV) {
+    case 'production':
+      return 'https://talent-pool.redi-school.org'
+    case 'demonstration':
+      return 'https://app.demo.talent-pool.redi-school.org'
+    default:
+      return 'http://localhost:2999'
+  }
+})()

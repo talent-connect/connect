@@ -11,16 +11,17 @@ import { useHistory, useParams } from 'react-router-dom'
 import { Teaser } from '../../../components/molecules'
 import AccountOperation from '../../../components/templates/AccountOperation'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
-import { envRediLocation } from '../../../utils/env-redi-location'
 import { SignUpPageType, SignUpPageTypes } from './signup-page.type'
 
 export default function SignUpComplete() {
   const history = useHistory()
-  const rediLocation = envRediLocation() as RediLocation
   const { userType } = useParams() as unknown as { userType: SignUpPageType }
 
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
+
+  const isMalmoLocation =
+    myProfileQuery.data?.conProfile.rediLocation === RediLocation.Malmo
   const isPartnershipMentor =
     myProfileQuery.data?.conProfile.mentor_isPartnershipMentor === true
 
@@ -50,25 +51,17 @@ export default function SignUpComplete() {
               ) : (
                 <>
                   <p style={{ textAlign: 'justify' }}>
-                    Now, we would like to get to know you better.
+                    Thank you for signing up!{' '}
                   </p>
                   <p style={{ textAlign: 'justify' }}>
-                    Your next step is to{' '}
-                    <a
-                      href="https://calendly.com/hadeertalentsucess/mentors-onboarding-session"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      schedule a quick
-                    </a>
-                    . It's the final step before you can kick off your journey
-                    as a mentor!{' '}
+                    Please click on <strong>"Continue to your profile"</strong>{' '}
+                    and complete all the steps from the stepper at the top of
+                    your profile page.
                   </p>
                   <p style={{ textAlign: 'justify' }}>
-                    In the meantime, please go to your account and{' '}
-                    <strong>complete your profile information</strong>. This
-                    step is super important because it helps students get to
-                    know you better and understand how you can support them.
+                    After sending your profile for review and having an
+                    onboarding call with our Mentorship Program Manager, your
+                    profile will become visible to mentees.
                   </p>
                 </>
               ))}
@@ -95,20 +88,11 @@ export default function SignUpComplete() {
                 </p>
 
                 <p style={{ textAlign: 'justify' }}>
-                  Your <strong>final step</strong> after watching this video
-                  will be your activation call with our team -{' '}
-                  <a
-                    href={
-                      rediLocation === 'CYBERSPACE'
-                        ? 'https://calendly.com/josefa_cyberspace/redi-connect-mentees-activation-call-cyberspace-only'
-                        : 'https://calendly.com/hadeertalentsucess/redi-connect-mentees-activation-call'
-                    }
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    schedule your activation call now
-                  </a>
-                  .
+                  After watching the video, click{' '}
+                  <strong>"Continue to your profile"</strong> and complete the
+                  steps in the top stepper. Once you've sent your profile for
+                  review, our Mentorship Program Manager will approve it. Then,
+                  you can find a mentor and start your journey right away.
                 </p>
               </>
             )}
@@ -122,8 +106,24 @@ export default function SignUpComplete() {
           </Form.Field>
           <Content size="small" renderAs="p">
             Do you have questions? Feel free to contact us{' '}
-            <a href="mailto:career@redi-school.org">here</a> or visit our{' '}
-            <a href="https://www.redi-school.org/" target="__blank">
+            <a
+              href={
+                isMalmoLocation
+                  ? 'mailto:career.sweden@redi-school.org'
+                  : 'mailto:career@redi-school.org'
+              }
+            >
+              here
+            </a>{' '}
+            or visit our{' '}
+            <a
+              href={
+                isMalmoLocation
+                  ? 'https://www.redi-school.org/redi-school-malmo'
+                  : 'https://www.redi-school.org/'
+              }
+              target="__blank"
+            >
               ReDI school website
             </a>{' '}
             for more information.

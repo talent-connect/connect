@@ -1,4 +1,4 @@
-import { Tooltip } from '@material-ui/core'
+import { Tooltip } from '@mui/material'
 import {
   JobseekerProfileStatus,
   TpJobseekerDirectoryEntry,
@@ -45,17 +45,11 @@ export function JobseekerProfileForJobseekerEyes() {
     queryClient.invalidateQueries()
   }
 
-  const onDusseldorf24WinterJobFairParticipateChange = async () => {
-    await mutation.mutateAsync({
-      input: {
-        joinsDusseldorf24WinterJobFair:
-          !profile?.joinsDusseldorf24WinterJobFair,
-      },
-    })
-    queryClient.invalidateQueries()
-  }
-
-  // Hidden until the new date announced
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next method when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
   // const onMunich24SummerJobFairParticipateChange = async () => {
   //   await mutation.mutateAsync({
   //     input: {
@@ -65,9 +59,15 @@ export function JobseekerProfileForJobseekerEyes() {
   //   queryClient.invalidateQueries()
   // }
 
+  const isProfileApproved =
+    profile?.state === JobseekerProfileStatus.ProfileApproved
+
+  const isProfileSubmittedForReview =
+    profile?.state === JobseekerProfileStatus.SubmittedForReview
+
   return (
     <LoggedIn>
-      {profile?.state === JobseekerProfileStatus.ProfileApproved ? (
+      {isProfileApproved ? (
         <Notification className="account-not-active double-bs">
           <Icon
             className="account-not-active__icon"
@@ -84,31 +84,28 @@ export function JobseekerProfileForJobseekerEyes() {
       <Columns className="is-6 is-variable">
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'three-fifths' }}>
           <div className="is-hidden-tablet">
-            <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
-              <CallToActionButton profile={profile} />
-            </div>
-            <OnboardingSteps />
+            {!isProfileSubmittedForReview && (
+              <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
+                <CallToActionButton profile={profile} />
+              </div>
+            )}
+            {!isProfileApproved && <OnboardingSteps />}
           </div>
           <EditableNamePhotoLocation profile={profile} />
-          <div style={{ marginBottom: '1.5rem' }}>
+          {/*
+           * Job Fair Boolean Field(s)
+           * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next div when there's an upcoming Job Fair
+           * Duplicate if there are multiple Job Fairs coming
+           */}
+          {/* <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
-              checked={profile?.joinsDusseldorf24WinterJobFair}
-              customOnChange={onDusseldorf24WinterJobFairParticipateChange}
-              disabled={profile?.joinsMunich24SummerJobFair}
-            >
-              I will attend the <b>ReDI Winter Job Fair in Düsseldorf</b> on{' '}
-              <b>02/02/2024</b>.
-            </Checkbox>
-            {/* Hidden until the next Job Fair date announced */}
-            {/* <Checkbox
               checked={profile?.joinsMunich24SummerJobFair}
               customOnChange={onMunich24SummerJobFairParticipateChange}
-              disabled={profile?.joinsDusseldorf24WinterJobFair}
             >
-              I will attend the <b>ReDI Winter Job Fair in Munich</b> on{' '}
-              <b>22/02/2024</b>.
-            </Checkbox> */}
-          </div>
+              I will attend the <b>ReDI Summer Job Fair in Munich</b> on{' '}
+              <b>01/07/2024</b>.
+            </Checkbox>
+          </div> */}
           <EditableOverview profile={profile} />
           <EditableSummary profile={profile} />
           <EditableProfessionalExperience profile={profile} />
@@ -116,10 +113,12 @@ export function JobseekerProfileForJobseekerEyes() {
         </Columns.Column>
         <Columns.Column mobile={{ size: 12 }} tablet={{ size: 'two-fifths' }}>
           <div className="is-hidden-mobile">
-            <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
-              <CallToActionButton profile={profile} />
-            </div>
-            <OnboardingSteps />
+            {!isProfileSubmittedForReview && (
+              <div style={{ textAlign: 'right', marginBottom: '1.5rem' }}>
+                <CallToActionButton profile={profile} />
+              </div>
+            )}
+            {!isProfileApproved && <OnboardingSteps />}
           </div>
           {/* <EditableVisibility /> */}
           <EditableImportantDetails profile={profile} showFullAddress />
@@ -188,7 +187,6 @@ export function OnboardingSteps() {
           textAlignment="centered"
           textTransform="uppercase"
           textSize={6}
-          responsive={{ mobile: { textSize: { value: 7 } } }}
         >
           Complete the steps below!
         </Element>
@@ -206,7 +204,7 @@ export function OnboardingSteps() {
           ) : (
             <ChecklistImage className="checklist-image" />
           )}
-          <Element textSize="5">{step.label}</Element>
+          <Element textSize={5}>{step.label}</Element>
           {currentStep[0] > step.number ? (
             <CheckmarkImage className="checkmark-image" />
           ) : null}

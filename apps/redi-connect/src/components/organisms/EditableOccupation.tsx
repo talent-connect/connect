@@ -187,7 +187,7 @@ function EditableOccupation() {
           />
           <FormInput
             name="mentor_workPlace"
-            label="Which company are you working for?"
+            label="Which company are you working for?*"
             placeholder="Company"
             {...formik}
           />
@@ -204,11 +204,11 @@ function EditableOccupation() {
       {isMentee && (
         <>
           <FormSelect
-            label="What is your current occupation?"
+            label="What is your current occupation?*"
             name="mentee_occupationCategoryId"
             placeholder="Current Occupation"
             items={formMenteeOccupationCategories}
-            {...formik}
+            formik={formik}
           />
           {occupation === 'job' && (
             <>

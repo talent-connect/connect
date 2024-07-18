@@ -13,19 +13,20 @@
           <mj-text mj-class="text" padding="0 0 20px 0"
             >Hi ${mentorName},</mj-text
           >
-          <mj-text mj-class="text paragraph" 
+          <mj-text mj-class="text paragraph"
             >You have received a mentee application from ${menteeFullName} from
-            ${locationNameFormatted}!
+            ReDI ${locationNameFormatted}!
           </mj-text>
-          <mj-text mj-class="text paragraph" 
+          <mj-text mj-class="text paragraph"
             >Please log into ReDI Connect to review this application as soon as
             you find the time.</mj-text
           >
-          <mj-text mj-class="text paragraph" 
-            >Once you’ve checked their profile and message to you and you do
-            want to become their mentor: that’s great! You can then accept their application and get in touch. Please make
-            sure to already suggest a date and time for a first meeting, whether
-            it be online or in person.</mj-text
+          <mj-text mj-class="text paragraph"
+            >Once you've checked their profile and message to you and you do
+            want to become their mentor: that's great! You can then accept their
+            application and get in touch. Please make sure to already suggest a
+            date and time for a first meeting, whether it be online or in
+            person.</mj-text
           >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/review-application.png"
@@ -35,21 +36,21 @@
             width="250px"
             href="${loginUrl}"
           />
-          <mj-text mj-class="text paragraph" 
+          <mj-text mj-class="text paragraph"
             >If, upon checking their profile and message to you, you realize
             that you cannot support them in the way they are looking for, please
             kindly decline their application and make sure to send them a quick
             message to explain why.</mj-text
           >
-          <mj-text mj-class="text paragraph" 
+          <mj-text mj-class="text paragraph"
             >Should the reason be that you are too busy to take on a mentorship
             right now, remember that you can always set your mentee count
-            capacity to ‘0’ in your profile - then you won’t be visible to any
+            capacity to '0' in your profile - then you won't be visible to any
             mentees until you change this back.</mj-text
           >
 
           <mj-text mj-class="text">All the best,</mj-text>
-          <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
+          <mj-text mj-class="text">Your ReDI Talent Success Team</mj-text>
         </mj-column>
       </mj-section>
       <mj-include path="./footer.career.support.team.mjml" />

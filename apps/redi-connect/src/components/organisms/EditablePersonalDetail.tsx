@@ -69,7 +69,7 @@ const EditablePersonalDetail = () => {
 
   return (
     <Editable
-      title="Personal Details"
+      title="Personal Details (optional)"
       onSave={() => formik.handleSubmit()}
       onClose={() => formik.resetForm()}
       savePossible={formik.dirty && formik.isValid}
@@ -80,7 +80,7 @@ const EditablePersonalDetail = () => {
         name="gender"
         placeholder="Prefer not to answer"
         items={formGenders}
-        {...formik}
+        formik={formik}
       />
       {/* Disabled for reasons explained above */}
       {/* <FormDatePicker

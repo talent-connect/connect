@@ -639,6 +639,7 @@ export const employmentTypes = [
   { id: 'traineeship', label: 'Traineeship' },
   { id: 'dualStudyBachelor', label: 'Dual Study Bachelor' },
   { id: 'dualStudyMaster', label: 'Dual Study Master' },
+  { id: 'projectBased', label: 'Project-based work' },
 ]
 
 export const employmentTypesIdToLabelMap = mapValues(

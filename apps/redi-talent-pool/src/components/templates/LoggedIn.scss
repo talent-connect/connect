@@ -1,7 +1,8 @@
+@import '_variables';
 @import '~bulma/sass/utilities/_all';
 
 .tp-side-menu {
-  background-color: #eff6f8;
+  background-color: $redi-blue-light;
 
   min-width: 84px;
 
@@ -23,4 +24,10 @@
   &--horizontal-spacer {
     width: 24px;
   }
+}
+
+.main-content-wrapper {
+  width: 100%;
+  margin-top: 2rem;
+  overflow: hidden;
 }

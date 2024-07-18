@@ -1,3 +1,4 @@
+import formbricks from '@formbricks/js/website'
 import { initSentry } from '@talent-connect/shared-utils'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -5,15 +6,24 @@ import App from './App'
 // import i18n (needs to be bundled ;))
 import './main.scss'
 import './services/i18n/i18n'
-// Needed for datepicker in <LogMentoringSessionDialog>
 
-// uncomment this to see wasted/unnecessary renders of your components
-// if (process.env.NODE_ENV !== 'production') {
-// const whyDidYouRender = require('@welldone-software/why-did-you-render');
-// whyDidYouRender(React, {include: [/.*/]});
-// }
+// We used to call initSentry('con') here. Now we can only init Sentry
+// if user accepts it in the cookie banner. So we expose the function
+// here to window so that cookie banner can call as needed.
+// prettier-ignore
+(window as any).initSentry = initSentry
 
-initSentry('tp')
+const environmentId =
+  process.env.NODE_ENV === 'production'
+    ? 'clxii0o4r01bt7f3o9zm71or8'
+    : 'clxii0o4r01bt7f3o9zm71or8'
+
+if (typeof window !== 'undefined') {
+  formbricks.init({
+    environmentId: environmentId,
+    apiHost: 'https://app.formbricks.com',
+  })
+}
 
 ReactDOM.render(
   <React.StrictMode>

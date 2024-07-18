@@ -16,7 +16,7 @@
           >
           <mj-text mj-class="text paragraph"
             >Please verify your email address by clicking on the button below.
-            After successfully verifying, we’ll send you an email with the next
+            After successfully verifying, we'll send you an email with the next
             steps!</mj-text
           >
           <mj-image
@@ -33,7 +33,7 @@
           >
 
           <mj-text mj-class="text">All the best,</mj-text>
-          <mj-text mj-class="text">Your Career Support Team</mj-text>
+          <mj-text mj-class="text">${rediSignature}</mj-text>
         </mj-column>
       </mj-section>
       <mj-section />

@@ -5,7 +5,7 @@ import { SfApiRepository } from './sf-api.repository'
 
 @Injectable()
 export class SfApiTpContactLanguageRecordsService {
-  constructor(private readonly repository: SfApiRepository) {}
+  constructor(private readonly repository: SfApiRepository) { }
 
   async getAll(filter: any = {}): Promise<TpContactLanguageRecord[]> {
     const rawRecords = await this.repository.findRecordsOfObject({

@@ -17,5 +17,9 @@ export class TpJobListingCreateInput extends PartialType(
     'summary',
     'title',
     'federalState',
+    'contactFirstName',
+    'contactLastName',
+    'contactPhoneNumber',
+    'contactEmailAddress',
   ] as const)
 ) {}

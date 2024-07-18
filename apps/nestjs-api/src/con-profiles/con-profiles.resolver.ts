@@ -48,8 +48,14 @@ export class ConProfilesResolver {
 
   //! TODO: Add auth
   @Query(() => [ConProfileEntityProps], { name: 'conProfilesAvailableMentors' })
-  async findAllAvailableMentors(@Args() args: FindConProfilesArgs) {
-    const entities = await this.conProfilesService.findAllAvailableMentors(args)
+  async findAllAvailableMentors(
+    @Args() args: FindConProfilesArgs,
+    @CurrentUser() currentUser: CurrentUserInfo
+  ) {
+    const entities = await this.conProfilesService.findAllAvailableMentors(
+      args,
+      currentUser
+    )
     const props = entities.map((entity) => entity.props)
     return props
   }
@@ -100,6 +106,14 @@ export class ConProfilesResolver {
   ) {
     const updatedEntity = await this.conProfilesService.patch(
       patchConProfileInput,
+      currentUser
+    )
+    return updatedEntity.props
+  }
+
+  @Mutation(() => ConProfileEntityProps, { name: 'conProfileSubmitForReview' })
+  async submitForReview(@CurrentUser() currentUser: CurrentUserInfo) {
+    const updatedEntity = await this.conProfilesService.submitForReview(
       currentUser
     )
     return updatedEntity.props

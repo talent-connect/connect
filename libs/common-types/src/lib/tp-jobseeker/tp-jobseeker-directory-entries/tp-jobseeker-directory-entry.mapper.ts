@@ -71,13 +71,16 @@ export class TpJobseekerDirectoryEntryMapper
       ) as TpTechnicalSkill[]) ?? undefined
     props.state =
       jobseekerProfileRecord.Profile_Status__c as JobseekerProfileStatus
-    props.joinsDusseldorf24WinterJobFair =
-      jobseekerProfileRecord.Joins_Dusseldorf_24_Winter_Job_Fair__c
-    props.joinsMunich24SummerJobFair =
-      jobseekerProfileRecord.Joins_Munich_24_Summer_Job_Fair__c
+
+    /**
+     * Job Fair Boolean Field(s)
+     * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+     * Duplicate if there are multiple Job Fairs coming
+     */
+    // props.joinsMunich24SummerJobFair = jobseekerProfileRecord.Joins_Munich_24_Summer_Job_Fair__c
+
     props.isProfileVisibleToCompanies =
       jobseekerProfileRecord.Is_Visible_to_Companies__c
-    props.isHired = jobseekerProfileRecord.Is_Hired__c
     props.federalState = jobseekerProfileRecord.Federal_State__c as FederalState
     props.willingToRelocate = jobseekerProfileRecord.Willing_to_Relocate__c
     //! TODO: this "as unknown as OneType | undefined" was needed to get around TS

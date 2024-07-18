@@ -17,19 +17,19 @@ export const formSelectStyles = {
   }),
   dropdownIndicator: (provided: any, state: any) => ({
     ...provided,
-    color: state.isFocused ? '#ea5b29' : '#a0a0a0',
-    transform: state.menuIsOpen ? 'rotate(180deg)' : 'none',
+    transition: 'ease-in-out all 0.2s',
+    transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : 'none',
     svg: {
       margin: '0 0.1rem',
     },
   }),
   control: (provided: any, state: any) => ({
     ...provided,
-    borderColor: state.isFocused ? '#ea5b29' : '#a0a0a0',
+    borderColor: state.isFocused ? 'black' : '#A0A0A0',
     minHeight: '48px',
     boxShadow: 'inset 0 2px 6px rgba(178, 180, 181, 0.3)',
     '&:hover': {
-      borderColor: state.isFocused ? '#ea5b29' : '#f6b9a2',
+      borderColor: 'black'
     },
   }),
   multiValue: (provided: any) => ({

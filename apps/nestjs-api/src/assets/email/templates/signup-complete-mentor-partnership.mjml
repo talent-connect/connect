@@ -15,17 +15,23 @@
             >Great news - you're officially signed up!</mj-text
           >
           <mj-text mj-class="text paragraph"
-            >Please take a moment to <a
-              href="https://connect.redi-school.org/"
-              class="text-link"
-              >log into your account</a> and <strong>fill out your profile information</strong>. This step is super important because it helps students get to know you better and understand how you can support them.</mj-text
+            >Please take a moment to
+            <a href="${loginPageUrl}" class="text-link"
+              >log into your account</a
+            >
+            and <strong>fill out your profile information</strong>. This step is
+            super important because it helps students get to know you better and
+            understand how you can support them.</mj-text
           >
           <mj-text mj-class="text paragraph"
-            >You will receive an application from your assigned student before the mentorship kick off event, make sure you <strong>accept the application</strong> to continue your sessions online.</mj-text
+            >You will receive an application from your assigned student before
+            the mentorship kick off event, make sure you
+            <strong>accept the application</strong> to continue your sessions
+            online.</mj-text
           >
-          
+
           <mj-text mj-class="text">All the best,</mj-text>
-          <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
+          <mj-text mj-class="text">Your ReDI Talent Success Team</mj-text>
         </mj-column>
       </mj-section>
       <mj-include path="./footer.career.support.team.mjml" />

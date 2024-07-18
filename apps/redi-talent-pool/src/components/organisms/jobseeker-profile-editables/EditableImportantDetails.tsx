@@ -117,7 +117,8 @@ export function EditableImportantDetails({
                 <Caption>Contact</Caption>
                 <Content>
                   {[profile?.telephoneNumber, profile?.email].map(
-                    (contactItem) => (contactItem ? <p>{contactItem}</p> : null)
+                    (contactItem, index) =>
+                      contactItem ? <p key={index}>{contactItem}</p> : null
                   )}
                 </Content>
               </div>
@@ -305,7 +306,7 @@ function JobseekerFormSectionImportantDetails({
             label="What kind of employment are you looking for?*"
             name="desiredEmploymentType"
             items={formDesiredEmploymentType}
-            {...formik}
+            formik={formik}
             multiselect
             placeholder="Select desired employment types"
             closeMenuOnSelect={false}
@@ -314,7 +315,7 @@ function JobseekerFormSectionImportantDetails({
             label="When are you available to start?*"
             name="availability"
             items={formAvailabilityOptions}
-            {...formik}
+            formik={formik}
           />
           {formik.values.availability === 'date' ? (
             <FormDatePicker
@@ -333,7 +334,7 @@ function JobseekerFormSectionImportantDetails({
             label="What is your immigration status?"
             name="immigrationStatus"
             items={formImmigrationStatusOptions}
-            {...formik}
+            formik={formik}
           />
         </>
       )}

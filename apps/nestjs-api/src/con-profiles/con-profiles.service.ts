@@ -3,6 +3,7 @@ import {
   ConProfileEntity,
   ConProfileMapper,
   ConnectProfileStatus,
+  RediLocation,
   UserType,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
@@ -27,7 +28,7 @@ export class ConProfilesService {
     return await this.api.createConProfileForSignUp({
       userId: user.userId,
       loopbackUserId: user.loopbackUserId,
-      profileStatus: ConnectProfileStatus.PENDING,
+      profileStatus: ConnectProfileStatus.DRAFTING_PROFILE,
       rediLocation: input.rediLocation,
       userType: input.userType,
       menteeCountCapacity: input.userType === UserType.MENTOR ? 1 : 0,
@@ -71,7 +72,14 @@ export class ConProfilesService {
     return selectedProfiles
   }
 
-  async findAllAvailableMentors(_filter: FindConProfilesArgs) {
+  async findAllAvailableMentors(
+    _filter: FindConProfilesArgs,
+    currentUser: CurrentUserInfo
+  ) {
+    const currentUserConProfile = await this.findOneByLoopbackUserId(
+      currentUser.loopbackUserId
+    )
+
     const filter: any = {
       'RecordType.DeveloperName': UserType.MENTOR,
       Available_Mentorship_Slots__c: { $gte: 1 },
@@ -81,10 +89,52 @@ export class ConProfilesService {
       filter['Contact__r.Name'] = { $like: `%${_filter.filter.name}%` }
     if (_filter.filter.categories?.length > 0)
       filter.Mentoring_Topics__c = { $includes: _filter.filter.categories }
-    if (_filter.filter.locations?.length > 0)
-      filter.ReDI_Location__c = { $in: _filter.filter.locations }
     if (_filter.filter.languages?.length > 0)
       filter.Languages__c = { $includes: _filter.filter.languages }
+
+    // Business requirement added in February 2024: we isolate Sweden and Germany,
+    // meaning mentees in Sweden can only see mentors in Sweden and mentees in
+    // Germany can only see mentors in Germany
+    const swedenLocations = [RediLocation.MALMO]
+    const germanyLocations = [
+      RediLocation.BERLIN,
+      RediLocation.CYBERSPACE,
+      RediLocation.HAMBURG,
+      RediLocation.MUNICH,
+      RediLocation.NRW,
+    ]
+    const currentUserBelongsToRediSweden = swedenLocations.includes(
+      currentUserConProfile.props.rediLocation
+    )
+    const currentUserBelongsToRediGermany = germanyLocations.includes(
+      currentUserConProfile.props.rediLocation
+    )
+    if (_filter.filter.locations?.length > 0) {
+      filter.ReDI_Location__c = { $in: _filter.filter.locations }
+    } else {
+      if (currentUserBelongsToRediSweden) {
+        filter.ReDI_Location__c = { $in: swedenLocations }
+      } else if (currentUserBelongsToRediGermany) {
+        filter.ReDI_Location__c = { $in: germanyLocations }
+      }
+    }
+
+    if (currentUserBelongsToRediSweden) {
+      filter.ReDI_Location__c.$in = filter.ReDI_Location__c.$in.filter(
+        (location) => swedenLocations.includes(location)
+      )
+    } else if (currentUserBelongsToRediGermany) {
+      filter.ReDI_Location__c.$in = filter.ReDI_Location__c.$in.filter(
+        (location) => germanyLocations.includes(location)
+      )
+    } else {
+      throw new Error(
+        'ConProfilesService:findAllAvailableMentors(): ' +
+          "Couldn't categorize current user's Connect " +
+          ' Profile as belonging to either Sweden or Germany.'
+      )
+    }
+
     return this.findAll(filter)
   }
 
@@ -145,5 +195,23 @@ export class ConProfilesService {
     const updatedEntity = this.mapper.fromPersistence(persistedObject)
 
     return updatedEntity
+  }
+
+  async submitForReview(currentUser: CurrentUserInfo) {
+    const existingEntity = await this.findOneByLoopbackUserId(
+      currentUser.loopbackUserId
+    )
+    const props = existingEntity.props
+
+    if (
+      existingEntity.props.profileStatus ===
+      ConnectProfileStatus.DRAFTING_PROFILE
+    ) {
+      props.profileStatus = ConnectProfileStatus.SUBMITTED_FOR_REVIEW
+    }
+
+    const entityToPersist = ConProfileEntity.create(props)
+
+    return this.update(entityToPersist)
   }
 }

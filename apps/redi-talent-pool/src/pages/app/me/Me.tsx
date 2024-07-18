@@ -1,5 +1,6 @@
 import { useMyTpDataQuery } from '@talent-connect/data-access'
 import { Loader } from '@talent-connect/shared-atomic-design-components'
+import { purgeAllSessionData } from 'apps/redi-connect/src/services/auth/auth'
 import { Redirect, useHistory } from 'react-router-dom'
 import { MeCompany } from './MeCompany'
 
@@ -24,9 +25,13 @@ function Me() {
 
   switch (companyRepresentativeRelationship?.status) {
     case 'PENDING':
+      history.push('/front/signup-complete')
+      break
     case 'REJECTED':
     case 'DEACTIVATED':
-      history.push('/front/signup-email-verification-success')
+      purgeAllSessionData()
+      history.push('/front/login-result')
+      break
     case 'APPROVED':
       return <MeCompany />
   }

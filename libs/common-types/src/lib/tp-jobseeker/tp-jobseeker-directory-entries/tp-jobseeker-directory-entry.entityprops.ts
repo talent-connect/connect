@@ -53,10 +53,13 @@ export class TpJobseekerDirectoryEntryEntityProps implements EntityProps {
   topSkills?: Array<TpTechnicalSkill>
   @Field((type) => JobseekerProfileStatus)
   state: JobseekerProfileStatus
-  joinsDusseldorf24WinterJobFair?: boolean
-  joinsMunich24SummerJobFair?: boolean
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
+  //joinsMunich24SummerJobFair?: boolean
   isProfileVisibleToCompanies: boolean
-  isHired: boolean
   @Field((type) => FederalState)
   federalState?: FederalState
   willingToRelocate: boolean

@@ -44,6 +44,7 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
         return undefined
     }
   })()
+  console.log('logging current user as type', userType)
   if ((window as any).hj) {
     ;(window as any).hj(
       'identify',
@@ -93,7 +94,7 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
               <div className="main-container--horizontal-spacer"></div>
             </>
           )}
-          <Columns style={{ width: '100%', marginTop: '2rem' }}>
+          <Columns className="main-content-wrapper">
             <Columns.Column
               desktop={{ size: 12 }}
               className="column--main-content"

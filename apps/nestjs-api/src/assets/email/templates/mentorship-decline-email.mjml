@@ -13,7 +13,7 @@
           >
 
           <mj-text mj-class="text paragraph"
-            >Unfortunately ${mentorName} cannot accept your mentorship
+            >Unfortunately, ${mentorName} cannot accept your mentorship
             application at this time.</mj-text
           >
           <mj-text mj-class="text paragraph"
@@ -42,7 +42,7 @@
           >
 
           <mj-text mj-class="text">All the best,</mj-text>
-          <mj-text mj-class="text">Your ReDI Career Support Team</mj-text>
+          <mj-text mj-class="text">Your ReDI Talent Success Team</mj-text>
         </mj-column>
       </mj-section>
       <mj-include path="./footer.career.support.team.mjml" />
