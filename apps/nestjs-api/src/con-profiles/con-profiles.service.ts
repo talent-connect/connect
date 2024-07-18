@@ -44,12 +44,12 @@ export class ConProfilesService {
       this.mapper.fromPersistence(source)
     )
 
-    entities = this.whenMultipleProfilesExcludeDeactivatedOnes(entities)
+    entities = this.selectLatestActiveProfilePerUser(entities)
 
     return entities
   }
 
-  whenMultipleProfilesExcludeDeactivatedOnes(profiles: ConProfileEntity[]) {
+  selectLatestActiveProfilePerUser(profiles: ConProfileEntity[]) {
     const groupedProfiles = groupBy(profiles, (profile) => profile.props.userId)
     const selectedProfiles: ConProfileEntity[] = []
 
