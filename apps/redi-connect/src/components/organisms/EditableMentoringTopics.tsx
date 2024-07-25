@@ -13,7 +13,7 @@ import { objectEntries } from '@talent-connect/typescript-utilities'
 import { useFormik } from 'formik'
 
 import groupBy from 'lodash/groupBy'
-import { Content } from 'react-bulma-components'
+import { Content, Notification } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
@@ -91,15 +91,12 @@ function EditableMentoringTopics() {
   const queryClient = useQueryClient()
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const patchMyProfileMutation = usePatchMyProfileMutation()
-
   const profile = myProfileQuery.data?.conProfile
-
   const userType = profile?.userType
   const categories = profile?.categories
 
   const submitForm = async (values: MentoringFormValues) => {
     const { isMentor, ...formCategories } = values
-
     const valuesOfCategories = Object.entries(formCategories)
       .map(([, value]) => value)
       .flat()
@@ -122,10 +119,43 @@ function EditableMentoringTopics() {
     }),
     enableReinitialize: true,
     validationSchema,
+    //validateOnChange: true,
     onSubmit: submitForm,
   })
 
+  const selectionsLeft =
+    MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE -
+    (Object.entries(formik.values)
+      .map(([, value]) => value)
+      .flat().length -
+      1)
+
   if (!myProfileQuery.isSuccess) return null
+
+  const customOnChange =
+    (groupId) =>
+    (selectedOption: any = []) => {
+      const { setFieldValue, setFieldTouched, values } = formik
+
+      const isUserTryingToAddNewValue =
+        selectedOption.length > values[groupId].length
+      setFieldTouched(groupId, true, false)
+
+      if (isUserTryingToAddNewValue && !selectionsLeft) {
+        return
+      }
+
+      // this is a copy of the default onChange
+      if (!selectedOption) {
+        setFieldValue(groupId, [], true)
+      } else {
+        setFieldValue(
+          groupId,
+          selectedOption ? selectedOption.map((item: any) => item.value) : [],
+          true
+        )
+      }
+    }
 
   return (
     <Editable
@@ -137,9 +167,19 @@ function EditableMentoringTopics() {
       className="mentoring"
     >
       <Content>
-        {userType === 'MENTOR'
-          ? 'Select at least one topic where you would like to support mentees.'
-          : 'You can select between 1 and up to 4 topics.'}
+        {userType === 'MENTOR' ? (
+          'Select at least one topic where you would like to support mentees.'
+        ) : (
+          <>
+            {`You can select between 1 and up to 4 topics.`}
+            {!selectionsLeft && (
+              <Notification color="info" className="is-light">
+                You selected the maximum number of topics. You can save your
+                selection or remove topics.
+              </Notification>
+            )}
+          </>
+        )}
       </Content>
 
       {formCategoryGroups.map(([groupId, groupLabel]) => (
@@ -151,6 +191,7 @@ function EditableMentoringTopics() {
           multiselect
           placeholder="Start typing and select a Topic"
           formik={formik}
+          customOnChange={userType === 'MENTEE' && customOnChange(groupId)}
         />
       ))}
     </Editable>
