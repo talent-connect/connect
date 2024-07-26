@@ -41,3 +41,55 @@
   text-transform: capitalize;
   letter-spacing: 0.5px;
 }
+
+.MuiDrawer-paper {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+
+  .drawer__header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 2rem 1.5rem;
+    border-bottom: 1px solid $grey-light;
+
+    h3 {
+      font-weight: $weight-bold !important;
+      margin-bottom: 0;
+    }
+
+    .icon__button {
+      position: absolute;
+      right: 1.5rem;
+
+      cursor: pointer;
+      width: 2rem;
+      height: 2rem;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: $transition;
+
+      &:not(.icon__button--disabled):hover {
+        background-color: $redi-orange-extra-light;
+      }
+
+      path {
+        transition: $transition;
+      }
+
+      &--disabled path {
+        fill: $grey-light;
+      }
+    }
+  }
+
+  .drawer__body {
+    padding: 1.5rem;
+  }
+
+  .drawer__footer {
+    padding: 1.5rem;
+    border-top: 1px solid $grey-light;
+  }
+}
