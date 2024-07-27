@@ -26,13 +26,10 @@ function FormDraggableAccordion({
   entryCategory,
 }: Props) {
   const [showAnswer, setShowAnswer] = useState(initialOpen)
-  const [
-    deleteModalOpenForProExperience,
-    setDeleteModalOpenForJobProExperience,
-  ] = useState<boolean>(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false)
 
-  const openDeleteModal = () => setDeleteModalOpenForJobProExperience(true)
-  const closeDeleteModal = () => setDeleteModalOpenForJobProExperience(false)
+  const openDeleteModal = () => setIsDeleteModalOpen(true)
+  const closeDeleteModal = () => setIsDeleteModalOpen(false)
 
   useEffect(() => {
     const sub = closeAccordionSignalSubject?.subscribe(() =>
@@ -41,7 +38,6 @@ function FormDraggableAccordion({
 
     return () => sub?.unsubscribe()
   }, [closeAccordionSignalSubject])
-  console.log(children)
 
   const modalHeadline =
     entryCategory === 'education'
@@ -72,7 +68,7 @@ function FormDraggableAccordion({
             <Icon icon="cancel" size="small" onClick={openDeleteModal} />
           ) : null}
           <LightModal
-            isOpen={deleteModalOpenForProExperience}
+            isOpen={isDeleteModalOpen}
             handleClose={closeDeleteModal}
             headline={modalHeadline}
             message={modalMessage}
