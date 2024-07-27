@@ -6,6 +6,7 @@ import { Icon } from '../atoms'
 import './FormDraggableAccordion.scss'
 
 import { ReactComponent as AccordionHandleIcon } from '../../assets/images/accordion-handle.svg'
+import { LightModal } from '../molecules'
 
 interface Props {
   title: string
@@ -13,6 +14,7 @@ interface Props {
   initialOpen?: boolean
   onRemove?: () => void
   closeAccordionSignalSubject?: Subject<void>
+  entryCategory?: string
 }
 
 function FormDraggableAccordion({
@@ -21,8 +23,16 @@ function FormDraggableAccordion({
   onRemove = null,
   initialOpen = false,
   closeAccordionSignalSubject = null,
+  entryCategory,
 }: Props) {
   const [showAnswer, setShowAnswer] = useState(initialOpen)
+  const [
+    deleteModalOpenForProExperience,
+    setDeleteModalOpenForJobProExperience,
+  ] = useState<boolean>(false)
+
+  const openDeleteModal = () => setDeleteModalOpenForJobProExperience(true)
+  const closeDeleteModal = () => setDeleteModalOpenForJobProExperience(false)
 
   useEffect(() => {
     const sub = closeAccordionSignalSubject?.subscribe(() =>
@@ -31,20 +41,26 @@ function FormDraggableAccordion({
 
     return () => sub?.unsubscribe()
   }, [closeAccordionSignalSubject])
+  console.log(children)
+
+  const modalHeadline =
+    entryCategory === 'education'
+      ? 'Delete education entry?'
+      : 'Delete professional experience?'
+  const modalMessage =
+    entryCategory === 'education'
+      ? 'You will lose all the information entered for this education entry.'
+      : 'You will lose all the information entered for this professional experience.'
 
   return (
     <div className="form-draggable-accordion">
-      <Columns
-        breakpoint="mobile"
-        className="form-draggable-accordion__title"
-        onClick={() => setShowAnswer(!showAnswer)}
-      >
-        <Columns.Column>
+      <Columns breakpoint="mobile" className="form-draggable-accordion__title">
+        <Columns.Column onClick={() => setShowAnswer(!showAnswer)}>
           <Element style={{ display: 'flex' }}>
             <AccordionHandleIcon style={{ marginRight: '.8rem' }} /> {title}
           </Element>
         </Columns.Column>
-        <Columns.Column narrow>
+        <Columns.Column onClick={() => setShowAnswer(!showAnswer)} narrow>
           <Icon
             icon="chevron"
             size="small"
@@ -53,8 +69,17 @@ function FormDraggableAccordion({
         </Columns.Column>
         <Columns.Column narrow>
           {onRemove ? (
-            <Icon icon="cancel" size="small" onClick={onRemove} />
+            <Icon icon="cancel" size="small" onClick={openDeleteModal} />
           ) : null}
+          <LightModal
+            isOpen={deleteModalOpenForProExperience}
+            handleClose={closeDeleteModal}
+            headline={modalHeadline}
+            message={modalMessage}
+            ctaLabel="Delete"
+            ctaOnClick={onRemove}
+            cancelLabel="Keep it"
+          />
         </Columns.Column>
       </Columns>
       <Element

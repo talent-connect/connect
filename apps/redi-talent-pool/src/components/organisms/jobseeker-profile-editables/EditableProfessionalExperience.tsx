@@ -386,6 +386,7 @@ export function JobseekerFormSectionProfessionalExperience({
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >
+                      {console.log(formik?.values)}
                       <FormDraggableAccordion
                         title={
                           item.title ? item.title : 'Click me to add details'
@@ -394,6 +395,7 @@ export function JobseekerFormSectionProfessionalExperience({
                         closeAccordionSignalSubject={
                           closeAllAccordionsSignalSubject.current
                         }
+                        entryCategory="professional"
                       >
                         <FormInput
                           name={`experience[${index}].title`}
