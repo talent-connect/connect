@@ -388,7 +388,6 @@ function JobseekerFormSectionEducation({
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >
-                      {console.log(formik?.values)}
                       <FormDraggableAccordion
                         title={
                           item.title ? item.title : 'Click me to add details'
