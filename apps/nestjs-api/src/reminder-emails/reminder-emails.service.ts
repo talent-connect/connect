@@ -217,45 +217,6 @@ export class ReminderEmailsService {
     return transformedReducedMatches
   }
 
-  // async getUnmatchedMenteesWithApprovedProfiles() {
-  //   const approvedDate = new Date()
-  //   approvedDate.setDate(approvedDate.getDate() - 45) // Interestingly, parseInt is able to parse 7d and 14d to 7 and 14 respectively
-
-  //   return await this.conProfilesService.findAll({
-  //     'RecordType.DeveloperName': UserType.MENTEE,
-  //     Profile_Status__c: ConnectProfileStatus.APPROVED,
-  //     Profile_First_Approved_At__c: {
-  //       $eq: jsforce.SfDate.toDateLiteral(approvedDate),
-  //     },
-  //     'Contact__r.ReDI_Active_Mentorship_Matches_Mentee__c': null,
-  //   })
-  // }
-
-  // async getConProfilesWithMentorshipMatchesWithoutMentoringSessions({
-  //   mentorshipMatchAgeInDays,
-  // }: {
-  //   mentorshipMatchAgeInDays: number
-  // }) {
-  //   const matches = await this.conMentorshipMatchesService.findAll({
-  //     Status__c: MentorshipMatchStatus.ACCEPTED,
-  //     Mentorship_Match_Age_In_Days__c: mentorshipMatchAgeInDays,
-  //     of_Sessions__c: 0,
-  //   })
-
-  //   const menteeIds = matches.map((match) => match.props.menteeId)
-  //   const mentorIds = matches.map((match) => match.props.mentorId)
-
-  //   if ([...menteeIds, ...mentorIds].length > 0) {
-  //     return await this.conProfilesService.findAll({
-  //       'Contact__r.Id': {
-  //         $in: [...menteeIds, ...mentorIds],
-  //       },
-  //     })
-  //   }
-
-  //   return []
-  // }
-
   async getPendingMenteeApplications() {
     const pendingMentorshipApplications =
       await this.conMentorshipMatchesService.findAll({
