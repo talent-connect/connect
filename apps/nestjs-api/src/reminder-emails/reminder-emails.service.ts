@@ -87,15 +87,15 @@ export class ReminderEmailsService {
     )
 
     // 3rd Step: Find approved mentees that do not have a mentorship match
-    const menteeIdsWithoutMentorshipMatch = difference(
+    const unmatchedMenteeIds = difference(
       approvedMenteeIds,
       mentorshipMatchMenteeIds
     )
 
     // 4th Step: Return approved mentees that do not have a mentorship match
-    if (menteeIdsWithoutMentorshipMatch.length > 0) {
+    if (unmatchedMenteeIds.length > 0) {
       return approvedMentees.filter((mentee) =>
-        menteeIdsWithoutMentorshipMatch.includes(mentee.props.userId)
+        unmatchedMenteeIds.includes(mentee.props.userId)
       )
     }
 
@@ -107,7 +107,7 @@ export class ReminderEmailsService {
     approvedDate.setDate(approvedDate.getDate() - 45)
 
     // 1st Step: Get all mentees that have been approved 45 days ago
-    const approvedMenteesFrom45DaysAgo = await this.conProfilesService.findAll({
+    const menteesApproved45DaysAgo = await this.conProfilesService.findAll({
       'RecordType.DeveloperName': UserType.MENTEE,
       Profile_Status__c: ConnectProfileStatus.APPROVED,
       Profile_First_Approved_At__c: {
@@ -115,16 +115,16 @@ export class ReminderEmailsService {
       },
     })
 
-    const approvedMenteeIds = approvedMenteesFrom45DaysAgo.map(
+    const approvedMenteeIds = menteesApproved45DaysAgo.map(
       (mentee) => mentee.props.userId
     )
 
     if (approvedMenteeIds.length === 0) return []
 
-    // 2nd Step: Get all mentorship matches where the mentee is one of the approved mentees above
+    // 2nd Step: Find all Mentees that have a mentorship match or waiting applied to extract them later
     const mentorshipMatches = await this.conMentorshipMatchesService.findAll({
       Status__c: {
-        $ne: MentorshipMatchStatus.APPLIED,
+        $in: [MentorshipMatchStatus.APPLIED, MentorshipMatchStatus.ACCEPTED],
       },
       'Mentee__r.id': {
         $in: approvedMenteeIds,
@@ -135,16 +135,17 @@ export class ReminderEmailsService {
       (match) => match.props.menteeId
     )
 
-    // 3rd Step: Find approved mentees that do not have a mentorship match or waiting applied
-    const menteeIdsWithoutMentorshipMatch = difference(
+    // 3rd Step: Find the list of mentees we need by extracting mentees with
+    // ACCEPTED or APPLIED mentorships, by extracting 2nd list from 1st list
+    const unmatchedMenteeIds = difference(
       approvedMenteeIds,
       mentorshipMatchMenteeIds
     )
 
-    // 4th Step: Return approved mentees that do not have a mentorship match or waiting applied
-    if (menteeIdsWithoutMentorshipMatch.length > 0) {
-      return approvedMenteesFrom45DaysAgo.filter((mentee) =>
-        menteeIdsWithoutMentorshipMatch.includes(mentee.props.userId)
+    // 4th Step: Get the mentee profiles of those mentee ids in the 3rd step
+    if (unmatchedMenteeIds.length > 0) {
+      return menteesApproved45DaysAgo.filter((mentee) =>
+        unmatchedMenteeIds.includes(mentee.props.userId)
       )
     }
 
@@ -530,61 +531,61 @@ export class ReminderEmailsService {
     return { message: 'Email sent' }
   }
 
-  async sendLogMentoringSessionsReminder({
-    email,
-    firstName,
-    userType,
-    mentorshipMatchAgeInDays,
-  }) {
-    const sfEmailTemplateDeveloperName =
-      userType === UserType.MENTOR
-        ? // Mentor Emails for 2 weeks (14 days) and 4 weeks (28 days)
-          mentorshipMatchAgeInDays === 14
-          ? 'Mentor_Log_Mentoring_Sessions_Reminder_1_1711110740940'
-          : 'Mentor_Log_Mentoring_Sessions_Reminder_2_1711112496532'
-        : // Mentee Emails for 2 weeks (14 days) and 4 weeks (28 days)
-        mentorshipMatchAgeInDays === 14
-        ? 'Mentee_Log_Mentoring_Sessions_Reminder_1_1711114670729'
-        : 'Mentee_Log_Mentoring_Sessions_Reminder_2_1711115347143'
+  // async sendLogMentoringSessionsReminder({
+  //   email,
+  //   firstName,
+  //   userType,
+  //   mentorshipMatchAgeInDays,
+  // }) {
+  //   const sfEmailTemplateDeveloperName =
+  //     userType === UserType.MENTOR
+  //       ? // Mentor Emails for 2 weeks (14 days) and 4 weeks (28 days)
+  //         mentorshipMatchAgeInDays === 14
+  //         ? 'Mentor_Log_Mentoring_Sessions_Reminder_1_1711110740940'
+  //         : 'Mentor_Log_Mentoring_Sessions_Reminder_2_1711112496532'
+  //       : // Mentee Emails for 2 weeks (14 days) and 4 weeks (28 days)
+  //       mentorshipMatchAgeInDays === 14
+  //       ? 'Mentee_Log_Mentoring_Sessions_Reminder_1_1711114670729'
+  //       : 'Mentee_Log_Mentoring_Sessions_Reminder_2_1711115347143'
 
-    const template = await this.emailTemplatesService.getEmailTemplate(
-      sfEmailTemplateDeveloperName
-    )
+  //   const template = await this.emailTemplatesService.getEmailTemplate(
+  //     sfEmailTemplateDeveloperName
+  //   )
 
-    if (!template) {
-      throw new Error(
-        `Email template not found: ${sfEmailTemplateDeveloperName}`
-      )
-    }
+  //   if (!template) {
+  //     throw new Error(
+  //       `Email template not found: ${sfEmailTemplateDeveloperName}`
+  //     )
+  //   }
 
-    const sanitizedHtml = template.HtmlValue.replace(
-      /{{{Recipient\.FirstName}}}/g,
-      `${firstName} ${email}`
-    )
+  //   const sanitizedHtml = template.HtmlValue.replace(
+  //     /{{{Recipient\.FirstName}}}/g,
+  //     `${firstName} ${email}`
+  //   )
 
-    const params = {
-      Destination: {
-        ToAddresses: isProductionOrDemonstration()
-          ? [email]
-          : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
-        BccAddresses: [SENDER_EMAIL],
-      },
-      Message: {
-        Body: {
-          Html: { Data: sanitizedHtml },
-        },
-        Subject: { Data: template.Subject },
-      },
-      Source: `${SENDER_NAME} <${SENDER_EMAIL}>`,
-    }
+  //   const params = {
+  //     Destination: {
+  //       ToAddresses: isProductionOrDemonstration()
+  //         ? [email]
+  //         : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+  //       BccAddresses: [SENDER_EMAIL],
+  //     },
+  //     Message: {
+  //       Body: {
+  //         Html: { Data: sanitizedHtml },
+  //       },
+  //       Subject: { Data: template.Subject },
+  //     },
+  //     Source: `${SENDER_NAME} <${SENDER_EMAIL}>`,
+  //   }
 
-    this.ses.sendEmail(params, (err, data) => {
-      if (err) console.log(err, err.stack)
-      else console.log(data)
-    })
+  //   this.ses.sendEmail(params, (err, data) => {
+  //     if (err) console.log(err, err.stack)
+  //     else console.log(data)
+  //   })
 
-    return { message: 'Email sent' }
-  }
+  //   return { message: 'Email sent' }
+  // }
 
   async sendMentorPendingApplicationReminder({ match }) {
     const sfEmailTemplateDeveloperName =
