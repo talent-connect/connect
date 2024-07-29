@@ -2,12 +2,6 @@
 module.exports = {
   plugins: [require('tailwindcss'), require('autoprefixer')],
 }
-// module.exports = {
-//   plugins: {
-//     tailwindcss: {},
-//     autoprefixer: {},
-//   },
-// }
 
 // Configuration for TailwindCSS v3
 // const { join } = require('path')
