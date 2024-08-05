@@ -21,6 +21,7 @@
       line-height="24px"
       color="#000"
       padding="0"
+      align="justify"
     />
     <mj-class
       name="text-small"
@@ -29,11 +30,7 @@
       color="#000"
       padding="0"
     />
-    <mj-class
-      name="paragraph"
-      padding="0 0 20px 0"
-      align="justify"
-    />
+    <mj-class name="paragraph" padding="0 0 20px 0" align="justify" />
     <mj-class name="column" padding="0 20px 0 0" />
     <mj-class name="italic" font-style="italic" />
     <mj-class

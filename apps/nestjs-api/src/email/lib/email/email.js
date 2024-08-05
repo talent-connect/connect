@@ -470,7 +470,9 @@ export const sendMentorshipRequestReceivedEmail = ({
 
 export const sendMentorshipAcceptedEmail = ({
   recipient,
-  mentorName,
+  mentorFirstName,
+  mentorFullName,
+  mentorEmail,
   menteeName,
   mentorReplyMessageOnAccept,
   rediLocation,
@@ -480,12 +482,14 @@ export const sendMentorshipAcceptedEmail = ({
     'mentorship-acceptance-email'
   )
   const html = sendMentorshipAcceptedEmailParsed
-    .replace(/\${mentorName}/g, mentorName)
+    .replace(/\${mentorFirstName}/g, mentorFirstName)
+    .replace(/\${mentorFullName}/g, mentorFullName)
+    .replace(/\${mentorEmail}/g, mentorEmail)
     .replace(/\${menteeName}/g, menteeName)
     .replace(/\${mentorReplyMessageOnAccept}/g, mentorReplyMessageOnAccept)
   return sendMjmlEmailFactory({
     to: recipient,
-    subject: `Congratulations! Mentor ${mentorName} has accepted your application, ${menteeName}!`,
+    subject: `Congratulations! Mentor ${mentorFullName} has accepted your application, ${menteeName}!`,
     html: html,
     rediLocation,
   })
