@@ -14,8 +14,9 @@
             >Hi ${mentorName},</mj-text
           >
           <mj-text mj-class="text paragraph"
-            >You have received a mentee application from ${menteeFullName} from
-            ReDI ${locationNameFormatted}!
+            >You have received a mentee application from
+            <strong>${menteeFullName}</strong> from
+            <strong>ReDI ${locationNameFormatted}</strong>!
           </mj-text>
           <mj-text mj-class="text paragraph"
             >Please log into ReDI Connect to review this application and visit
@@ -35,15 +36,16 @@
           <mj-text mj-class="text">
             <ul>
               <li>
-                If you would like to become their mentor, please accept their
-                application and suggest a date and time for your first meeting,
-                either online or in person. You may also share your preferred
-                contact methods (email, links, etc.).
+                If you would like to become their mentor, please
+                <i>accept the application</i> and suggest a date and time for
+                your first meeting, either online or in person. You may also
+                share your preferred contact methods (email, links, etc.).
               </li>
               <li>
                 If you realize that you cannot support them in the way they need
-                or are currently too busy to take on new mentees, please decline
-                the application and add a brief message explaining why.
+                or are currently too busy to take on new mentees, please
+                <i>decline the application</i> and add a brief message
+                explaining why.
               </li>
             </ul>
           </mj-text>
