@@ -6,7 +6,6 @@ import { Icon } from '../atoms'
 import './FormDraggableAccordion.scss'
 
 import { ReactComponent as AccordionHandleIcon } from '../../assets/images/accordion-handle.svg'
-import { LightModal } from '../molecules'
 
 interface Props {
   title: string
@@ -26,10 +25,6 @@ function FormDraggableAccordion({
   entryCategory,
 }: Props) {
   const [showAnswer, setShowAnswer] = useState(initialOpen)
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false)
-
-  const openDeleteModal = () => setIsDeleteModalOpen(true)
-  const closeDeleteModal = () => setIsDeleteModalOpen(false)
 
   useEffect(() => {
     const sub = closeAccordionSignalSubject?.subscribe(() =>
@@ -65,17 +60,8 @@ function FormDraggableAccordion({
         </Columns.Column>
         <Columns.Column narrow>
           {onRemove ? (
-            <Icon icon="cancel" size="small" onClick={openDeleteModal} />
+            <Icon icon="cancel" size="small" onClick={onRemove} />
           ) : null}
-          <LightModal
-            isOpen={isDeleteModalOpen}
-            handleClose={closeDeleteModal}
-            headline={modalHeadline}
-            message={modalMessage}
-            ctaLabel="Delete"
-            ctaOnClick={onRemove}
-            cancelLabel="Keep it"
-          />
         </Columns.Column>
       </Columns>
       <Element

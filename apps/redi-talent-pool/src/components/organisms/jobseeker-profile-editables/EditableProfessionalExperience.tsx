@@ -15,6 +15,7 @@ import {
   FormSelect,
   FormTextArea,
   Icon,
+  LightModal,
 } from '@talent-connect/shared-atomic-design-components'
 import { formMonthsOptions } from '@talent-connect/talent-pool/config'
 import { reorder } from '@talent-connect/typescript-utilities'
@@ -174,6 +175,10 @@ export function JobseekerFormSectionProfessionalExperience({
   const createMutation = useTpJobseekerProfileExperienceRecordCreateMutation()
   const removedRecords = useRef<Array<string>>([])
   const isBusy = useIsBusy()
+
+  const [experienceIdToRemove, setExperienceIdToRemove] = useState<
+    string | undefined
+  >()
 
   const closeAllAccordionsSignalSubject = useRef(new Subject<void>())
 
@@ -360,6 +365,7 @@ export function JobseekerFormSectionProfessionalExperience({
         'experience',
         formik.values?.experience?.filter((item) => item.id !== id)
       )
+      setExperienceIdToRemove(undefined)
     },
     [formik]
   )
@@ -390,7 +396,7 @@ export function JobseekerFormSectionProfessionalExperience({
                         title={
                           item.title ? item.title : 'Click me to add details'
                         }
-                        onRemove={() => onRemove(item.id)}
+                        onRemove={() => setExperienceIdToRemove(item.id)}
                         closeAccordionSignalSubject={
                           closeAllAccordionsSignalSubject.current
                         }
@@ -486,6 +492,15 @@ export function JobseekerFormSectionProfessionalExperience({
             </div>
           )}
         </Droppable>
+        <LightModal
+          isOpen={Boolean(experienceIdToRemove)}
+          handleClose={() => setExperienceIdToRemove(undefined)}
+          headline="Delete professional experience?"
+          message="You will lose all the information entered for this professional experience."
+          ctaLabel="Delete"
+          ctaOnClick={() => onRemove(experienceIdToRemove)}
+          cancelLabel="Keep it"
+        />
       </DragDropContext>
 
       <div style={{ height: '30px' }} />
