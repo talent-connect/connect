@@ -30,6 +30,12 @@
       color="#000"
       padding="0"
     />
+    <mj-class
+      name="quote"
+      padding="12px"
+      container-background-color="#f0f0f0"
+      font-style="italic"
+    />
     <mj-class name="paragraph" padding="0 0 20px 0" align="justify" />
     <mj-class name="column" padding="0 20px 0 0" />
     <mj-class name="italic" font-style="italic" />

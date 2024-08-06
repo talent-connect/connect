@@ -16,19 +16,18 @@
             Great news! Your application has been accepted by your new mentor,
             <strong>${mentorFullName}</strong>. Here is a message from them:
           </mj-text>
-          <mj-text mj-class="text paragraph italic"
-            >${mentorReplyMessageOnAccept}</mj-text
-          >
+          <mj-text mj-class="text quote">${mentorReplyMessageOnAccept}</mj-text>
 
-          <mj-text mj-class="text paragraph"
+          <mj-text mj-class="text" padding="20px 0"
             >Please make sure to respond to your mentor's message as soon as
             possible so that you can begin your mentorship journey
             together.</mj-text
           >
           <mj-text mj-class="text paragraph"
-            >For your reference, your mentor's email address is listed as a
-            recipient of this email. So, feel free to hit the 'Reply to all'
-            button. You can also reach ${mentorFirstName} directly at
+            >For your reference, ${mentorFirstName}'s email address is listed as
+            a recipient of this email. So, feel free to hit the
+            <strong>'Reply to all'</strong>
+            button. You can also reach them directly at
             <a href="mailto:${mentorEmail}" class="text-link">${mentorEmail}</a
             >.</mj-text
           >
