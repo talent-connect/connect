@@ -34,15 +34,6 @@ function FormDraggableAccordion({
     return () => sub?.unsubscribe()
   }, [closeAccordionSignalSubject])
 
-  const modalHeadline =
-    entryCategory === 'education'
-      ? 'Delete education entry?'
-      : 'Delete professional experience?'
-  const modalMessage =
-    entryCategory === 'education'
-      ? 'You will lose all the information entered for this education entry.'
-      : 'You will lose all the information entered for this professional experience.'
-
   return (
     <div className="form-draggable-accordion">
       <Columns breakpoint="mobile" className="form-draggable-accordion__title">
