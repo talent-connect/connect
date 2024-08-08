@@ -69,7 +69,6 @@ export class ReminderEmailsController {
         await this.reminderEmailsService.sendApplyToMentorReminder({
           email: mentee.props.email,
           firstName: mentee.props.firstName,
-          location: mentee.props.rediLocation,
         })
       })
     }
@@ -87,7 +86,6 @@ export class ReminderEmailsController {
         await this.reminderEmailsService.sendApplyToMentorReminder({
           email: mentee.props.email,
           firstName: mentee.props.firstName,
-          location: mentee.props.rediLocation,
           isSecondReminder: true,
         })
       })

@@ -108,9 +108,7 @@ export const ONBOARDING_STEPS = [
           or{' '}
           <a
             href={
-              rediLocation === RediLocation.Cyberspace
-                ? 'https://calendly.com/josefa_cyberspace/redi-connect-consultancy-call-only-for-cyberspace'
-                : rediLocation === RediLocation.Malmo
+              rediLocation === RediLocation.Malmo
                 ? 'https://calendar.app.google/zQJr8PJsNF2arm236'
                 : 'https://calendly.com/hadeertalentsucess/consultancy-call?month=2024-02'
             }
