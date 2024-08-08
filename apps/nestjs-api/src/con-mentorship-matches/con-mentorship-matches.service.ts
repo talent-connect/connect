@@ -99,10 +99,12 @@ export class ConMentorshipMatchesService {
 
     this.emailService.sendMentorshipAcceptedEmail({
       recipient: [menteeProfile.props.email, mentorProfile.props.email],
-      mentorName: mentorProfile.props.firstName,
+      mentorFirstName: mentorProfile.props.firstName,
+      mentorFullName: mentorProfile.props.fullName,
       menteeName: menteeProfile.props.firstName,
       mentorReplyMessageOnAccept: input.mentorReplyMessageOnAccept,
       rediLocation: menteeProfile.props.rediLocation,
+      mentorEmail: mentorProfile.props.email,
     })
 
     const menteePendingMenteeApplications = await this.findAll({
