@@ -333,30 +333,6 @@ export const sendMentoringSessionLoggedEmail = ({
   })
 }
 
-/* The code for sending this reminder wasn't re-implemented when we migrated to Salesforce. 
-It should be re-implemented in Salesforce and then removed. */
-
-// export const sendMenteeReminderToApplyToMentorEmail = ({
-//   recipient,
-//   menteeFirstName,
-//   rediLocation,
-// }) => {
-//   const templateFile =
-//     rediLocation === 'CYBERSPACE'
-//       ? 'apply-to-mentor-reminder-for-mentee-cyberspace'
-//       : 'apply-to-mentor-reminder-for-mentee'
-
-//   const html = convertTemplateToHtml(null, templateFile).replace(
-//     /\${menteeFirstName}/g,
-//     menteeFirstName
-//   )
-//   return sendMjmlEmailFactory({
-//     to: recipient,
-//     subject: 'Have you checked out or amazing mentors yet?',
-//     html: html,
-//   })
-// }
-
 export const sendMentorCancelledMentorshipNotificationEmail = ({
   recipient,
   firstName,
