@@ -60,27 +60,27 @@
           },
           {
             "question": "How do I get started?",
-            "answer": "Follow these four steps: 1. Fill in the sign-up form to provide some first information on your ReDI Connect profile. 2. Prospective mentors and mentees will meet one of our team menbers, so we can get to know you better and activate your profile. 3. Complete your profile as much as possible to allow for a great match. 4. Mentees (students) can now browse through the available mentor profiles. They look for the ones that best fit their needs and start applying to mentors. Mentors wait for applications. When they receive an application, they let the student know as soon as possible, whether they are ReDI for this mentorship match."
-          },
-          {
-            "question": "Why do I have to meet with someone from the ReDI Talent Success Team before I can start?",
-            "answer": "At ReDI we like to keep a close community spirit and create a welcoming and safe space for everyone. This means that we like to know everyone personally. In these personal meetings with one of our team members, we like to get to know you better and get an understanding of your motivation to be a part of ReDI Connect. This way we hope to realize our credo of 'using technology to break down barriers and connect the leaders of tomorrow.'"
-          },
-          {
-            "question": "How much time does the mentorship require?",
-            "answer": "We suggest a mentorship duration for about 4-6 months. If needed, it can be longer. In the end, it is up to you and your mentor/mentee to decide how often you want to meet. It highly depends on the goals that you are trying to reach and the time commitment each party is able to make. Being prepared for your sessions is also important, so please keep that in mind."
-          },
-          {
-            "question": "How can I create a good profile?",
-            "answer": "Share all the information that might be relevant to allow the other person to check whether it will be a good match. Be as specific as possible about what you want to accomplish together. Share your professional and education info, as well as something personal about you (only what you feel comfortable sharing). Uploading a photo may give others an idea of who you are and creates trust."
+            "answer": "Follow these steps:  <b>If you wish to be a Mentor:</b> First, Sign up as a mentor and fill out your profile information . After you submit your profile for review, make sure you book an onboarding call with one of our team members to know all about the mentorship program, its dynamics and what to expect as a mentor. <b>If you wish to be a Mentee:</b> Sign  up as a mentee using the email address you used to sign up for your ReDI course,  remember: only registered ReDI students can join the platform as mentees. After signing up, make sure you fill out your profile information and submit it for review. You need to wait for the approval of your profile to get access to our mentors profiles database."
           },
           {
             "question": "How does the matching process work?",
-            "answer": "Everyone on ReDI Connect creates a profile with information about them. However, only the mentees are able to see the mentors' profiles, not the other way around. Mentees browse mentor profiles and apply to the ones that have the expertise or experience they need. Only once a mentor receives an application, they will see that person’s profile. Mentors review applications from mentees and decide if they can help them based on the student’s profile and application message. Once a mentor accepts an application, it’s a match!"
+            "answer": "ReDI connect works with two phases of matching. The first phase starts with the mentees’ initiative to search for a suitable mentor. A Mentee can do that - only if they have an approved profile- through the “find a mentor” tab. They can filter through the database of the mentors profiles and send mentorship applications to the mentors they are interested in. The second phase comes from the mentor side: a mentor can accept or decline mentorship applications according to the mentees’ expectations and profiles. It is also important to note that Mentor’s don’t have access to Mentees’ profiles database, they only can view a mentee’s profile when a mentee sends them a mentorship application."
+          },          
+          {
+            "question": "How much time does the mentorship require?",
+            "answer": "Mentorships at ReDI are flexible and goal oriented. What we suggest is  a mentorship duration of about 4-6 sessions, although it can be extended if needed. The frequency and duration of the  sessions are up to you and your mentor/mentee to decide, based on your goals and the time commitment each party can make. To make sure you are making the most of each session, remember that preparation is key.  Also, bear in mind that you can still use the time between sessions to exchange updates and answer questions."
+          },
+          {
+            "question": "How can I communicate with my Mentor/Mentee?",
+            "answer": "ReDI-Connect doesn’t have a messaging system. So to communicate with your Mentor/Mentee after the match happens you need to send them a message via e-mail. You can use any platform you prefer for communication. This is not only convenient but also prepares mentees for using various platforms for meetings and communication in the future during their career path."
+          },
+          {
+            "question": "How can I create a good profile?",
+            "answer": "To create a good profile, share all relevant information to help others determine if you would be a good match. Be as specific as possible about what you aim to accomplish together. Include details about your professional and educational background, as well as some personal information (only what you're comfortable sharing). Uploading a photo can also help others get a better idea of who you are and build trust."
           },
           {
             "question": "If I have any questions, whom should I contact?",
-            "answer": "If you are from <strong>ReDI School Germany</strong>, then please use the following email addresses: </br> General: <a href='mailto:career@redi-school.org'>career@redi-school.org</a> </br> Mentorship Program: <a href='mailto:hadeer@redi-school.org'>hadeer@redi-school.org</a> </br>Mentorship Program for Cyberspace: <a href='mailto:josefa@redi-school.org'>josefa@redi-school.org</a></br></br>If you are from <strong>ReDI School Malmö</strong>, then please use the following email addresses:</br>General: <a href='mailto:malmo@redi-school.org'>malmo@redi-school.org</a></br>General career: <a href='mailto:career.sweden@redi-school.org'>career.sweden@redi-school.org</a></br>Mentorship Program Manager: <a href='mailto:alice.r@redi-school.org'>alice.r@redi-school.org</a>"
+            "answer": "If you are from <b>ReDI School Germany</b>, then please use the following email addresses: </br> General: <a href='mailto:career@redi-school.org'>career@redi-school.org</a> </br> Mentorship Program: <a href='mailto:hadeer@redi-school.org'>hadeer@redi-school.org</a> </br> </br>If you are from <b>ReDI School Malmö</b>, then please use the following email addresses:</br>General: <a href='mailto:malmo@redi-school.org'>malmo@redi-school.org</a></br>General career: <a href='mailto:career.sweden@redi-school.org'>career.sweden@redi-school.org</a></br>Mentorship Program Manager: <a href='mailto:alice.r@redi-school.org'>alice.r@redi-school.org</a>"
           }
         ]
       },
@@ -89,35 +89,35 @@
         "qAndAs": [
           {
             "question": "Who can become a mentor?",
-            "answer": "Anyone who has expertise or experience our students can learn from. We have a wide range of volunteer mentors: programmers, engineers, designers, HR professionals, entrepreneurs, marketing specialists, data scientists or also advanced students."
+            "answer": "Anyone with expertise or experience in the European market that our students can learn from can become a mentor. Our volunteer mentors come from various fields, including programming, engineering, design, HR, entrepreneurship, marketing, data science, and management."
           },
           {
             "question": "Am I ReDI to become a mentor?",
-            "answer": "If you are unsure, don't worry, you can always sign up and schedule a call with someone from our team to learn more about the program and decide together if it is a good time for you to become a mentor."
+            "answer": "If you're unsure about becoming a mentor, don't worry. You can sign up and schedule a call with someone from our team to learn more about the program. Together, you can decide if it's the right time for you to become a mentor."
           },
           {
             "question": "How do I pick the mentoring topics in my profile?",
-            "answer": "The mentoring topics show your prospective mentee which areas you can support them in. Please choose the ones that you feel comfortable and confident enough to be mentoring our students/alumni on. You can select as many as you want, but you may want to focus on the ones that best reflect your skills, expertise and focus you want to give your mentorship relationship. Be aware that mentees can only select up to four mentoring topics to reflect their most urgent support needs."
+            "answer": "The mentoring topics in your profile indicate to prospective mentees the areas where you can offer support. Choose the topics you feel comfortable and confident mentoring in. You can select as many topics as you want, but it's advisable to focus on those that best reflect your skills and expertise, and the focus you want to bring to your mentorship relationship. Keep in mind that mentees can only select up to four mentoring topics to reflect their most urgent support needs."
           },
           {
             "question": "How do I get matched with a mentee?",
-            "answer": "Make sure your profile reflects your expertise and then lean back and wait for applications by mentees. Once you receive an application, you will get an email notification and be able to read it on the ReDI Connect platform. Then you can decide whether you will be able to help this student and answer them as soon as possible. In case you think you are not a good match, please explain to the student why you think you are not the best match for them, so they can look for someone else. Please know that sometimes it can also take a bit longer until you receive an application, so be patient."
+            "answer": "To get matched with a mentee, ensure your profile accurately reflects your expertise. After that, simply wait for mentees to apply to you. When you receive an application, you'll get an email notification and can review it on the ReDI Connect platform. You can then decide if you can help the student and respond as soon as possible. If you feel you're not the best match, please provide feedback to the student so they can seek another mentor. Remember, it may take some time to receive an application, so be patient."
           },
           {
             "question": "How can I update or improve my profile?",
-            "answer": "Go to 'My profile' and share some more info about yourself. A photo is usually also a good way to gain more traction. For our students, it is important to get an idea of who you are, what it is like to collaborate with you and how you might be able to help them. Adding some personal info also creates trust and connection. If you have a portfolio, you can also share your github or a link to your other portfolio."
+            "answer": "To update or improve your profile, go to <a href='https://connect.redi-school.org/app/me'>'My Profile'</a> and add more information about yourself. Including a photo can also help attract more attention. For students, it’s important to get a sense of who you are, what it’s like to collaborate with you, and how you can assist them. Adding personal details can build trust and connection. If you have a portfolio, consider sharing your GitHub or a link to other portfolio sites to showcase your work."
           },
           {
             "question": "How to stop receiving further applications?",
-            "answer": "Please go to your profile page and check your mentee count capacity. If it is currently too high for you, please edit it. If you want to take a break from mentoring for a while, you can set your mentee count capacity to '0'. This will make your profile invisible and you will not receive any applications."
+            "answer": "To stop receiving further applications, go to your profile page and check your mentee count capacity. If it's currently too high, you can edit it to a lower number. If you want to take a break from mentoring, set your mentee count capacity to '0'. This will make your profile invisible and prevent any new applications from being sent to you."
           },
           {
             "question": "What to do if my mentee comes to me with issues I am not qualified to answer?",
-            "answer": "If your mentee approaches you with any significant issues beyond the scope of your mentorship (such as skill-building or job search), kindly reach out to us at <a href='mailto:career@redi-school.org'>career@redi-school.org</a> <strong>(for ReDI Schools in Germany)</strong> and at <a href='mailto:career.sweden@redi-school.org'>career.sweden@redi-school.org</a> <strong>(for ReDI School in Sweden)</strong>. Please refrain from attempting to address psychological or financial matters independently. We maintain a connection with Ipso, an organization providing online psychosocial counseling, and can facilitate their support for your mentee when needed."
+            "answer": "If your mentee approaches you with any significant issues beyond the scope of your mentorship, kindly reach out to us at <a href='mailto:career@redi-school.org'>career@redi-school.org</a> <b>(for ReDI Schools in Germany)</b> and at <a href='mailto:career.sweden@redi-school.org'>career.sweden@redi-school.org</a> <b>(for ReDI School in Sweden)</b>. You can also reach out to the mentorship community on slack. Please refrain from attempting to address psychological or financial matters independently. We maintain a connection with Ipso, an organization providing online psychosocial counseling, and can facilitate their support for your mentee when needed."
           },
           {
             "question": "Is there a way to meet the ReDI Connect Community?",
-            "answer": "Yes! Usually in advance of the new semester, we organize info sessions for prospective ReDI volunteers. Once you are a mentor with ReDI, you will also be informed of all upcoming events and workshops on our dedicated mentor Slack channel. Additionally, the ReDI Sweden team arranges various events for volunteers and students, and you'll receive invitations to those gatherings."
+            "answer": "Yes, you can meet the ReDI Connect Community in several ways. Before each new semester, we typically organize info sessions for prospective ReDI volunteers. Once you become a mentor, you will be informed about upcoming events and workshops through our dedicated mentor Slack channel. Additionally, the ReDI Sweden team arranges various events for volunteers and students, and you'll receive invitations to those gatherings."
           }
         ]
       },
@@ -125,12 +125,12 @@
         "title": "Guidance for Mentees",
         "qAndAs": [
           {
-            "question": "Why could I need a mentor?",
-            "answer": "Having a mentor can have many different benefits: it is a great way to gain insight into the tech industry, get a clearer view of what your next career steps could be after ReDI School, learn how to present yourself on your CV and during job interviews, and get that extra help on topics related to your ReDI course. Everyone can benefit from having a mentor!"
+            "question": "Why might I need a mentor?",
+            "answer": "A mentor can offer numerous benefits, such as providing valuable insights into the tech industry and helping you clarify your career path after ReDI School. They can assist with improving your CV and job interview skills, and offer additional support on topics related to your ReDI course. Essentially, a mentor can help you navigate your professional journey and achieve your goals more effectively."
           },
           {
             "question": "Am I ready to get a mentor?",
-            "answer": "If you are not sure, whether it is the right time for you to get a mentor, just sign up and schedule a meeting with our Mentorship Community Manager. They will discuss with you the best options for you at this stage. Setting your professional goals will help you decide which are the more relevant areas where you would like to to have some support during your mentoring sessions."
+            "answer": "If you're unsure whether it's the right time to get a mentor, you can sign up and <a href='https://calendly.com/hadeertalentsucess/consultancy-call'>schedule a meeting</a> with our Mentorship Community Manager. They will help you explore the best options for your current stage and assist you in setting your professional goals. This will help you identify the areas where you would benefit most from support during your mentoring sessions."
           },
           {
             "question": "How do I find the right mentor?",
@@ -138,15 +138,15 @@
           },
           {
             "question": "What happens after I've sent an application?",
-            "answer": "The mentor will receive an email notification about your application. Hopefully they will review it soon and give you an answer. If you do not receive an answer within a week, please let us know, so we can follow up. You may also choose to apply to another mentor that meets your criteria."
+            "answer": "After you send an application, the mentor will receive an email notification about it. They should review your application and respond to you soon. If you don’t receive a response within a week, please let us know so we can follow up. In the meantime, you can also apply to other mentors who meet your criteria."
           },
           {
             "question": "How many applications should I send?",
-            "answer": "Generally, you can always only have one mentor at a time. You can apply to multiple mentors at the same time, but be aware that the first one to accept will be your mentor. If you find one that you think could be a really good match, apply to that one first and wait for an answer. If you do not get an answer soon, try the next best match."
+            "answer": "You can apply to multiple mentors at the same time, but remember that you can only have one mentor at a time, therefore the first mentor who accepts your application will be your match and all the other applications will be invalidated automatically. If you find a mentor who seems like a particularly good match, apply to them first and wait for a response. If you don’t hear back soon, you can then move on to applying to other potential mentors."
           },
           {
             "question": "How can I update or improve my profile?",
-            "answer": "Go to ReDI Connect to work on ‘My profile’ and share some more info about yourself. Make sure your information is accurate and as complete as possible. The more you share about yourself, the easier it is for a mentor to see if and how they can help you. Also a photo of yourself can create  trust and connection. If you already have a portfolio, you can also share your github or a link to your other portfolio."
+            "answer": "To update or improve your profile, go to ReDI Connect and work on <a href='https://connect.redi-school.org/app/me'>'My Profile'</a>. Ensure your information is accurate and as complete as possible. The more details you provide, the easier it will be for a mentor to assess how they can assist you. Including a photo can also help build trust and connection. If you have a portfolio, consider adding a link to your GitHub or other portfolio sites to showcase your work."
           }
         ]
       },
@@ -155,31 +155,31 @@
         "qAndAs": [
           {
             "question": "What happens after the mentorship match has been created?",
-            "answer": "It is now up to you two to contact each other and start planning your first session."
+            "answer": "After the mentorship match is created, it’s up to you and your mentor or mentee to get in touch and start planning your first session."
           },
           {
             "question": "What tools to use to communicate?",
-            "answer": "This is up to the mentee and mentor to decide. You can indicate a preference in your profile or discuss in your first session which communication tool to use. You could for example also use our ReDI Slack space to communicate since most of our community is there."
+            "answer": "The choice of communication tools is up to you and your mentor or mentee. You can indicate a preference in your profile or discuss and decide on the tools during your first session. You might also consider using our ReDI Slack space for communication, as many in our community are active there."
           },
           {
             "question": "Is there a location where we could meet?",
-            "answer": "Due to the Covid-19 situation, we currently recommend using online tools to meet and communicate with each other. If you both agree and reside in the same location, you may also choose to meet up - while complying with local regulations."
+            "answer": "During the Covid-19 situation, we recommend meeting online and many people have preferred to continue with this format. If you and your mentor or mentee agree and are in the same location, you may choose to meet in person while adhering to local regulations. However, ReDI doesn’t provide meeting spaces for one:one mentorships in ReDI locations. "
           },
           {
             "question": "How often and for how long should we meet?",
-            "answer": "We recommend a minimum of 6 sessions in a period of about 6 months, 1 hour each time. However, a lot of people meet more often and usually for more than an hour. (1,5 - 2 hours seems to be a good time to get something done). The meetings can be scheduled whenever you want to. We just ask mentors to log all meetings on the ReDI Connect platform."
+            "answer": "This depends on several factors such as the goals of your mentorship and the nature of the topics that you need to discuss. In General, we  recommend having a minimum of 4 sessions over a period of about 3-6 months, with each session lasting around 1 hour. Many people find that meeting more frequently or for longer periods (1.5 - 2 hours) is more effective. Meetings can be scheduled at your convenience, but we ask mentors to log all meetings on the ReDI Connect platform."
           },
           {
             "question": "How can we structure our mentoring sessions?",
-            "answer": "For your first meeting you can focus on getting to know each other and work on setting goals together. Some students already have clear long-term goals. In these cases, you can think carefully about concrete, realistic goals for the next 6 months that bring you closer to your long-term goals. Other students are not sure yet about how to move forward, in which area to specialize or how to find realistic opportunities for the upcoming years. In those cases, your mentorship goals can be to gain insights into one or a few specialization areas, or to determine the best skills to develop further. For more specific guidance, mentors can reach out and learn from other mentors using the Slack space or the regular mentors’ gatherings. There is also a shared folder on our ReDI Community drive with links to resources and other useful guidance."
+            "answer": "In your first meeting, focus on getting to know each other and setting goals together. If the student already has clear long-term goals, work on defining concrete, realistic goals for the next 6 months that will help them progress toward those long-term objectives. If the student is unsure about their direction, use the sessions to explore different specialization areas and identify key skills to develop. For more specific guidance, mentors can connect with other mentors via our Slack space or attend regular mentors’ gatherings."
           },
           {
             "question": "How does the mentorship match end?",
-            "answer": "When both mentor and mentee think that they have reached their mentorship goals or feel that the match isn’t a good fit anymore, the mentor can mark the mentorship as complete on the ‘My mentorship’ page. Since this is a relationship between mentor and mentee, we ask you to communicate with each other, if and when you would like to complete the mentorship. Don’t worry about offending anyone. It is completely normal and even makes sense that at some point, when the goals have been achieved, the mentorship ends. This way you will both be able to be matched again with someone else. In the rare case that one party doesn’t feel comfortable, please refer to the next point below."
+            "answer": "The mentorship match ends when both the mentor and mentee feel that they have achieved their goals or in the case of agreeing that the match is no longer a good fit. The mentor can mark the mentorship as complete on the <a href='https://connect.redi-school.org/app/mentorships/'>'My Mentorship'</a> page. It's important for both parties to communicate openly about ending the mentorship to ensure a smooth transition. It’s completely normal for a mentorship to conclude when goals are met, allowing both individuals to pursue new opportunities. In rare cases where one party feels uncomfortable, please refer to the next steps for resolution"
           },
           {
             "question": "What to do if the mentorship match doesn't feel right?",
-            "answer": "There can be different reasons for having the feeling the mentorship should not continue. And this is totally okay. You can then use the option to contact someone from our team on your mentorship dashboard. The ReDI team will help you find a solution or a new match. It’s all better than staying in a mentorship relationship that doesn’t feel right or has come to an end. "
+            "answer": "If the mentorship match doesn’t feel right or if you believe it should not continue, that’s completely okay. You can contact a member of our ReDI Talent Success Team <br>at <a href='career@redi-school.org'>career@redi-school.org</a> <b>(for ReDI Schools in Germany)</b> or <br><a href='career.sweden@redi-school.org'>career.sweden@redi-school.org</a> <b>(for ReDI School in Sweden)</b>. <br> We will assist you in finding a solution or arranging a new match. It's better to address these concerns rather than staying in a mentorship relationship that isn’t fulfilling or has reached its end."
           }
         ]
       }
