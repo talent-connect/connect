@@ -28,6 +28,9 @@
       "@talent-connect/shared-shadcn-ui-components": [
         "libs/shared-shadcn-ui-components/src/index.ts"
       ],
+      "@talent-connect/shared-shadcn-ui-components/*": [
+        "libs/shared-shadcn-ui-components/src/*"
+      ],
       "@talent-connect/shared-types": ["libs/shared-types/src/index.ts"],
       "@talent-connect/shared-utils": ["libs/shared-utils/src/index.ts"],
       "@talent-connect/talent-pool/config": [
