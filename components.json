@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "libs/shared-shadcn-ui-components/src/lib/utils/tailwind.config.js",
+    "css": "libs/shared-atomic-design-components/src/lib/styles/global.scss",
+    "baseColor": "gray",
+    "cssVariables": true,
+    "prefix": "tw-"
+  },
+  "aliases": {
+    "components": "@talent-connect/shared-shadcn-ui-components/components",
+    "utils": "@talent-connect/shared-utils"
+  }
+}
