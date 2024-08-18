@@ -1,7 +1,8 @@
-// custom variable overwrites for bulma
-@import '_variables.scss';
+// directives for Tailwind’s layers
+@import '_tailwind';
 
-@import '_global.scss';
+// custom variable overwrites for bulma
+@import '_variables';
 
 // bulma global dependencies
 @import '~bulma/sass/utilities/_all';
@@ -22,9 +23,9 @@
 @import '~bulma/sass/elements/notification.sass';
 @import '~bulma-checkradio/src/sass/index.sass';
 
-//custom modifiers
-@import '_fonts.scss';
-@import '_forms.scss';
+// custom modifiers
+@import '_fonts';
+@import '_forms';
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -62,6 +63,10 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+.color-secondary {
+  color: $redi-blue-dark;
 }
 
 .field:not(:last-child) {
@@ -128,6 +133,7 @@ a:hover {
 .column--main-content {
   min-height: 40rem;
   position: relative;
+  overflow: hidden;
 }
 
 .color-side-menu {
@@ -172,5 +178,21 @@ a:hover {
 
   &__icon {
     flex-shrink: 0;
+  }
+}
+
+.block-separator {
+  .block-separator {
+    @include mobile() {
+      padding-bottom: 1.5rem;
+      margin-bottom: -0.5rem;
+      border-bottom: 1px solid $grey-light;
+    }
+  }
+
+  &:not(:last-child) {
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid $grey-light;
   }
 }

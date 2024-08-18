@@ -12,7 +12,12 @@ export class TpCompanyProfilePatchInput extends PartialType(
     'about',
     'companyName',
     'industry',
-    'joinsMunich24SummerJobFair',
+    /**
+     * Job Fair Boolean Field(s)
+     * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+     * Duplicate if there are multiple Job Fairs coming
+     */
+    // 'joinsMunich24SummerJobFair',
     'isProfileVisibleToJobseekers',
     'linkedInUrl',
     'location',

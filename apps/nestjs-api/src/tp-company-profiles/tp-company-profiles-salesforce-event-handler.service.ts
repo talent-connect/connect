@@ -41,6 +41,14 @@ export class TpCompanyProfilesSalesforceEventHandlerService {
       const updatedCompanyProfileProps = Object.assign(
         {},
         companyProfile.props,
+        // Even though this function is run as a result of .status changing in Salesforce,
+        // we observed that when retrieving the companyProfile from Salesforce (a few lines
+        // above), companyProfile.props.status would contain the OLD value! So, when for
+        // example .status was changed from DRAFTING_PROFILE to PROFILE_APPROVED by a
+        // Salesforce admin, when this code ran, .status would contain DRAFTING_PROFILE.
+        // We therefore need to avoid setting .status _back to_ DRAFTING_PROFILE 🤦‍♀️...
+        // by setting it to the new value it's supposed to have.
+        { state: payload.newStatus },
         { isProfileVisibleToJobseekers: true }
       )
       const updatedCompanyProfile = TpCompanyProfileEntity.create(

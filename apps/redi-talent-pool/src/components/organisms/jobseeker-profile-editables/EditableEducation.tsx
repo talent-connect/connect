@@ -14,6 +14,7 @@ import {
   FormSelect,
   FormTextArea,
   Icon,
+  LightModal,
 } from '@talent-connect/shared-atomic-design-components'
 import {
   certificationTypes,
@@ -160,6 +161,10 @@ function JobseekerFormSectionEducation({
   setIsEditing,
   setIsFormDirty,
 }: JobseekerFormSectionEducationProps) {
+  const [educationIdToRemove, setEducationIdToRemove] = useState<
+    string | undefined
+  >()
+
   const queryClient = useQueryClient()
   const myData = useMyTpDataQuery()
   const patchMutation = useTpJobseekerProfileEducationRecordPatchMutation()
@@ -362,6 +367,7 @@ function JobseekerFormSectionEducation({
         'education',
         formik.values?.education?.filter((item) => item.id !== id)
       )
+      setEducationIdToRemove(undefined)
     },
     [formik]
   )
@@ -392,7 +398,7 @@ function JobseekerFormSectionEducation({
                         title={
                           item.title ? item.title : 'Click me to add details'
                         }
-                        onRemove={() => onRemove(item.id)}
+                        onRemove={() => setEducationIdToRemove(item.id)}
                         closeAccordionSignalSubject={
                           closeAllAccordionsSignalSubject.current
                         }
@@ -489,6 +495,15 @@ function JobseekerFormSectionEducation({
             </div>
           )}
         </Droppable>
+        <LightModal
+          isOpen={Boolean(educationIdToRemove)}
+          handleClose={() => setEducationIdToRemove(undefined)}
+          headline="Delete education entry?"
+          message="You will lose all the information entered for this education entry."
+          ctaLabel="Delete"
+          ctaOnClick={() => onRemove(educationIdToRemove)}
+          cancelLabel="Keep it"
+        />
       </DragDropContext>
 
       <div style={{ height: '30px' }} />

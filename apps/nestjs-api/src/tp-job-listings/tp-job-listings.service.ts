@@ -67,10 +67,15 @@ export class TpJobListingsService {
     if (_filter.filter.isRemotePossible) {
       filter.Remote_Possible__c = true
     }
-    if (_filter.filter.joinsMunich24SummerJobFair) {
-      filter['Account__r.ReDI_Joins_Munich_24_Summer_Job_Fair__c'] =
-        _filter.filter.joinsMunich24SummerJobFair
-    }
+    /**
+     * Job Fair Boolean Field(s)
+     * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next block when there's an upcoming Job Fair
+     * Duplicate if there are multiple Job Fairs coming
+     */
+    // if (_filter.filter.joinsMunich24SummerJobFair) {
+    //   filter['Account__r.ReDI_Joins_Munich_24_Summer_Job_Fair__c'] =
+    //     _filter.filter.joinsMunich24SummerJobFair
+    // }
 
     return await this.findAll(filter)
   }
