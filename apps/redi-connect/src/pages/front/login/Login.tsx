@@ -91,7 +91,9 @@ export default function Login() {
       // TODO: insert proper error handling here and elsewhere. We should cover cases where we
       // get values usch as myProfileResult.isError. Perhaps we-ure the error boundary logic
       // that Eric has been looking into.
-      return history.push('/app/me')
+      const urlParams = new URLSearchParams(window.location.search)
+      const goto = urlParams.get('goto') ?? '/app/me'
+      return history.push(goto)
     } catch (err) {
       console.log(err)
     }

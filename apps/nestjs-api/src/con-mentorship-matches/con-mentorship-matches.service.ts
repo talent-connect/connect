@@ -99,18 +99,20 @@ export class ConMentorshipMatchesService {
 
     this.emailService.sendMentorshipAcceptedEmail({
       recipient: [menteeProfile.props.email, mentorProfile.props.email],
-      mentorName: mentorProfile.props.firstName,
+      mentorFirstName: mentorProfile.props.firstName,
+      mentorFullName: mentorProfile.props.fullName,
       menteeName: menteeProfile.props.firstName,
       mentorReplyMessageOnAccept: input.mentorReplyMessageOnAccept,
       rediLocation: menteeProfile.props.rediLocation,
+      mentorEmail: mentorProfile.props.email,
     })
 
-    const menteePendingMentorshipMatches = await this.findAll({
+    const menteePendingMenteeApplications = await this.findAll({
       Mentee__c: menteeProfile.props.userId,
       Status__c: MentorshipMatchStatus.APPLIED,
     })
 
-    menteePendingMentorshipMatches.forEach(async (match) => {
+    menteePendingMenteeApplications.forEach(async (match) => {
       match.props.status =
         MentorshipMatchStatus.INVALIDATED_AS_OTHER_MENTOR_ACCEPTED
       this.api.update(this.mapper.toPersistence(match))

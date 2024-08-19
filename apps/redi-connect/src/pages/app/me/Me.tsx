@@ -20,7 +20,10 @@ import {
 } from '../../../components/organisms'
 
 import { LoggedIn } from '../../../components/templates'
-import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
+import {
+  getAccessTokenFromLocalStorage,
+  purgeAllSessionData,
+} from '../../../services/auth/auth'
 
 import {
   ConnectProfileStatus,
@@ -31,6 +34,7 @@ import {
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { useLoading } from '../../../hooks/WithLoading'
 // CHECK OUT THE LOADER
+import { useHistory } from 'react-router-dom'
 import './Me.scss'
 import OnboardingSteps from './OnboardingSteps'
 
@@ -38,11 +42,25 @@ function Me() {
   const queryClient = useQueryClient()
   const submitProfileForReviewMutation = useConProfileSubmitForReviewMutation()
   const { Loading, isLoading } = useLoading()
+  const history = useHistory()
+
   const myProfileResult = useLoadMyProfileQuery(
     {
       loopbackUserId: getAccessTokenFromLocalStorage().userId,
     },
-    { onSuccess: () => console.log('Me loaded it') }
+    {
+      onSuccess: (profile) => {
+        if (
+          profile?.conProfile?.profileStatus ===
+            ConnectProfileStatus.Rejected ||
+          profile?.conProfile?.profileStatus ===
+            ConnectProfileStatus.Deactivated
+        ) {
+          purgeAllSessionData()
+          history.push('/front/login-result')
+        }
+      },
+    }
   )
 
   // TODO: insert proper error handling here and elsewhere. We should cover cases where we
