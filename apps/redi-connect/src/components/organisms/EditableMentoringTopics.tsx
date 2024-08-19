@@ -119,7 +119,6 @@ function EditableMentoringTopics() {
     }),
     enableReinitialize: true,
     validationSchema,
-    //validateOnChange: true,
     onSubmit: submitForm,
   })
 
@@ -189,6 +188,13 @@ function EditableMentoringTopics() {
           key={groupId}
           items={getFormSelectItemsFromCategory(categoriesByGroup[groupId])}
           multiselect
+          disabled={
+            userType === 'MENTEE' &&
+            formik.values[groupId].length === 0 &&
+            !selectionsLeft
+              ? true
+              : false
+          }
           placeholder="Start typing and select a Topic"
           formik={formik}
           customOnChange={userType === 'MENTEE' && customOnChange(groupId)}
