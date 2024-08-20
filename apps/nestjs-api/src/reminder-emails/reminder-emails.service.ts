@@ -251,8 +251,6 @@ export class ReminderEmailsService {
         Mentor__c: match.props.mentorId,
       })
 
-      console.log(mentoringSessions)
-
       // Step 2.2: Fill the object with the mentorship match id as key and the mentee id, mentor id and the count of mentoring sessions
       mentorshipMatchesWithSessionsCount[match.props.id] = {
         menteeId: match.props.menteeId,
