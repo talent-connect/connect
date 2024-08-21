@@ -5,7 +5,7 @@ This library stores the [shadcn/ui](https://ui.shadcn.com/) components - a colle
 ## Component Design
 
 - The `shadcn/ui` library is based on `Radix UI`, which provides unstyled, accessible components for building React applications
-- `shadcn/ui` utilizes `TailwindCSS` fo the styling of these Radix components
+- `shadcn/ui` utilizes `TailwindCSS` for the styling of these Radix components
 - `shadcn/ui` uses `@radix-ui/react-icons` for the `new-york` style components and `lucide-react` icons for the `default` style components (the style we are using is defined in the `components.json` file). Since we are integrating `shadcn/ui` into the existing Design System, we have decided to use our own icons instead.
 
 ## Customization
@@ -28,13 +28,13 @@ npx shadcn-ui@latest add component-name
 
 This command will produce a newly generated component located at `libs/shared-shadcn-ui-components/src/components/ui/component-name.tsx` and, if needed, will also install missing dependencies for it.
 
-3. Ensure that the newly generated component is exported from the library. Add the following line to `libs/shared-shadcn-ui-components/src/index.ts`:
+2. Ensure that the newly generated component is exported from the library. Add the following line to `libs/shared-shadcn-ui-components/src/index.ts`:
 
 ```
 export * from './components/ui/component-name'
 ```
 
-4. Use `TailwindCSS` to style the generated component according to our Design System. After that, it is ready to use. Just import it to some `ComponentName.tsx` file in a project.
+3. Use `TailwindCSS` to style the generated component according to our Design System. After that, it is ready to use. Just import it to some `ComponentName.tsx` file in a project.
 
 ## Running unit tests
 
