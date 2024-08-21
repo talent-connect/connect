@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import {
-  ConProfileEntity,
   ConnectProfileStatus,
+  ConProfileEntity,
   MentorshipMatchStatus,
   RediLocation,
   UserType,
@@ -10,8 +10,10 @@ import {
 import * as AWS from 'aws-sdk'
 import { format as formatDate } from 'date-fns'
 import * as jsforce from 'jsforce'
+import { filter } from 'lodash'
 import difference from 'lodash/difference'
 import transform from 'lodash/transform'
+import { ConMentoringSessionsService } from '../con-mentoring-sessions/con-mentoring-sessions.service'
 import { ConMentorshipMatchesService } from '../con-mentorship-matches/con-mentorship-matches.service'
 import { ConProfilesService } from '../con-profiles/con-profiles.service'
 import { SfApiEmailTemplatesService } from '../salesforce-api/sf-api-email-templates.service'
@@ -30,6 +32,7 @@ export class ReminderEmailsService {
     private readonly emailTemplatesService: SfApiEmailTemplatesService,
     private readonly conProfilesService: ConProfilesService,
     private readonly conMentorshipMatchesService: ConMentorshipMatchesService,
+    private readonly conMentoringSessionsService: ConMentoringSessionsService,
     private readonly config: ConfigService
   ) {
     this.ses = new AWS.SES({
@@ -215,6 +218,106 @@ export class ReminderEmailsService {
     )
 
     return transformedReducedMatches
+  }
+
+  async getMentorsAndMenteesWithoutMentoringSessionsLogged({
+    mentorshipMatchAgeInDays,
+  }: {
+    mentorshipMatchAgeInDays: number
+  }) {
+    // Step 1: Get all mentorship matches that are accepted and have the age of the mentorship match in days
+    const mentorshipMatches = await this.conMentorshipMatchesService.findAll({
+      Status__c: MentorshipMatchStatus.ACCEPTED,
+      Mentorship_Match_Age_In_Days__c: mentorshipMatchAgeInDays,
+    })
+
+    const mentorshipMatchesWithSessionsCount = {} as Record<
+      string,
+      {
+        menteeId: string
+        mentorId: string
+        mentoringSessionsCount: number
+        matchMadeActiveOn: Date
+      }
+    >
+    const menteeIdsWithoutMentoringSessionsLogged = []
+    const mentorIdsWithoutMentoringSessionsLogged = []
+
+    // Step 2: Fill the needed objects/arrays for the next steps
+    for (const match of mentorshipMatches) {
+      // Step 2.1: Get all mentoring sessions for the mentorship match
+      const mentoringSessions = await this.conMentoringSessionsService.findAll({
+        Mentee__c: match.props.menteeId,
+        Mentor__c: match.props.mentorId,
+      })
+
+      // Step 2.2: Fill the object with the mentorship match id as key and the mentee id, mentor id and the count of mentoring sessions
+      mentorshipMatchesWithSessionsCount[match.props.id] = {
+        menteeId: match.props.menteeId,
+        mentorId: match.props.mentorId,
+        mentoringSessionsCount: mentoringSessions.length,
+        matchMadeActiveOn: match.props.matchMadeActiveOn,
+      }
+
+      // Step 2.3: Fill the arrays with the mentee and mentor ids that have 0 mentoring sessions
+      if (mentoringSessions.length === 0) {
+        menteeIdsWithoutMentoringSessionsLogged.push(match.props.menteeId)
+        mentorIdsWithoutMentoringSessionsLogged.push(match.props.mentorId)
+      }
+    }
+
+    let matchConProfiles = []
+
+    // Step 3: Get the profiles of the mentees and mentors that have 0 mentoring sessions
+    if (
+      [
+        ...menteeIdsWithoutMentoringSessionsLogged,
+        ...mentorIdsWithoutMentoringSessionsLogged,
+      ].length > 0
+    ) {
+      matchConProfiles = await this.conProfilesService.findAll({
+        'Contact__r.Id': {
+          $in: [
+            ...menteeIdsWithoutMentoringSessionsLogged,
+            ...mentorIdsWithoutMentoringSessionsLogged,
+          ],
+        },
+      })
+    }
+
+    /**
+     * Some holy moly is happening here. The idea is, to filter the mentorship matches with 0 mentoring sessions first
+     * then transform the map of mentorship matches to a map of mentorship matches with the first names and emails of the mentee and mentor.
+     * See here for lodash/transform: https://lodash.com/docs/4.17.15#transform
+     */
+    const mentorshipMatchesWithMentorAndMenteeDetails = transform(
+      filter(
+        mentorshipMatchesWithSessionsCount,
+        (match) => match.mentoringSessionsCount === 0
+      ),
+      (result, value, key) => {
+        const mentee = matchConProfiles.find(
+          (profile) => profile?.props.userId === value['menteeId']
+        )
+
+        const mentor = matchConProfiles.find(
+          (profile) => profile?.props.userId === value['mentorId']
+        )
+
+        result[key] = {
+          menteeFirstName: mentee?.props.firstName,
+          menteeEmail: mentee?.props.email,
+          mentorFirstName: mentor?.props.firstName,
+          mentorEmail: mentor?.props.email,
+          matchMadeActiveOn: value.matchMadeActiveOn
+            ? formatDate(value.matchMadeActiveOn, 'PPP')
+            : '',
+        }
+      },
+      []
+    )
+
+    return mentorshipMatchesWithMentorAndMenteeDetails
   }
 
   async getPendingMenteeApplications() {
@@ -492,61 +595,108 @@ export class ReminderEmailsService {
     return { message: 'Email sent' }
   }
 
-  // async sendLogMentoringSessionsReminder({
-  //   email,
-  //   firstName,
-  //   userType,
-  //   mentorshipMatchAgeInDays,
-  // }) {
-  //   const sfEmailTemplateDeveloperName =
-  //     userType === UserType.MENTOR
-  //       ? // Mentor Emails for 2 weeks (14 days) and 4 weeks (28 days)
-  //         mentorshipMatchAgeInDays === 14
-  //         ? 'Mentor_Log_Mentoring_Sessions_Reminder_1_1711110740940'
-  //         : 'Mentor_Log_Mentoring_Sessions_Reminder_2_1711112496532'
-  //       : // Mentee Emails for 2 weeks (14 days) and 4 weeks (28 days)
-  //       mentorshipMatchAgeInDays === 14
-  //       ? 'Mentee_Log_Mentoring_Sessions_Reminder_1_1711114670729'
-  //       : 'Mentee_Log_Mentoring_Sessions_Reminder_2_1711115347143'
+  async sendLogMentoringSessionsReminder(
+    {
+      menteeFirstName,
+      menteeEmail,
+      mentorFirstName,
+      mentorEmail,
+      matchMadeActiveOn,
+    },
+    mentorshipMatchAgeInDays
+  ) {
+    const sfMenteeEmailTemplateDeveloperName =
+      mentorshipMatchAgeInDays === 14
+        ? 'Mentee_Log_Mentoring_Sessions_Reminder_1_1711114670729'
+        : 'Mentee_Log_Mentoring_Sessions_Reminder_2_1711115347143'
 
-  //   const template = await this.emailTemplatesService.getEmailTemplate(
-  //     sfEmailTemplateDeveloperName
-  //   )
+    const sfMentorEmailTemplateDeveloperName =
+      mentorshipMatchAgeInDays === 14
+        ? 'Mentor_Log_Mentoring_Sessions_Reminder_1_1711110740940'
+        : 'Mentor_Log_Mentoring_Sessions_Reminder_2_1711112496532'
 
-  //   if (!template) {
-  //     throw new Error(
-  //       `Email template not found: ${sfEmailTemplateDeveloperName}`
-  //     )
-  //   }
+    const menteeTemplate = await this.emailTemplatesService.getEmailTemplate(
+      sfMenteeEmailTemplateDeveloperName
+    )
 
-  //   const sanitizedHtml = template.HtmlValue.replace(
-  //     /{{{Recipient\.FirstName}}}/g,
-  //     `${firstName} ${email}`
-  //   )
+    const mentorTemplate = await this.emailTemplatesService.getEmailTemplate(
+      sfMentorEmailTemplateDeveloperName
+    )
 
-  //   const params = {
-  //     Destination: {
-  //       ToAddresses: isProductionOrDemonstration()
-  //         ? [email]
-  //         : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
-  //       BccAddresses: [SENDER_EMAIL],
-  //     },
-  //     Message: {
-  //       Body: {
-  //         Html: { Data: sanitizedHtml },
-  //       },
-  //       Subject: { Data: template.Subject },
-  //     },
-  //     Source: `${SENDER_NAME} <${SENDER_EMAIL}>`,
-  //   }
+    if (!menteeTemplate || !mentorTemplate) {
+      throw new Error(
+        `Email templates not found: ${sfMenteeEmailTemplateDeveloperName} - ${sfMentorEmailTemplateDeveloperName}`
+      )
+    }
 
-  //   this.ses.sendEmail(params, (err, data) => {
-  //     if (err) console.log(err, err.stack)
-  //     else console.log(data)
-  //   })
+    const menteeSanitizedSubject = menteeTemplate.Subject.replace(
+      /\${mentorFirstName}/g,
+      mentorFirstName
+    )
 
-  //   return { message: 'Email sent' }
-  // }
+    const mentorSanitizedSubject = mentorTemplate.Subject.replace(
+      /\${menteeFirstName}/g,
+      menteeFirstName
+    )
+
+    const menteeSanitizedHtml = menteeTemplate.HtmlValue.replace(
+      /\${mentorFirstName}/g,
+      mentorFirstName
+    )
+      .replace(/{{{Recipient.FirstName}}}/g, menteeFirstName)
+      .replace(/\${matchMadeActiveOn}/g, matchMadeActiveOn)
+
+    const mentorSanitizedHtml = mentorTemplate.HtmlValue.replace(
+      /\${menteeFirstName}/g,
+      menteeFirstName
+    )
+      .replace(/{{{Recipient.FirstName}}}/g, mentorFirstName)
+      .replace(/\${matchMadeActiveOn}/g, matchMadeActiveOn)
+
+    const menteeParams = {
+      Destination: {
+        ToAddresses: isProductionOrDemonstration()
+          ? [menteeEmail]
+          : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+        BccAddresses: [SENDER_EMAIL],
+      },
+      Message: {
+        Body: {
+          Html: { Data: menteeSanitizedHtml },
+        },
+        Subject: { Data: menteeSanitizedSubject },
+      },
+      Source: `${SENDER_NAME} <${SENDER_EMAIL}>`,
+    }
+
+    const mentorParams = {
+      Destination: {
+        ToAddresses: isProductionOrDemonstration()
+          ? [mentorEmail]
+          : [this.config.get('NX_DEV_MODE_EMAIL_RECIPIENT')],
+        BccAddresses: [SENDER_EMAIL],
+      },
+      Message: {
+        Body: {
+          Html: { Data: mentorSanitizedHtml },
+        },
+        Subject: { Data: mentorSanitizedSubject },
+      },
+      Source: `${SENDER_NAME} <${SENDER_EMAIL}>`,
+    }
+
+    this.ses.sendEmail(menteeParams, (err, data) => {
+      if (err) console.log(err, err.stack)
+      else console.log(data)
+    })
+
+    this.ses.sendEmail(mentorParams, (err, data) => {
+      if (err) console.log(err, err.stack)
+      else console.log(data)
+    })
+
+    return { message: 'Emails sent' }
+  }
 
   async sendMentorPendingApplicationReminder({ match }) {
     const sfEmailTemplateDeveloperName =

@@ -175,23 +175,46 @@ export class ReminderEmailsController {
     }
   }
 
-  // @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentoring-sessions-logging')
-  // async sendMentoringSessionsLoggingReminder() {
-  //   const conProfilesWithMentoringSessionsToLog =
-  //     await this.reminderEmailsService.getConProfilesWithMentorshipMatchesWithoutMentoringSessions(
-  //       { mentorshipMatchAgeInDays: 402 }
-  //     )
+  @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentoring-sessions-logging')
+  async sendMentoringSessionsLoggingReminder() {
+    const mentorshipMatchesWithMentorAndMenteeDetails_2weeks =
+      await this.reminderEmailsService.getMentorsAndMenteesWithoutMentoringSessionsLogged(
+        { mentorshipMatchAgeInDays: 14 }
+      )
 
-  //   if (conProfilesWithMentoringSessionsToLog.length > 0) {
-  //     // send reminder emails
-  //     conProfilesWithMentoringSessionsToLog.forEach(async (profile) => {
-  //       await this.reminderEmailsService.sendLogMentoringSessionsReminder({
-  //         email: profile.props.email,
-  //         firstName: profile.props.firstName,
-  //         userType: profile.props.userType,
-  //         mentorshipMatchAgeInDays: 14,
-  //       })
-  //     })
-  //   }
-  // }
+    // TODO: Uncomment and merge this two weeks after the first reminder is sent
+    // const mentorshipMatchesWithMentorAndMenteeDetails_4weeks =
+    //   await this.reminderEmailsService.getMentorsAndMenteesWithoutMentoringSessionsLogged(
+    //     { mentorshipMatchAgeInDays: 28 }
+    //   )
+
+    if (
+      Object.keys(mentorshipMatchesWithMentorAndMenteeDetails_2weeks).length > 0
+    ) {
+      // send reminder emails
+      Object.keys(mentorshipMatchesWithMentorAndMenteeDetails_2weeks).forEach(
+        async (key) => {
+          await this.reminderEmailsService.sendLogMentoringSessionsReminder(
+            mentorshipMatchesWithMentorAndMenteeDetails_2weeks[key],
+            14
+          )
+        }
+      )
+    }
+
+    // TODO: Uncomment and merge this two weeks after the first reminder is sent
+    // if (
+    //   Object.keys(mentorshipMatchesWithMentorAndMenteeDetails_4weeks).length > 0
+    // ) {
+    //   // send reminder emails
+    //   Object.keys(mentorshipMatchesWithMentorAndMenteeDetails_4weeks).forEach(
+    //     async (key) => {
+    //       await this.reminderEmailsService.sendLogMentoringSessionsReminder(
+    //         mentorshipMatchesWithMentorAndMenteeDetails_4weeks[key],
+    //         28
+    //       )
+    //     }
+    //   )
+    // }
+  }
 }
