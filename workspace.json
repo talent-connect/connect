@@ -1,28 +1,6 @@
 {
   "version": 2,
   "projects": {
-    "api": {
-      "root": "apps/api",
-      "sourceRoot": "apps/api/src",
-      "projectType": "application",
-      "targets": {
-        "serve": {
-          "executor": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              {
-                "command": "node apps/api/server/server.js"
-              },
-              {
-                "command": "mongod --dbpath ./mongodb-data"
-              }
-            ]
-          }
-        }
-      },
-      "tags": [],
-      "implicitDependencies": []
-    },
     "common-types": {
       "root": "libs/common-types",
       "sourceRoot": "libs/common-types/src",

@@ -6,9 +6,6 @@ require('dotenv').config({
 process.env.AWS_ACCESS_KEY_ID = process.env.NX_AWS_ACCESS_KEY_ID
 process.env.AWS_SECRET_ACCESS_KEY = process.env.NX_AWS_SECRET_ACCESS_KEY
 
-// required to set up logger
-require('../lib/logger')
-
 var loopback = require('loopback')
 var boot = require('loopback-boot')
 
