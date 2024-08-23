@@ -471,8 +471,7 @@
             "passWithNoTests": true
           }
         }
-      },
-      "tags": []
+      }
     },
     "shared-types": {
       "root": "libs/shared-types",

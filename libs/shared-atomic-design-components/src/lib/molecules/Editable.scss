@@ -41,3 +41,40 @@
   text-transform: capitalize;
   letter-spacing: 0.5px;
 }
+
+.MuiDrawer-paper {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  
+  .drawer__header{
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid $grey-light;
+
+  h3{
+    font-weight: $weight-bold !important;
+    margin-bottom: 0;
+  }
+  .drawer__subheader {
+    display: flex;
+    justify-content: center;
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+  .icon__button {
+    position: absolute;
+    right: 1.5rem;
+  }
+  }
+  
+  .drawer__body {
+    padding: 1.5rem;
+  }
+  
+  .drawer__footer {
+    border-top: 1px solid $grey-light;
+    padding: 1.5rem; 
+  }
+
+}

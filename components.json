@@ -6,8 +6,9 @@
   "tailwind": {
     "config": "libs/shared-shadcn-ui-components/src/lib/utils/tailwind.config.js",
     "css": "libs/shared-atomic-design-components/src/lib/styles/global.scss",
-    "baseColor": "slate",
-    "cssVariables": true
+    "baseColor": "gray",
+    "cssVariables": true,
+    "prefix": "tw-"
   },
   "aliases": {
     "components": "@talent-connect/shared-shadcn-ui-components/components",

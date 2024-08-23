@@ -7,6 +7,7 @@ import {
   UserType,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
+import { groupBy } from 'lodash'
 import { CurrentUserInfo } from '../auth/current-user.interface'
 import { SfApiConProfilesService } from '../salesforce-api/sf-api-con-profiles.service'
 import { FindConProfilesArgs } from './args/find-con-profiles.args'
@@ -39,11 +40,36 @@ export class ConProfilesService {
   async findAll(filter: any = {}) {
     const persistedRecords = await this.api.getAllConProfiles(filter)
 
-    const entities: ConProfileEntity[] = persistedRecords.map((source) =>
+    let entities: ConProfileEntity[] = persistedRecords.map((source) =>
       this.mapper.fromPersistence(source)
     )
 
+    entities = this.selectLatestActiveProfilePerUser(entities)
+
     return entities
+  }
+
+  selectLatestActiveProfilePerUser(profiles: ConProfileEntity[]) {
+    const groupedProfiles = groupBy(profiles, (profile) => profile.props.userId)
+    const selectedProfiles: ConProfileEntity[] = []
+
+    for (const key in groupedProfiles) {
+      const profileGroup = groupedProfiles[key].sort(
+        (a, b) =>
+          new Date(b.props.createdAt).getTime() -
+          new Date(a.props.createdAt).getTime()
+      )
+
+      const selectedProfile =
+        profileGroup.find(
+          (profile) =>
+            profile.props.profileStatus !== ConnectProfileStatus.DEACTIVATED
+        ) || profileGroup[0]
+
+      selectedProfiles.push(selectedProfile)
+    }
+
+    return selectedProfiles
   }
 
   async findAllAvailableMentors(

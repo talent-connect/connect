@@ -1,3 +1,4 @@
+import { SwipeableDrawer, useMediaQuery, useTheme } from '@mui/material'
 import { Button } from '@talent-connect/shared-atomic-design-components'
 import classnames from 'classnames'
 import React, { useState } from 'react'
@@ -31,12 +32,15 @@ function Editable(props: Props) {
     setIsEditing(false)
   }
 
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
   return (
     <div className={classnames('editable', { [`${className}`]: className })}>
       <div className="editable__header">
         <Caption>{title}</Caption>
         <div className="editable__header__buttons">
-          {isEditing ? (
+          {isEditing && !isMobile ? (
             <>
               <Button
                 onClick={savePossible ? handleSave : undefined}
@@ -63,8 +67,45 @@ function Editable(props: Props) {
           )}
         </div>
       </div>
-      <div className="editable__body">{isEditing ? children : read}</div>
-    </div>
+      <div className="editable__body">{isEditing && !isMobile? children : read}</div>
+
+    {isMobile? (
+
+      <SwipeableDrawer
+      anchor="bottom"
+      open={isEditing}
+      onClose={() => setIsEditing(false)}
+      onOpen={() => console.log('open')}
+      >
+      <div className="drawer__header">
+        <Caption>
+          { title.includes("optional")? (
+            <>
+            {title.split("(optional)")}
+            <div className='drawer__subheader'>(optional)</div>
+            </>
+          ) : (
+            title
+          )}
+        </Caption>
+    
+        <div className="icon__button" onClick={handleClose}>
+        <Icon size='small' icon="cancel" />
+        </div>
+      </div>
+      <div className="drawer__body">{children}</div>
+      <div className="drawer__footer">
+      <Button 
+        onClick={savePossible ? handleSave : undefined}
+        disabled={!savePossible}
+      >
+        Save
+      </Button>
+      </div>
+    </SwipeableDrawer>
+    ) : null}
+        </div>
+
   )
 }
 

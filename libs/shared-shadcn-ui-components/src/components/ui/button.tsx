@@ -5,28 +5,28 @@ import * as React from 'react'
 import { cn } from '@talent-connect/shared-utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
+  'tw-inline-flex tw-items-center tw-justify-center tw-whitespace-nowrap tw-rounded-md tw-text-sm tw-font-medium tw-transition-colors focus-visible:tw-outline-none focus-visible:tw-ring-1 focus-visible:tw-ring-ring disabled:tw-pointer-events-none disabled:tw-opacity-50',
   {
     variants: {
       variant: {
         default:
-          'bg-primary text-primary-foreground shadow hover:bg-primary/90',
+          'tw-bg-primary tw-text-primary-foreground tw-shadow hover:tw-bg-primary/90',
         destructive:
-          'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
+          'tw-bg-destructive tw-text-destructive-foreground tw-shadow-sm hover:tw-bg-destructive/90',
         outline:
-          'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
+          'tw-border tw-border-input tw-bg-background tw-shadow-sm hover:tw-bg-accent hover:tw-text-accent-foreground',
         secondary:
-          'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-[#FF7d55] underline-offset-4 hover:text-[#FD4D00]',
+          'tw-bg-secondary tw-text-secondary-foreground tw-shadow-sm hover:tw-bg-secondary/80',
+        ghost: 'hover:tw-bg-accent hover:tw-text-accent-foreground',
+        link: 'tw-text-[#FF7d55] tw-underline-offset-4 hover:tw-text-[#FD4D00]',
         rounded:
-          'text-[#FF7d55] hover:text-[#FD4D00] bg-[#FFEAE2] rounded-full',
+          'tw-text-[#FF7d55] hover:text-[#FD4D00] bg-[#FFEAE2] rounded-full',
       },
       size: {
-        default: 'h-9 px-4 py-2',
-        sm: 'h-8 rounded-md px-3 text-xs',
-        lg: 'h-10 rounded-md px-8',
-        icon: 'h-9 w-9',
+        default: 'tw-h-9 tw-px-4 tw-py-2',
+        sm: 'tw-h-8 tw-rounded-md tw-px-3 tw-text-xs',
+        lg: 'tw-h-10 tw-rounded-md tw-px-8',
+        icon: 'tw-h-9 tw-w-9',
       },
     },
     defaultVariants: {

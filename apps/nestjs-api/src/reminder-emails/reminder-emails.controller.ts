@@ -27,7 +27,7 @@ export class ReminderEmailsController {
     }
 
     return {
-      message: `Complete Profile reminder emails sent to ${mentorsWithDraftingProfile.length} mentors`,
+      message: `Complete Profile Reminder Emails sent to Mentors: ${mentorsWithDraftingProfile.length}`,
     }
   }
 
@@ -50,7 +50,7 @@ export class ReminderEmailsController {
     }
 
     return {
-      message: `Complete Profile reminder emails sent to ${menteesWithDrafingProfile.length} mentees`,
+      message: `Complete Profile Reminder Emails Sent to Mentees: ${menteesWithDrafingProfile.length}`,
     }
   }
 
@@ -94,7 +94,7 @@ export class ReminderEmailsController {
     }
 
     return {
-      message: `First reminder emails to apply to a mentor sent to ${firstReminderMentees.length} mentees. Second reminder emails to apply to a mentor sent to ${secondReminderMentees.length} mentees`,
+      message: `Apply To a Mentor Reminder Emails sent: ${firstReminderMentees.length} first reminders, ${secondReminderMentees.length} second reminders`,
     }
   }
 
@@ -126,51 +126,95 @@ export class ReminderEmailsController {
     }
 
     return {
-      message: `Follow-up reminder emails sent to ${
+      message: `Mentorship Follow-up Reminder Emails Sent: ${
         Object.keys(threeMonthsOldMentorshipMatches).length
-      } mentorship matches`,
+      }`,
     }
   }
 
-  // @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentees-platform-and-new-mentors')
-  // async sendUnmatchedMenteesReminder() {
-  //   const unmatchedMenteesWithApprovedProfiles =
-  //     await this.reminderEmailsService.getUnmatchedMenteesWithApprovedProfiles()
+  @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentees-platform-and-new-mentors')
+  async sendUnmatchedMenteesReminder() {
+    const unmatchedMenteesFor45Days =
+      await this.reminderEmailsService.getUnmatchedMenteesFor45Days()
 
-  //   if (unmatchedMenteesWithApprovedProfiles.length > 0) {
-  //     // send reminder emails
-  //     unmatchedMenteesWithApprovedProfiles.forEach(async (mentee) => {
-  //       await this.reminderEmailsService.sendMenteesPlatformAndNewMentorsReminder(
-  //         {
-  //           email: mentee.props.email,
-  //           firstName: mentee.props.firstName,
-  //         }
-  //       )
-  //     })
-  //   }
+    if (Object.keys(unmatchedMenteesFor45Days).length > 0) {
+      unmatchedMenteesFor45Days.forEach(async (mentee) => {
+        // Send reminder email to mentee
+        await this.reminderEmailsService.sendMenteesPlatformAndNewMentorsReminder(
+          {
+            email: mentee.props.email,
+            firstName: mentee.props.firstName,
+          }
+        )
+      })
+    }
 
-  //   return {
-  //     message: `Reminder emails sent to ${unmatchedMenteesWithApprovedProfiles.length} unmatched mentees with approved profiles`,
-  //   }
-  // }
+    return {
+      message: `Platform Update Reminder Emails Sent to Mentees: ${unmatchedMenteesFor45Days.length}`,
+    }
+  }
 
-  // @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentoring-sessions-logging')
-  // async sendMentoringSessionsLoggingReminder() {
-  //   const conProfilesWithMentoringSessionsToLog =
-  //     await this.reminderEmailsService.getConProfilesWithMentorshipMatchesWithoutMentoringSessions(
-  //       { mentorshipMatchAgeInDays: 402 }
-  //     )
+  @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/pending-mentorships')
+  async sendPendingMenteeApplicationReminder() {
+    const pendingMenteeApplications =
+      await this.reminderEmailsService.getPendingMenteeApplications()
 
-  //   if (conProfilesWithMentoringSessionsToLog.length > 0) {
-  //     // send reminder emails
-  //     conProfilesWithMentoringSessionsToLog.forEach(async (profile) => {
-  //       await this.reminderEmailsService.sendLogMentoringSessionsReminder({
-  //         email: profile.props.email,
-  //         firstName: profile.props.firstName,
-  //         userType: profile.props.userType,
-  //         mentorshipMatchAgeInDays: 14,
-  //       })
-  //     })
-  //   }
-  // }
+    if (Object.keys(pendingMenteeApplications).length > 0) {
+      Object.keys(pendingMenteeApplications).forEach(async (match) => {
+        // Send reminder email to mentor
+        await this.reminderEmailsService.sendMentorPendingApplicationReminder({
+          match: pendingMenteeApplications[match],
+        })
+      })
+    }
+
+    return {
+      message: `Pending Mentee Applications Reminder emails sent to Mentors: ${
+        Object.keys(pendingMenteeApplications).length
+      }`,
+    }
+  }
+
+  @Get('/s3cr3t-3ndp01nt-t0-tr1gg3r-r3m1nd3r5/mentoring-sessions-logging')
+  async sendMentoringSessionsLoggingReminder() {
+    const mentorshipMatchesWithMentorAndMenteeDetails_2weeks =
+      await this.reminderEmailsService.getMentorsAndMenteesWithoutMentoringSessionsLogged(
+        { mentorshipMatchAgeInDays: 14 }
+      )
+
+    // TODO: Uncomment and merge this two weeks after the first reminder is sent
+    // const mentorshipMatchesWithMentorAndMenteeDetails_4weeks =
+    //   await this.reminderEmailsService.getMentorsAndMenteesWithoutMentoringSessionsLogged(
+    //     { mentorshipMatchAgeInDays: 28 }
+    //   )
+
+    if (
+      Object.keys(mentorshipMatchesWithMentorAndMenteeDetails_2weeks).length > 0
+    ) {
+      // send reminder emails
+      Object.keys(mentorshipMatchesWithMentorAndMenteeDetails_2weeks).forEach(
+        async (key) => {
+          await this.reminderEmailsService.sendLogMentoringSessionsReminder(
+            mentorshipMatchesWithMentorAndMenteeDetails_2weeks[key],
+            14
+          )
+        }
+      )
+    }
+
+    // TODO: Uncomment and merge this two weeks after the first reminder is sent
+    // if (
+    //   Object.keys(mentorshipMatchesWithMentorAndMenteeDetails_4weeks).length > 0
+    // ) {
+    //   // send reminder emails
+    //   Object.keys(mentorshipMatchesWithMentorAndMenteeDetails_4weeks).forEach(
+    //     async (key) => {
+    //       await this.reminderEmailsService.sendLogMentoringSessionsReminder(
+    //         mentorshipMatchesWithMentorAndMenteeDetails_4weeks[key],
+    //         28
+    //       )
+    //     }
+    //   )
+    // }
+  }
 }
