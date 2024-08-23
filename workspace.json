@@ -137,7 +137,7 @@
             "polyfills": "apps/redi-connect/src/polyfills.ts",
             "tsConfig": "apps/redi-connect/tsconfig.app.json",
             "assets": ["apps/redi-connect/src/assets"],
-            "styles": ["apps/redi-connect/src/main.scss"],
+            "styles": [],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "libs/shared-atomic-design-components/src/lib/styles",
@@ -251,7 +251,7 @@
               "apps/redi-talent-pool/src/favicon.ico",
               "apps/redi-talent-pool/src/assets"
             ],
-            "styles": ["apps/redi-talent-pool/src/main.scss"],
+            "styles": [],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "libs/shared-atomic-design-components/src/lib/styles",
