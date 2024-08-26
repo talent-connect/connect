@@ -12,6 +12,10 @@ This library stores the [shadcn/ui](https://ui.shadcn.com/) components - a colle
 
 While the components come with default styles, they are highly customizable. We can easily extend or modify the styles using `TailwindCSS` to fit the needs of our Design System.
 
+We configured `TailwindCSS` to utilize its classes with the `tw-` prefix. Remember to add this prefix when styling with `TailwindCSS` and check the [documentation](https://tailwindcss.com/docs/configuration#prefix) on how to apply it correctly. When typing `tw-` in the `className`, VS Code's autocomplete for `TailwindCSS` classes kicks in immediately.
+
+We decided to incorporate the prefix to prevent naming conflicts since we are layering `TailwindCSS` classes on top of our existing custom CSS classes. Using the `tw-` prefix also allows us to easily differentiate `TailwindCSS` classes from the rest.
+
 ## Usage
 
 The code of the components can be copy-pasted from the [shadcn/ui documentation](https://ui.shadcn.com/docs/components/) or generated using the CLI.
