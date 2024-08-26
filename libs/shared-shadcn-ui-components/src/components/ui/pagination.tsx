@@ -11,7 +11,7 @@ const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
     role="navigation"
     aria-label="pagination"
-    className={cn('mx-auto flex w-full justify-center', className)}
+    className={cn('tw-mx-auto tw-flex tw-w-full tw-justify-center', className)}
     {...props}
   />
 )
@@ -23,7 +23,7 @@ const PaginationContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ul
     ref={ref}
-    className={cn('flex flex-row items-center gap-1', className)}
+    className={cn('tw-flex tw-flex-row tw-items-center tw-gap-1', className)}
     {...props}
   />
 ))
@@ -33,7 +33,7 @@ const PaginationItem = React.forwardRef<
   HTMLLIElement,
   React.ComponentProps<'li'>
 >(({ className, ...props }, ref) => (
-  <li ref={ref} className={cn('', className)} {...props} />
+  <li ref={ref} className={cn('tw-', className)} {...props} />
 ))
 PaginationItem.displayName = 'PaginationItem'
 
@@ -72,8 +72,10 @@ const PaginationPrevious = ({
     aria-label="Go to previous page"
     size="icon"
     className={cn(
-      'flex items-center justify-center rounded-[3px] border border-[#FF7D55] hover:border-[2px] hover:border-[#FD4D00] transition-colors',
-      disabled ? 'border-[#DADADA] pointer-events-none opacity-50' : '',
+      'tw-flex tw-items-center tw-justify-center tw-rounded-[3px] tw-border tw-border-[#FF7D55] hover:tw-border-[2px] hover:tw-border-[#FD4D00] tw-transition-colors',
+      disabled
+        ? '!tw-border-[#DADADA] tw-pointer-events-none tw-opacity-50'
+        : '',
       className
     )}
     {...props}
@@ -96,8 +98,10 @@ const PaginationNext = ({
     aria-label="Go to next page"
     size="icon"
     className={cn(
-      'flex items-center justify-center rounded-[3px] border border-[#FF7D55] transition-colors hover:border-[2px] hover:border-[#FD4D00]',
-      disabled ? 'border-[#DADADA] pointer-events-none opacity-50' : '',
+      'tw-flex tw-items-center tw-justify-center tw-rounded-[3px] tw-border tw-border-[#FF7D55] hover:tw-border-[2px] hover:tw-border-[#FD4D00] tw-transition-colors',
+      disabled
+        ? '!tw-border-[#DADADA] tw-pointer-events-none tw-opacity-50'
+        : '',
       className
     )}
     {...props}
@@ -117,11 +121,14 @@ const PaginationEllipsis = ({
 }: React.ComponentProps<'span'>) => (
   <span
     aria-hidden
-    className={cn('flex h-9 w-9 items-center justify-center', className)}
+    className={cn(
+      'tw-flex tw-h-9 tw-w-9 tw-items-center tw-justify-center',
+      className
+    )}
     {...props}
   >
     <Icon icon="ellipsisHorizontal" size="large" />
-    <span className="sr-only">More pages</span>
+    <span className="tw-sr-only">More pages</span>
   </span>
 )
 PaginationEllipsis.displayName = 'PaginationEllipsis'

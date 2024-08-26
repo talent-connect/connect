@@ -20,7 +20,7 @@ const buttonVariants = cva(
         ghost: 'hover:tw-bg-accent hover:tw-text-accent-foreground',
         link: 'tw-text-[#FF7d55] tw-underline-offset-4 hover:tw-text-[#FD4D00]',
         rounded:
-          'tw-text-[#FF7d55] hover:text-[#FD4D00] bg-[#FFEAE2] rounded-full',
+          'tw-text-[#FF7d55] hover:tw-text-[#FD4D00] tw-bg-[#FFEAE2] !tw-rounded-full',
       },
       size: {
         default: 'tw-h-9 tw-px-4 tw-py-2',
