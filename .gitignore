@@ -45,6 +45,7 @@ Thumbs.db
 
 # environment variables
 .env
+.env.development
 
 # tf
 infrastructure/.terraform

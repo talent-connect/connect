@@ -9,7 +9,7 @@ Both are created, run and managed by [ReDI School of Digital Integration](https:
 
 ## Getting started for developers
 
-First of all, ReDI Connect / Talent Pool connect to a Salesforce instance via the nestjs-api app. You'll need to set a number of environment variables in your `.env` file to make the Salesforce connection work. Reach out to @helloanil, @katamatata or @ericbolikowski to get set up.
+First of all, ReDI Connect / Talent Pool connect to a Salesforce instance via the nestjs-api app. You'll need to set a number of environment variables in your `.env` and `.env.development` files to make various connections and features work. Reach out to @helloanil, @katamatata or @ericbolikowski to get set up.
 
 After you've set up `.env`, make sure to update `NX_DEV_MODE_EMAIL_RECIPIENT` to your own email address to receive emails from the platform.
 
