@@ -1,28 +1,6 @@
 {
   "version": 2,
   "projects": {
-    "api": {
-      "root": "apps/api",
-      "sourceRoot": "apps/api/src",
-      "projectType": "application",
-      "targets": {
-        "serve": {
-          "executor": "@nrwl/workspace:run-commands",
-          "options": {
-            "commands": [
-              {
-                "command": "node apps/api/server/server.js"
-              },
-              {
-                "command": "mongod --dbpath ./mongodb-data"
-              }
-            ]
-          }
-        }
-      },
-      "tags": [],
-      "implicitDependencies": []
-    },
     "common-types": {
       "root": "libs/common-types",
       "sourceRoot": "libs/common-types/src",
@@ -448,6 +426,30 @@
         }
       },
       "tags": []
+    },
+    "shared-shadcn-ui-components": {
+      "root": "libs/shared-shadcn-ui-components",
+      "sourceRoot": "libs/shared-shadcn-ui-components/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared-shadcn-ui-components/**/*.{ts,tsx,js,jsx}"
+            ]
+          },
+          "outputs": ["{options.outputFile}"]
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared-shadcn-ui-components"],
+          "options": {
+            "jestConfig": "libs/shared-shadcn-ui-components/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     },
     "shared-types": {
       "root": "libs/shared-types",

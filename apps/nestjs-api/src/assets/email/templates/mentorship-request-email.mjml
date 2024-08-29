@@ -14,19 +14,13 @@
             >Hi ${mentorName},</mj-text
           >
           <mj-text mj-class="text paragraph"
-            >You have received a mentee application from ${menteeFullName} from
-            ReDI ${locationNameFormatted}!
+            >You have received a mentee application from
+            <strong>${menteeFullName}</strong> from
+            <strong>ReDI ${locationNameFormatted}</strong>!
           </mj-text>
           <mj-text mj-class="text paragraph"
-            >Please log into ReDI Connect to review this application as soon as
-            you find the time.</mj-text
-          >
-          <mj-text mj-class="text paragraph"
-            >Once you've checked their profile and message to you and you do
-            want to become their mentor: that's great! You can then accept their
-            application and get in touch. Please make sure to already suggest a
-            date and time for a first meeting, whether it be online or in
-            person.</mj-text
+            >Please log into ReDI Connect to review this application and visit
+            the profile of the mentee at your earliest convenience:</mj-text
           >
           <mj-image
             src="https://redi-connect-email-assets.s3-eu-west-1.amazonaws.com/review-application.png"
@@ -34,19 +28,32 @@
             padding="10px 0 30px 0"
             target="_blank"
             width="250px"
-            href="${loginUrl}"
+            href="${applicationsPageUrl}"
           />
-          <mj-text mj-class="text paragraph"
-            >If, upon checking their profile and message to you, you realize
-            that you cannot support them in the way they are looking for, please
-            kindly decline their application and make sure to send them a quick
-            message to explain why.</mj-text
+          <mj-text mj-class="text"
+            ><strong>After reviewing the application:</strong></mj-text
           >
+          <mj-text mj-class="text">
+            <ul>
+              <li>
+                If you would like to become their mentor, please
+                <strong>accept the application</strong> and suggest a date and
+                time for your first meeting, either online or in person. You may
+                also share your preferred contact methods (email, links, etc.).
+              </li>
+              <li>
+                If you realize that you cannot support them in the way they need
+                or are currently too busy to take on new mentees, please
+                <strong>decline the application</strong> and add a brief message
+                explaining why.
+              </li>
+            </ul>
+          </mj-text>
           <mj-text mj-class="text paragraph"
-            >Should the reason be that you are too busy to take on a mentorship
-            right now, remember that you can always set your mentee count
-            capacity to '0' in your profile - then you won't be visible to any
-            mentees until you change this back.</mj-text
+            >Additionally, remember that you can set your mentee count capacity
+            to '0' in your profile. This will make your profile invisible to
+            mentees until you change it back when you are ready to accept
+            applications again.</mj-text
           >
 
           <mj-text mj-class="text">All the best,</mj-text>
