@@ -4,7 +4,6 @@ import {
   ConnectProfileStatus,
   ConProfileEntity,
   MentorshipMatchStatus,
-  RediLocation,
   UserType,
 } from '@talent-connect/common-types'
 import * as AWS from 'aws-sdk'
@@ -445,15 +444,10 @@ export class ReminderEmailsService {
   async sendApplyToMentorReminder({
     email,
     firstName,
-    location,
     isSecondReminder = false,
   }) {
     const sfEmailTemplateDeveloperName = !isSecondReminder
-      ? location === RediLocation.CYBERSPACE
-        ? 'Cyberspace_Mentee_Apply_To_A_Mentor_Reminder_1_1711037205143'
-        : 'Mentee_Apply_To_A_Mentor_Reminder_1_1695975263767'
-      : location === RediLocation.CYBERSPACE
-      ? 'Cyberspace_Mentee_Apply_To_A_Mentor_Reminder_2_1711109460383'
+      ? 'Mentee_Apply_To_A_Mentor_Reminder_1_1695975263767'
       : 'Mentee_Apply_To_A_Mentor_Reminder_2_1695975868066'
 
     const template = await this.emailTemplatesService.getEmailTemplate(

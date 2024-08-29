@@ -65,7 +65,7 @@
           {
             "question": "How does the matching process work?",
             "answer": "ReDI connect works with two phases of matching. The first phase starts with the mentees’ initiative to search for a suitable mentor. A Mentee can do that - only if they have an approved profile- through the “find a mentor” tab. They can filter through the database of the mentors profiles and send mentorship applications to the mentors they are interested in. The second phase comes from the mentor side: a mentor can accept or decline mentorship applications according to the mentees’ expectations and profiles. It is also important to note that Mentor’s don’t have access to Mentees’ profiles database, they only can view a mentee’s profile when a mentee sends them a mentorship application."
-          },          
+          },
           {
             "question": "How much time does the mentorship require?",
             "answer": "Mentorships at ReDI are flexible and goal oriented. What we suggest is  a mentorship duration of about 4-6 sessions, although it can be extended if needed. The frequency and duration of the  sessions are up to you and your mentor/mentee to decide, based on your goals and the time commitment each party can make. To make sure you are making the most of each session, remember that preparation is key.  Also, bear in mind that you can still use the time between sessions to exchange updates and answer questions."
@@ -80,7 +80,7 @@
           },
           {
             "question": "If I have any questions, whom should I contact?",
-            "answer": "If you are from <b>ReDI School Germany</b>, then please use the following email addresses: </br> General: <a href='mailto:career@redi-school.org'>career@redi-school.org</a> </br> Mentorship Program: <a href='mailto:hadeer@redi-school.org'>hadeer@redi-school.org</a> </br> </br>If you are from <b>ReDI School Malmö</b>, then please use the following email addresses:</br>General: <a href='mailto:malmo@redi-school.org'>malmo@redi-school.org</a></br>General career: <a href='mailto:career.sweden@redi-school.org'>career.sweden@redi-school.org</a></br>Mentorship Program Manager: <a href='mailto:alice.r@redi-school.org'>alice.r@redi-school.org</a>"
+            "answer": "If you are from <b>ReDI School Germany</b>, then please use the following email addresses: </br> General: <a href='mailto:career@redi-school.org'>career@redi-school.org</a> </br> Mentorship Program Manager: <a href='mailto:hadeer@redi-school.org'>hadeer@redi-school.org</a></br></br>If you are from <b>ReDI School Malmö</b>, then please use the following email addresses:</br>General: <a href='mailto:malmo@redi-school.org'>malmo@redi-school.org</a></br>General career: <a href='mailto:career.sweden@redi-school.org'>career.sweden@redi-school.org</a></br>Mentorship Program Manager: <a href='mailto:alice.r@redi-school.org'>alice.r@redi-school.org</a>"
           }
         ]
       },
