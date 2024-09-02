@@ -233,6 +233,7 @@ export class ReminderEmailsService {
     const mentorshipMatchesWithSessionsCount = {} as Record<
       string,
       {
+        mentorshipMatchId: string,
         menteeId: string
         mentorId: string
         mentoringSessionsCount: number
@@ -252,6 +253,7 @@ export class ReminderEmailsService {
 
       // Step 2.2: Fill the object with the mentorship match id as key and the mentee id, mentor id and the count of mentoring sessions
       mentorshipMatchesWithSessionsCount[match.props.id] = {
+        mentorshipMatchId: match.props.id,
         menteeId: match.props.menteeId,
         mentorId: match.props.mentorId,
         mentoringSessionsCount: mentoringSessions.length,
@@ -304,6 +306,7 @@ export class ReminderEmailsService {
         )
 
         result[key] = {
+          mentorshipMatchId: value.mentorshipMatchId,
           menteeFirstName: mentee?.props.firstName,
           menteeEmail: mentee?.props.email,
           mentorFirstName: mentor?.props.firstName,
@@ -591,6 +594,7 @@ export class ReminderEmailsService {
 
   async sendLogMentoringSessionsReminder(
     {
+      mentorshipMatchId,
       menteeFirstName,
       menteeEmail,
       mentorFirstName,
@@ -646,6 +650,7 @@ export class ReminderEmailsService {
     )
       .replace(/{{{Recipient.FirstName}}}/g, mentorFirstName)
       .replace(/\${matchMadeActiveOn}/g, matchMadeActiveOn)
+      .replace(/\${logMentoringSessionUrl}/g, `https://connect.redi-school.org/app/mentorships/${mentorshipMatchId}`)
 
     const menteeParams = {
       Destination: {
