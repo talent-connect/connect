@@ -9,7 +9,7 @@ import {
 } from '@talent-connect/shared-shadcn-ui-components'
 import './Pagination.scss'
 
-interface PaginateProps {
+interface PaginationProps {
   totalPagesNumber: number
   currentPageNumber: number
   setCurrentPageNumber: (page: number) => void
@@ -19,11 +19,11 @@ type ActivePagesType = number | 'ellipsis'
 
 const MAX_VISIBLE_PAGES = 5
 
-const Paginate = ({
+const Pagination = ({
   totalPagesNumber,
   currentPageNumber,
   setCurrentPageNumber,
-}: PaginateProps) => {
+}: PaginationProps) => {
   if (!totalPagesNumber) return null
 
   const scrollToListTop = () => {
@@ -118,4 +118,4 @@ const Paginate = ({
   )
 }
 
-export default Paginate
+export default Pagination
