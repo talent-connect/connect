@@ -1,13 +1,13 @@
 import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
+  Pagination as ShadcnPagination,
+  PaginationContent as ShadcnPaginationContent,
+  PaginationEllipsis as ShadcnPaginationEllipsis,
+  PaginationItem as ShadcnPaginationItem,
+  PaginationLink as ShadcnPaginationLink,
+  PaginationNext as ShadcnPaginationNext,
+  PaginationPrevious as ShadcnPaginationPrevious,
 } from '@talent-connect/shared-shadcn-ui-components'
-import './Paginate.scss'
+import './Pagination.scss'
 
 interface PaginateProps {
   totalPagesNumber: number
@@ -77,45 +77,44 @@ const Paginate = ({
     }
 
     // Map activePages to rendered pagination items
-    const renderedPages = activePages.map((page, index) => {
-      if (page === 'ellipsis') {
-        return <PaginationEllipsis key={`ellipsis-${index}`} />
-      }
-      return (
-        <PaginationItem key={page}>
-          <PaginationLink
+    const renderedPages = activePages.map((page, index) =>
+      page === 'ellipsis' ? (
+        <ShadcnPaginationEllipsis key={`ellipsis-${index}`} />
+      ) : (
+        <ShadcnPaginationItem key={page}>
+          <ShadcnPaginationLink
             onClick={() => handlePageClick(page)}
             isActive={currentPageNumber === page}
           >
             {page}
-          </PaginationLink>
-        </PaginationItem>
+          </ShadcnPaginationLink>
+        </ShadcnPaginationItem>
       )
-    })
+    )
 
     return renderedPages
   }
 
   return (
-    <Pagination>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious
+    <ShadcnPagination>
+      <ShadcnPaginationContent>
+        <ShadcnPaginationItem>
+          <ShadcnPaginationPrevious
             onClick={handlePreviousPage}
             disabled={currentPageNumber === 1}
             className="icon-hover"
           />
-        </PaginationItem>
+        </ShadcnPaginationItem>
         {renderPages()}
-        <PaginationItem>
-          <PaginationNext
+        <ShadcnPaginationItem>
+          <ShadcnPaginationNext
             onClick={handleNextPage}
             disabled={currentPageNumber === totalPagesNumber}
             className="icon-hover"
           />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
+        </ShadcnPaginationItem>
+      </ShadcnPaginationContent>
+    </ShadcnPagination>
   )
 }
 

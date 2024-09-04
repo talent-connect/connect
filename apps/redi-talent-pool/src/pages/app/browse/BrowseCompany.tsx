@@ -10,7 +10,7 @@ import {
   Checkbox,
   FilterDropdown,
   Icon,
-  Paginate,
+  Pagination,
   SearchField,
 } from '@talent-connect/shared-atomic-design-components'
 import { LANGUAGES } from '@talent-connect/shared-config'
@@ -419,7 +419,7 @@ export function BrowseCompany() {
         })}
       </Columns>
       {totalItems > JOBSEEKER_CARDS_PER_PAGE && (
-        <Paginate
+        <Pagination
           totalPagesNumber={totalPagesNumber}
           currentPageNumber={currentPageNumber}
           setCurrentPageNumber={setCurrentPageNumber}
