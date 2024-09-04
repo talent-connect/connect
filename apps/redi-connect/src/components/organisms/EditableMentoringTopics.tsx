@@ -25,9 +25,11 @@ export type UserType =
   | 'public-sign-up-mentor-pending-review'
   | 'public-sign-up-mentee-pending-review'
 
+export type CategoryGroup = keyof typeof CATEGORY_GROUPS
+
 export type MentoringFormValues = {
   isMentor: boolean
-} & Record<keyof typeof CATEGORY_GROUPS, MentoringTopic[]>
+} & Record<CategoryGroup, MentoringTopic[]>
 
 const MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE = 4
 
@@ -51,32 +53,27 @@ const getInitialValues = ({
   userType: ProfileUserType
   categories: MentoringTopic[]
 }) => {
-  const groups = Object.keys(
-    CATEGORY_GROUPS
-  ) as unknown as (keyof typeof CATEGORY_GROUPS)[]
+  const groups = Object.keys(CATEGORY_GROUPS) as unknown as CategoryGroup[]
 
   const emptyGroups = Object.fromEntries(
     groups.map((key) => [key, []])
-  ) as Record<keyof typeof CATEGORY_GROUPS, []>
+  ) as Record<CategoryGroup, []>
 
   const initialValues: MentoringFormValues = {
     isMentor: userType === 'MENTOR',
     ...emptyGroups,
   }
-
-  for (let i = 0; i < groups.length; i++) {
-    const groupName = groups[i]
+  for (const groupName of groups) {
     const groupItems = categoriesByGroup[groupName]
 
-    for (let j = 0; j < groupItems.length; j++) {
-      const groupItem = groupItems[j].id as MentoringTopic
+    for (const groupItem of groupItems) {
+      const itemId = groupItem.id as MentoringTopic
 
-      if (categories.includes(groupItem)) {
-        initialValues[groupName].push(groupItem)
+      if (categories.includes(itemId)) {
+        initialValues[groupName].push(itemId)
       }
     }
   }
-
   return initialValues
 }
 
@@ -94,6 +91,7 @@ function EditableMentoringTopics() {
   const profile = myProfileQuery.data?.conProfile
   const userType = profile?.userType
   const categories = profile?.categories
+  const isMentee = userType === 'MENTEE'
 
   const submitForm = async (values: MentoringFormValues) => {
     const { isMentor, ...formCategories } = values
@@ -166,18 +164,15 @@ function EditableMentoringTopics() {
       className="mentoring"
     >
       <Content>
-        {userType === 'MENTOR' ? (
+        {!isMentee ? (
           'Select at least one topic where you would like to support mentees.'
+        ) : selectionsLeft ? (
+          `You can select between 1 and up to 4 topics.`
         ) : (
-          <>
-            {`You can select between 1 and up to 4 topics.`}
-            {!selectionsLeft && (
-              <Notification color="info" className="is-light">
-                You selected the maximum number of topics. You can save your
-                selection or remove topics.
-              </Notification>
-            )}
-          </>
+          <Notification color="info" className="is-light">
+            You’ve selected the maximum number of topics. If you wish to choose
+            another, please deselect one.
+          </Notification>
         )}
       </Content>
 
@@ -189,15 +184,11 @@ function EditableMentoringTopics() {
           items={getFormSelectItemsFromCategory(categoriesByGroup[groupId])}
           multiselect
           disabled={
-            userType === 'MENTEE' &&
-            formik.values[groupId].length === 0 &&
-            !selectionsLeft
-              ? true
-              : false
+            isMentee && formik.values[groupId].length === 0 && !selectionsLeft
           }
           placeholder="Start typing and select a Topic"
           formik={formik}
-          customOnChange={userType === 'MENTEE' && customOnChange(groupId)}
+          customOnChange={isMentee && customOnChange(groupId)}
         />
       ))}
     </Editable>
