@@ -6,6 +6,7 @@ import { NewProfileCard } from '../../../../../libs/shared-atomic-design-compone
 import placeholderImage from '../../assets/img-placeholder.png'
 import { JobseekerProfileCardJobseekerProfilePropFragment } from './JobseekerProfileCard.generated'
 import './JobseekerProfileCard.scss'
+import { germanFederalStates } from '@talent-connect/talent-pool/config'
 
 interface JobseekerProfileCardProps {
   jobseekerProfile: JobseekerProfileCardJobseekerProfilePropFragment
@@ -25,7 +26,7 @@ export function JobseekerProfileCard({
     profileAvatarImageS3Key,
     fullName,
     desiredPositions,
-    location,
+    federalState,
     workingLanguages,
     topSkills,
   } = jobseekerProfile
@@ -37,6 +38,7 @@ export function JobseekerProfileCard({
   const languages = workingLanguages?.map(({ language }) => language)
   const tags = topSkills?.map((skill) => topSkillsIdToLabelMap[skill])
   const avatar = profileAvatarImageS3Key || placeholderImage
+  const location = `Based in ${germanFederalStates[federalState]}`
 
   return (
     <div className="jobSeeker-profile-card-wrapper">
