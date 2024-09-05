@@ -5,13 +5,16 @@ import {
   ButtonProps,
   buttonVariants,
 } from '@talent-connect/shared-shadcn-ui-components'
-import { cn } from '@talent-connect/shared-utils'
+import { classNames } from '@talent-connect/shared-utils'
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
     role="navigation"
     aria-label="pagination"
-    className={cn('tw-mx-auto tw-flex tw-w-full tw-justify-center', className)}
+    className={classNames(
+      'tw-mx-auto tw-flex tw-w-full tw-justify-center',
+      className
+    )}
     {...props}
   />
 )
@@ -23,7 +26,10 @@ const PaginationContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ul
     ref={ref}
-    className={cn('tw-flex tw-flex-row tw-items-center tw-gap-1', className)}
+    className={classNames(
+      'tw-flex tw-flex-row tw-items-center tw-gap-1',
+      className
+    )}
     {...props}
   />
 ))
@@ -33,7 +39,7 @@ const PaginationItem = React.forwardRef<
   HTMLLIElement,
   React.ComponentProps<'li'>
 >(({ className, ...props }, ref) => (
-  <li ref={ref} className={cn('tw-', className)} {...props} />
+  <li ref={ref} className={classNames('tw-', className)} {...props} />
 ))
 PaginationItem.displayName = 'PaginationItem'
 
@@ -51,7 +57,7 @@ const PaginationLink = ({
 }: PaginationLinkProps) => (
   <a
     aria-current={isActive ? 'page' : undefined}
-    className={cn(
+    className={classNames(
       buttonVariants({
         variant: isActive ? 'rounded' : 'link',
         size,
@@ -71,7 +77,7 @@ const PaginationPrevious = ({
   <PaginationLink
     aria-label="Go to previous page"
     size="icon"
-    className={cn(
+    className={classNames(
       'tw-flex tw-items-center tw-justify-center tw-rounded-[3px] tw-border tw-border-[#FF7D55] hover:tw-border-[2px] hover:tw-border-[#FD4D00] tw-transition-colors',
       disabled
         ? '!tw-border-[#DADADA] tw-pointer-events-none tw-opacity-50'
@@ -97,7 +103,7 @@ const PaginationNext = ({
   <PaginationLink
     aria-label="Go to next page"
     size="icon"
-    className={cn(
+    className={classNames(
       'tw-flex tw-items-center tw-justify-center tw-rounded-[3px] tw-border tw-border-[#FF7D55] hover:tw-border-[2px] hover:tw-border-[#FD4D00] tw-transition-colors',
       disabled
         ? '!tw-border-[#DADADA] tw-pointer-events-none tw-opacity-50'
@@ -121,7 +127,7 @@ const PaginationEllipsis = ({
 }: React.ComponentProps<'span'>) => (
   <span
     aria-hidden
-    className={cn(
+    className={classNames(
       'tw-flex tw-h-9 tw-w-9 tw-items-center tw-justify-center',
       className
     )}

@@ -32,7 +32,9 @@ The `components.json` file, located in the root folder, holds the configuration 
 npx shadcn-ui@latest add component-name
 ```
 
-This command will produce a newly generated component located at `libs/shared-shadcn-ui-components/src/components/ui/component-name.tsx` and, if needed, will also install missing dependencies for it. On this step, you must rename the generated file from the lower-cased name `component-name.tsx` to the Pascal-cased `ComponentName.tsx` name following the convention we are using in the codebase.
+This command will produce a newly generated component located at `libs/shared-shadcn-ui-components/src/components/ui/component-name.tsx` and, if needed, will also install missing dependencies for it.
+
+In this step, you must rename the generated file from the lower-cased name `component-name.tsx` to the Pascal-cased `ComponentName.tsx` name following the convention we use in the codebase. Also, if the generetaed component uses the `cn` function, you must rename it to `classNames` according to `libs/shared-utils/src/lib/tailwind-classnames-util.ts`.
 
 2. Ensure that the newly generated component is exported from the library. Add the following line to `libs/shared-shadcn-ui-components/src/index.ts`:
 
