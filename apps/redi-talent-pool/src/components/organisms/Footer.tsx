@@ -95,8 +95,8 @@ const RediFooter = () => {
                 {t('footer.support')}
               </Element>
               <Element renderAs="ul">
-                {supportLinks.map((link) => (
-                  <Element renderAs="li" key={link.url}>
+                {supportLinks.map((link, index) => (
+                  <Element renderAs="li" key={`${link.url}-${index}`}>
                     <Element
                       renderAs="a"
                       href={link.url}
@@ -120,8 +120,8 @@ const RediFooter = () => {
                 {t('footer.legal')}
               </Element>
               <Element renderAs="ul">
-                {legalLinks.map((link) => (
-                  <Element renderAs="li" key={link.url}>
+                {legalLinks.map((link, index) => (
+                  <Element renderAs="li" key={`${link.url}-${index}`}>
                     <Element
                       renderAs="a"
                       href={link.url}

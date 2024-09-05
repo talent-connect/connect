@@ -44,7 +44,7 @@ function FormDraggableAccordion({
         </Columns.Column>
         <Columns.Column onClick={() => setShowAnswer(!showAnswer)} narrow>
           <Icon
-            icon="chevron"
+            icon="chevronDown"
             size="small"
             className={classnames({ 'icon--rotate': showAnswer })}
           />
