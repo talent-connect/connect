@@ -69,7 +69,6 @@ export class ReminderEmailsController {
         await this.reminderEmailsService.sendApplyToMentorReminder({
           email: mentee.props.email,
           firstName: mentee.props.firstName,
-          location: mentee.props.rediLocation,
         })
       })
     }
@@ -87,7 +86,6 @@ export class ReminderEmailsController {
         await this.reminderEmailsService.sendApplyToMentorReminder({
           email: mentee.props.email,
           firstName: mentee.props.firstName,
-          location: mentee.props.rediLocation,
           isSecondReminder: true,
         })
       })
@@ -182,11 +180,10 @@ export class ReminderEmailsController {
         { mentorshipMatchAgeInDays: 14 }
       )
 
-    // TODO: Uncomment and merge this two weeks after the first reminder is sent
-    // const mentorshipMatchesWithMentorAndMenteeDetails_4weeks =
-    //   await this.reminderEmailsService.getMentorsAndMenteesWithoutMentoringSessionsLogged(
-    //     { mentorshipMatchAgeInDays: 28 }
-    //   )
+    const mentorshipMatchesWithMentorAndMenteeDetails_4weeks =
+      await this.reminderEmailsService.getMentorsAndMenteesWithoutMentoringSessionsLogged(
+        { mentorshipMatchAgeInDays: 28 }
+      )
 
     if (
       Object.keys(mentorshipMatchesWithMentorAndMenteeDetails_2weeks).length > 0
@@ -202,19 +199,26 @@ export class ReminderEmailsController {
       )
     }
 
-    // TODO: Uncomment and merge this two weeks after the first reminder is sent
-    // if (
-    //   Object.keys(mentorshipMatchesWithMentorAndMenteeDetails_4weeks).length > 0
-    // ) {
-    //   // send reminder emails
-    //   Object.keys(mentorshipMatchesWithMentorAndMenteeDetails_4weeks).forEach(
-    //     async (key) => {
-    //       await this.reminderEmailsService.sendLogMentoringSessionsReminder(
-    //         mentorshipMatchesWithMentorAndMenteeDetails_4weeks[key],
-    //         28
-    //       )
-    //     }
-    //   )
-    // }
+    if (
+      Object.keys(mentorshipMatchesWithMentorAndMenteeDetails_4weeks).length > 0
+    ) {
+      // send reminder emails
+      Object.keys(mentorshipMatchesWithMentorAndMenteeDetails_4weeks).forEach(
+        async (key) => {
+          await this.reminderEmailsService.sendLogMentoringSessionsReminder(
+            mentorshipMatchesWithMentorAndMenteeDetails_4weeks[key],
+            28
+          )
+        }
+      )
+    }
+
+    return {
+      message: `Mentoring Session Loggging Reminder emails sent: 1st: ${
+        Object.keys(mentorshipMatchesWithMentorAndMenteeDetails_2weeks).length
+      }, 2nd: ${
+        Object.keys(mentorshipMatchesWithMentorAndMenteeDetails_4weeks).length
+      }`,
+    }
   }
 }
