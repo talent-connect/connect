@@ -13,6 +13,7 @@ interface PaginationProps {
   totalPagesNumber: number
   currentPageNumber: number
   setCurrentPageNumber: (page: number) => void
+  scrollPosition: number
 }
 
 type ActivePagesType = number | 'ellipsis'
@@ -23,30 +24,31 @@ const Pagination = ({
   totalPagesNumber,
   currentPageNumber,
   setCurrentPageNumber,
+  scrollPosition,
 }: PaginationProps) => {
   if (!totalPagesNumber) return null
 
-  const scrollToListTop = () => {
-    window.scrollTo({ top: 350, behavior: 'smooth' })
+  const scrollToListTop = (scrollPosition) => {
+    window.scrollTo({ top: scrollPosition, behavior: 'smooth' })
   }
 
   const handlePreviousPage = () => {
     if (currentPageNumber > 1) {
       setCurrentPageNumber(currentPageNumber - 1)
     }
-    scrollToListTop()
+    scrollToListTop(scrollPosition)
   }
 
   const handlePageClick = (page: number) => {
     setCurrentPageNumber(page)
-    scrollToListTop()
+    scrollToListTop(scrollPosition)
   }
 
   const handleNextPage = () => {
     if (currentPageNumber < totalPagesNumber) {
       setCurrentPageNumber(currentPageNumber + 1)
     }
-    scrollToListTop()
+    scrollToListTop(scrollPosition)
   }
 
   const renderPages = () => {

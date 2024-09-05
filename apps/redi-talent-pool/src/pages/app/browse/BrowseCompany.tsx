@@ -43,6 +43,7 @@ import {
 } from './BrowseCompany.generated'
 
 const JOBSEEKER_CARDS_PER_PAGE = 12
+const PAGINATION_SCROLL_POSITION = 350
 
 export function BrowseCompany() {
   const queryClient = useQueryClient()
@@ -106,14 +107,16 @@ export function BrowseCompany() {
   const jobseekerProfiles =
     jobseekerProfilesQuery?.data?.tpJobseekerDirectoryEntriesVisible
 
+  const isJobseekerFavorite = (profileId) => {
+    return favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles?.some(
+      (p) => p.favoritedTpJobseekerProfileId === profileId
+    )
+  }
+
   // Filter the jobseekerProfiles based on the onlyFavorites flag before pagination
   const filteredJobseekerProfiles = jobseekerProfiles?.filter((profile) => {
     if (!onlyFavorites) return true
-    const isFavorite =
-      favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
-        ?.map((p) => p.favoritedTpJobseekerProfileId)
-        ?.includes(profile.id)
-    return isFavorite
+    return isJobseekerFavorite(profile.id)
   })
 
   const lastItemIndex = currentPageNumber * JOBSEEKER_CARDS_PER_PAGE
@@ -394,35 +397,29 @@ export function BrowseCompany() {
         )}
       </div>
       <Columns>
-        {currentItems?.map((profile) => {
-          const isFavorite =
-            favoritedJobseekersQuery.data?.tpCompanyFavoritedJobseekerProfiles
-              ?.map((p) => p.favoritedTpJobseekerProfileId)
-              ?.includes(profile.id)
-
-          return (
-            <Columns.Column
+        {currentItems?.map((profile) => (
+          <Columns.Column
+            key={profile.id}
+            mobile={{ size: 12 }}
+            tablet={{ size: 6 }}
+            desktop={{ size: 4 }}
+          >
+            <JobseekerProfileCard
               key={profile.id}
-              mobile={{ size: 12 }}
-              tablet={{ size: 6 }}
-              desktop={{ size: 4 }}
-            >
-              <JobseekerProfileCard
-                key={profile.id}
-                jobseekerProfile={profile}
-                linkTo={`/app/jobseeker-profile/${profile.id}`}
-                toggleFavorite={handleFavoriteJobseeker}
-                isFavorite={isFavorite}
-              />
-            </Columns.Column>
-          )
-        })}
+              jobseekerProfile={profile}
+              linkTo={`/app/jobseeker-profile/${profile.id}`}
+              toggleFavorite={handleFavoriteJobseeker}
+              isFavorite={isJobseekerFavorite(profile.id)}
+            />
+          </Columns.Column>
+        ))}
       </Columns>
       {totalItems > JOBSEEKER_CARDS_PER_PAGE && (
         <Pagination
           totalPagesNumber={totalPagesNumber}
           currentPageNumber={currentPageNumber}
           setCurrentPageNumber={setCurrentPageNumber}
+          scrollPosition={PAGINATION_SCROLL_POSITION}
         />
       )}
     </LoggedIn>
