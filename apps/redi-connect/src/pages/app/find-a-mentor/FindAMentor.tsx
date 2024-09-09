@@ -14,6 +14,7 @@ import {
   FilterDropdown,
   Heading,
   Icon,
+  Pagination,
   SearchField,
 } from '@talent-connect/shared-atomic-design-components'
 import {
@@ -70,6 +71,9 @@ const FilterTag = ({ id, label, onClickHandler }: FilterTagProps) => (
   </Tag>
 )
 
+const MENTOR_CARDS_PER_PAGE = 12
+const PAGINATION_SCROLL_POSITION = 380
+
 const FindAMentor = () => {
   const queryClient = useQueryClient()
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
@@ -82,6 +86,7 @@ const FindAMentor = () => {
   const history = useHistory()
   const profile = myProfileQuery.data?.conProfile
 
+  const [currentPageNumber, setCurrentPageNumber] = useState(1)
   const [showFavorites, setShowFavorites] = useState<boolean>(false)
   const [query, setQuery] = useQueryParams({
     name: withDefault(StringParam, undefined),
@@ -115,20 +120,26 @@ const FindAMentor = () => {
   const toggleFilters = (filtersArr, filterName, item) => {
     const newFilters = toggleValueInArray(filtersArr, item)
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
+    setCurrentPageNumber(1)
   }
 
   const setName = (value) => {
     setQuery((latestQuery) => ({ ...latestQuery, name: value || undefined }))
+    setCurrentPageNumber(1)
   }
 
-  const currentFavorites =
-    favouriteMentorsQuery.data?.conMenteeFavoritedMentors.map(
-      (item) => item.mentorId
-    ) ?? []
+  const isMentorFavorite = (mentorId) => {
+    return favouriteMentorsQuery.data?.conMenteeFavoritedMentors
+      ?.map((p) => p.mentorId)
+      ?.includes(mentorId)
+  }
 
   const toggleFavorite = async (mentorId) => {
-    const isMentorCurrentlyFavorited = currentFavorites.includes(mentorId)
-    if (isMentorCurrentlyFavorited) {
+    const isMentorFavorite =
+      favouriteMentorsQuery.data?.conMenteeFavoritedMentors
+        ?.map((p) => p.mentorId)
+        ?.includes(mentorId)
+    if (isMentorFavorite) {
       await unfavoriteMentorMutation.mutateAsync({ input: { mentorId } })
       queryClient.invalidateQueries(useListFavoriteMentorsQuery.getKey())
     } else {
@@ -143,6 +154,7 @@ const FindAMentor = () => {
       ...latestQuery,
       onlyFavorites: showFavorites ? undefined : true,
     }))
+    setCurrentPageNumber(1)
   }
 
   const clearFilters = () => {
@@ -152,6 +164,7 @@ const FindAMentor = () => {
       languages: [],
       locations: [],
     }))
+    setCurrentPageNumber(1)
   }
 
   const isMalmoLocation = profile?.rediLocation === RediLocation.Malmo
@@ -193,13 +206,25 @@ const FindAMentor = () => {
     history.replace(`/app/mentorships/${matchId}`)
   }
 
-  // This logic filters away mentors that have have opted out of being
-  // receiving application form mentees from other locations
-  const mentors = mentorsQuery.data?.conProfilesAvailableMentors.filter(
-    (mentor) =>
-      !mentor.optOutOfMenteesFromOtherRediLocation ||
-      mentor.rediLocation === profile?.rediLocation
-  )
+  const mentors = mentorsQuery.data?.conProfilesAvailableMentors
+    // This logic filters away mentors that have have opted out of being
+    // receiving application form mentees from other locations
+    .filter(
+      (mentor) =>
+        !mentor.optOutOfMenteesFromOtherRediLocation ||
+        mentor.rediLocation === profile?.rediLocation
+    )
+    // Filter mentors based on the onlyFavorites flag before pagination
+    .filter((mentor) => (onlyFavorites ? isMentorFavorite(mentor.id) : true))
+
+  const lastItemIndex = currentPageNumber * MENTOR_CARDS_PER_PAGE
+  const firstItemIndex = lastItemIndex - MENTOR_CARDS_PER_PAGE
+  const currentItems = mentors?.slice(firstItemIndex, lastItemIndex)
+
+  const totalItems = mentors?.length
+  const totalPagesNumber = totalItems
+    ? Math.ceil(totalItems / MENTOR_CARDS_PER_PAGE)
+    : undefined
 
   return (
     <LoggedIn>
@@ -307,28 +332,30 @@ const FindAMentor = () => {
       </div>
 
       <Columns>
-        {mentors?.map((mentor) => {
-          const isFavorite = currentFavorites.includes(mentor.id)
-
-          if (!isFavorite && showFavorites) return
-
-          return (
-            <Columns.Column
-              mobile={{ size: 12 }}
-              tablet={{ size: 6 }}
-              desktop={{ size: 4 }}
-              key={mentor.id}
-            >
-              <MentorProfileCard
-                mentorProfile={mentor}
-                linkTo={`/app/find-a-mentor/profile/${mentor.id}`}
-                toggleFavorite={() => toggleFavorite(mentor.id)}
-                isFavorite={isFavorite}
-              />
-            </Columns.Column>
-          )
-        })}
+        {currentItems?.map((mentor) => (
+          <Columns.Column
+            mobile={{ size: 12 }}
+            tablet={{ size: 6 }}
+            desktop={{ size: 4 }}
+            key={mentor.id}
+          >
+            <MentorProfileCard
+              mentorProfile={mentor}
+              linkTo={`/app/find-a-mentor/profile/${mentor.id}`}
+              toggleFavorite={() => toggleFavorite(mentor.id)}
+              isFavorite={isMentorFavorite(mentor.id)}
+            />
+          </Columns.Column>
+        ))}
       </Columns>
+      {totalItems > MENTOR_CARDS_PER_PAGE && (
+        <Pagination
+          totalPagesNumber={totalPagesNumber}
+          currentPageNumber={currentPageNumber}
+          setCurrentPageNumber={setCurrentPageNumber}
+          scrollPosition={PAGINATION_SCROLL_POSITION}
+        />
+      )}
 
       {mentors?.length === 0 && !isLoading && (
         <Content>
