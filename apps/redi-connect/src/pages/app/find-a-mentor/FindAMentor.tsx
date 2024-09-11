@@ -35,6 +35,7 @@ import {
   withDefault,
 } from 'use-query-params'
 
+import { paginateItems } from '@talent-connect/shared-utils'
 import { MentorProfileCard } from '../../../components/organisms/MentorProfileCard'
 import { LoggedIn } from '../../../components/templates'
 import { useLoading } from '../../../hooks/WithLoading'
@@ -217,14 +218,11 @@ const FindAMentor = () => {
     // Filter mentors based on the onlyFavorites flag before pagination
     .filter((mentor) => (onlyFavorites ? isMentorFavorite(mentor.id) : true))
 
-  const lastItemIndex = currentPageNumber * MENTOR_CARDS_PER_PAGE
-  const firstItemIndex = lastItemIndex - MENTOR_CARDS_PER_PAGE
-  const currentItems = mentors?.slice(firstItemIndex, lastItemIndex)
-
-  const totalItems = mentors?.length
-  const totalPagesNumber = totalItems
-    ? Math.ceil(totalItems / MENTOR_CARDS_PER_PAGE)
-    : undefined
+  const { currentItems, totalItems, totalPagesNumber } = paginateItems({
+    items: mentors,
+    currentPageNumber,
+    itemsPerPage: MENTOR_CARDS_PER_PAGE,
+  })
 
   return (
     <LoggedIn>

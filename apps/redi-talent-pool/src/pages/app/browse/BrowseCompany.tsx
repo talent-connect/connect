@@ -14,6 +14,7 @@ import {
   SearchField,
 } from '@talent-connect/shared-atomic-design-components'
 import { LANGUAGES } from '@talent-connect/shared-config'
+import { paginateItems } from '@talent-connect/shared-utils'
 import {
   desiredPositions,
   desiredPositionsIdToLabelMap,
@@ -119,17 +120,11 @@ export function BrowseCompany() {
     return isJobseekerFavorite(profile.id)
   })
 
-  const lastItemIndex = currentPageNumber * JOBSEEKER_CARDS_PER_PAGE
-  const firstItemIndex = lastItemIndex - JOBSEEKER_CARDS_PER_PAGE
-  const currentItems = filteredJobseekerProfiles?.slice(
-    firstItemIndex,
-    lastItemIndex
-  )
-
-  const totalItems = filteredJobseekerProfiles?.length
-  const totalPagesNumber = totalItems
-    ? Math.ceil(totalItems / JOBSEEKER_CARDS_PER_PAGE)
-    : undefined
+  const { currentItems, totalItems, totalPagesNumber } = paginateItems({
+    items: filteredJobseekerProfiles,
+    currentPageNumber,
+    itemsPerPage: JOBSEEKER_CARDS_PER_PAGE,
+  })
 
   const handleFavoriteJobseeker = async (tpJobseekerProfileId: string) => {
     const isFavorite =
