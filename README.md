@@ -18,7 +18,7 @@ First of all, ReDI Connect and ReDI Talent Pool connect to a `Salesforce` instan
 After you've set up `.env`, make sure to update `NX_DEV_MODE_EMAIL_RECIPIENT` to your own email address to receive emails from the platform.
 
 1. Make sure you're running the _v20_ version of Node locally. To do this, you can install [nvm](https://github.com/nvm-sh/nvm#node-version-manager), which allows you to select different versions of Node via the command line. Alternatively, we have added support for [Volta](https://docs.volta.sh/guide/understanding). So, if you choose, you can use Volta, which sets project-defined tools automatically.
-2. We are using `yarn` as a package manager in our repository. If you don't have it on your machine yet, [install it](https://classic.yarnpkg.com/en/docs/install#mac-stable). 
+2. We are using `yarn` as a package manager in our repository. If you don't have it on your machine yet, [install it](https://classic.yarnpkg.com/en/docs/install#mac-stable).
 3. Go to the root folder and run `yarn` to install the project dependencies (`node_modules`).
 4. Run `yarn start:all` to boot all apps, _or_ a subset of apps using the `start:x` commands listed in the `package.json` file.
 5. Read the [Onboarding Checklist](https://github.com/talent-connect/connect/wiki#onboarding-checklist) in our Wiki.
@@ -97,7 +97,7 @@ Our `NestJS API` thereafter uses `GraphQL` and code generation (codegen) to defi
 
 1. All our data models, or entities, start in the `libs/common-types/src/lib` folder as `TypeScript` classes
 2. `NestJS` analyzes all classes with the decorator `@ObjectType()`
-3. `NestJS` generates a `GraphQ`L schema, containing all our entities in the shape of object types
+3. `NestJS` generates a `GraphQL` schema, containing all our entities in the shape of object types
 4. The command `yarn graphql:codegen` uses the `graphql-codegen` tool to read the schema. It then generates Typescript types (see `libs/data-access/src/lib/types/types.ts`). It also scans all `.graphql` files for queries and mutations, and creates `react-query` queries and mutations stored in `.generated.ts` files right next to the `.graphql` file.
 
 ## What responsibilities are still carried by Loopback?
@@ -108,14 +108,14 @@ Our `NestJS API` thereafter uses `GraphQL` and code generation (codegen) to defi
 
 ## Good to know
 
-We integrated [TailwindCSS](https://tailwindcss.com/) into the `redi-connect` and `redi-talent-pool` applications to enhance styling capabilities and to enable a new UI components library - [shadcn/ui](https://ui.shadcn.com/docs).  
+We integrated [TailwindCSS](https://tailwindcss.com/) into the `redi-connect` and `redi-talent-pool` applications to enhance styling capabilities and to enable a new UI components library - [shadcn/ui](https://ui.shadcn.com/docs).
 
 A newly created `shared-shadcn-ui-components` library aims to replace `Bulma` in our codebase. Check the usage instructions for the `shared-shadcn-ui-components` library in this [README file](https://github.com/talent-connect/connect/tree/master/libs/shared-shadcn-ui-components).
 
 ## About the Nx monorepo
 
 Main benefits:
- 
+
 - code sharing between apps (NestJS backend, ReDI Connect, ReDI Talent Pool) - great for components, types, utilities, and much more
 - one linter to rule them all - no more crazy pull requests with style changes
 - one command to start it all - no more four terminal windows to start all the apps
