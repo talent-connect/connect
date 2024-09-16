@@ -2,7 +2,7 @@
 @import '_variables.scss';
 
 .navbar {
-  padding: 1rem 1.25rem;
+  padding: 1rem 1.25rem !important;
 
   &__wrapper {
     display: flex;
