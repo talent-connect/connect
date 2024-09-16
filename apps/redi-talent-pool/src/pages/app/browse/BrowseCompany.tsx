@@ -150,18 +150,20 @@ export function BrowseCompany() {
     )
   }
 
+  const resetPaginationPageNumber = () => setCurrentPageNumber(1)
+
   const toggleOnlyFavoritesFilter = () => {
     setQuery((latestQuery) => ({
       ...latestQuery,
       onlyFavorites: onlyFavorites ? undefined : true,
     }))
-    setCurrentPageNumber(1)
+    resetPaginationPageNumber()
   }
 
   const toggleFilters = (filtersArr, filterName, item) => {
     const newFilters = toggleValueInArray(filtersArr, item)
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
-    setCurrentPageNumber(1)
+    resetPaginationPageNumber()
   }
 
   /**
@@ -175,12 +177,12 @@ export function BrowseCompany() {
   //     joinsMunich24SummerJobFair:
   //       joinsMunich24SummerJobFair === undefined ? true : undefined,
   //   }))
-  //   setCurrentPageNumber(1)
+  //   resetPaginationPageNumber()
   // }
 
   const setName = (value) => {
     setQuery((latestQuery) => ({ ...latestQuery, name: value || undefined }))
-    setCurrentPageNumber(1)
+    resetPaginationPageNumber()
   }
 
   const clearFilters = () => {
@@ -198,7 +200,7 @@ export function BrowseCompany() {
        */
       // joinsMunich24SummerJobFair: undefined,
     }))
-    setCurrentPageNumber(1)
+    resetPaginationPageNumber()
   }
 
   const shouldShowFilters =
