@@ -1,20 +1,20 @@
-interface PaginateItemsProps<T> {
-  items: Array<T> | undefined
+interface PaginateItemsParameters<T> {
+  items: Array<T>
   currentPageNumber: number
   itemsPerPage: number
 }
 
 interface PaginateItemsResult<T> {
   currentItems: Array<T>
-  totalItems: number | undefined
-  totalPagesNumber: number | undefined
+  totalItems: number
+  totalPagesNumber: number
 }
 
 export const paginateItems = <T>({
   items,
   currentPageNumber,
   itemsPerPage,
-}: PaginateItemsProps<T>): PaginateItemsResult<T> => {
+}: PaginateItemsParameters<T>): PaginateItemsResult<T> => {
   const lastItemIndex = currentPageNumber * itemsPerPage
   const firstItemIndex = lastItemIndex - itemsPerPage
   const currentItems = items?.slice(firstItemIndex, lastItemIndex)

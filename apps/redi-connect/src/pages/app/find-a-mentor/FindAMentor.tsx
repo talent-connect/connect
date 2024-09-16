@@ -118,15 +118,17 @@ const FindAMentor = () => {
     setQuery(hasQuery ? query : { ...query, topics: profile?.categories ?? [] })
   }, [myProfileQuery.data])
 
+  const resetPaginationPageNumber = () => setCurrentPageNumber(1)
+
   const toggleFilters = (filtersArr, filterName, item) => {
     const newFilters = toggleValueInArray(filtersArr, item)
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
-    setCurrentPageNumber(1)
+    resetPaginationPageNumber()
   }
 
   const setName = (value) => {
     setQuery((latestQuery) => ({ ...latestQuery, name: value || undefined }))
-    setCurrentPageNumber(1)
+    resetPaginationPageNumber()
   }
 
   const isMentorFavorite = (mentorId) => {
@@ -155,7 +157,7 @@ const FindAMentor = () => {
       ...latestQuery,
       onlyFavorites: showFavorites ? undefined : true,
     }))
-    setCurrentPageNumber(1)
+    resetPaginationPageNumber()
   }
 
   const clearFilters = () => {
@@ -165,7 +167,7 @@ const FindAMentor = () => {
       languages: [],
       locations: [],
     }))
-    setCurrentPageNumber(1)
+    resetPaginationPageNumber()
   }
 
   const isMalmoLocation = profile?.rediLocation === RediLocation.Malmo
@@ -219,7 +221,7 @@ const FindAMentor = () => {
     .filter((mentor) => (onlyFavorites ? isMentorFavorite(mentor.id) : true))
 
   const { currentItems, totalItems, totalPagesNumber } = paginateItems({
-    items: mentors,
+    items: mentors ?? [],
     currentPageNumber,
     itemsPerPage: MENTOR_CARDS_PER_PAGE,
   })
@@ -330,7 +332,7 @@ const FindAMentor = () => {
       </div>
 
       <Columns>
-        {currentItems?.map((mentor) => (
+        {currentItems.map((mentor) => (
           <Columns.Column
             mobile={{ size: 12 }}
             tablet={{ size: 6 }}
