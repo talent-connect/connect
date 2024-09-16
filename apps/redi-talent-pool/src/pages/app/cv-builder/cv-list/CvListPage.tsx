@@ -70,7 +70,7 @@ function CvListPage() {
       <Columns>
         <Columns.Column size={12} paddingless>
           <Columns.Column size={4} paddingless>
-            <Heading size="smaller" className="heading">
+            <Heading size="smaller" className="heading heading__main">
               CV BUILDER
             </Heading>
             <Heading size="medium" border="bottomLeft" className="heading">

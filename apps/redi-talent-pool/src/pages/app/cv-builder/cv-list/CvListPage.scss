@@ -1,4 +1,10 @@
 .heading {
   font-family: Avenir LT Std;
-  padding-top: 2rem;
+
+  &__main {
+    padding-top: 2rem;
+    padding-bottom: 0.5rem;
+  }
 }
+
+

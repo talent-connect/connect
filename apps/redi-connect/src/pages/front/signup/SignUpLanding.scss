@@ -15,10 +15,12 @@
   &__type {
     padding: 1.125rem 0;
     width: 48%;
-    text-align: center;
     border: 2px solid transparent;
     box-shadow: $default-shadow;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     @include mobile() {
       width: 100%;
@@ -35,9 +37,6 @@
   }
 }
 
-.signup__type svg {
-  display: inline;
-}
 .no-shadow {
   box-shadow: none;
 }
