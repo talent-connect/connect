@@ -29,7 +29,7 @@ You can open these in your browser:
 - ReDI Connect: http://localhost:3000
 - Salesforce login: https://test.salesforce.com/ (get credentials from @katamatata, @helloanil or @ericbolikowski)
 - Loopback API: http://localhost:3003, Swagger: http://localhost:3003/explorer
-- NestJS API: http://localhost:3333, GraphQL: http://localhost:3333/graphql
+- NestJS API: http://localhost:3333, GraphiQL: http://localhost:3333/graphql
 
 6. If you're using `VS Code`, make sure you:
 
@@ -40,13 +40,13 @@ We use [Nx Dev Tools](https://nx.dev/) to manage this monorepo. Find all the app
 
 Use trunk-based branching: create feature/bugfix/docs/refactor/blabla branches directly off `master` and file PRs to merge back into `master`. Name branches `<type>/short-hyphenated-title`, where `type` is `feat`, `fix`, `docs`, `style`, `refactor`, `test` or `chore`.
 
-## Note on how to use the GraphQL playground
+## Note on how to use the GraphiQL playground
 
-The `GraphQL` playground is a tool that allows you to test the `GraphQL API`. It is available at http://localhost:3333/graphql.
+The `GraphiQL` playground is a tool that allows you to test the `GraphQL API`. It is available at http://localhost:3333/graphql.
 
 The playground is a great tool to test the API, but it is not meant to be used in production. It is a development tool only.
 
-Use it to view all the available `GraphQL` queries and mutations. Most queries and mutations require authentication. To authenticate, you need to provide a valid `JWT token`. You can get a valid `JWT token` by logging in to the ReDI Connect application. Use your browser's developer tools to view network requests. Once you are logged in, find the `POST /api/redUsers/login` request. There, copy the `jwtToken`. Then, in the `GraphQL` playground, click on the `HTTP HEADERS` tab. Paste the following:
+Use it to view all the available `GraphQL` queries and mutations. Most queries and mutations require authentication. To authenticate, you need to provide a valid `JWT token`. You can get a valid `JWT token` by logging in to the ReDI Connect application. Use your browser's developer tools to view network requests. Once you are logged in, find the `POST /api/redUsers/login` request. There, copy the `jwtToken`. Then, in the `GraphiQL` playground, click on the `HTTP HEADERS` tab. Paste the following:
 
 ```
 {
