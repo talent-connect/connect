@@ -121,7 +121,7 @@ export function BrowseCompany() {
   })
 
   const { currentItems, totalItems, totalPagesNumber } = paginateItems({
-    items: filteredJobseekerProfiles,
+    items: filteredJobseekerProfiles ?? [],
     currentPageNumber,
     itemsPerPage: JOBSEEKER_CARDS_PER_PAGE,
   })
@@ -145,16 +145,20 @@ export function BrowseCompany() {
     )
   }
 
+  const resetPaginationPageNumber = () => setCurrentPageNumber(1)
+
   const toggleOnlyFavoritesFilter = () => {
     setQuery((latestQuery) => ({
       ...latestQuery,
       onlyFavorites: onlyFavorites ? undefined : true,
     }))
+    resetPaginationPageNumber()
   }
 
   const toggleFilters = (filtersArr, filterName, item) => {
     const newFilters = toggleValueInArray(filtersArr, item)
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
+    resetPaginationPageNumber()
   }
 
   /**
@@ -162,15 +166,18 @@ export function BrowseCompany() {
    * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next method when there's an upcoming Job Fair
    * Duplicate if there are multiple Job Fairs coming
    */
-  // const toggleMunich24SummerJobFairFilter = () =>
+  // const toggleMunich24SummerJobFairFilter = () => {
   //   setQuery((latestQuery) => ({
   //     ...latestQuery,
   //     joinsMunich24SummerJobFair:
   //       joinsMunich24SummerJobFair === undefined ? true : undefined,
   //   }))
+  //   resetPaginationPageNumber()
+  // }
 
   const setName = (value) => {
     setQuery((latestQuery) => ({ ...latestQuery, name: value || undefined }))
+    resetPaginationPageNumber()
   }
 
   const clearFilters = () => {
@@ -188,6 +195,7 @@ export function BrowseCompany() {
        */
       // joinsMunich24SummerJobFair: undefined,
     }))
+    resetPaginationPageNumber()
   }
 
   const shouldShowFilters =
@@ -392,7 +400,7 @@ export function BrowseCompany() {
         )}
       </div>
       <Columns>
-        {currentItems?.map((profile) => (
+        {currentItems.map((profile) => (
           <Columns.Column
             key={profile.id}
             mobile={{ size: 12 }}
