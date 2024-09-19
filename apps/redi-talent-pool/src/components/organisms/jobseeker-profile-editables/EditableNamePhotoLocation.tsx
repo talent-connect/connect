@@ -132,8 +132,8 @@ const validationSchema = Yup.object({
   lastName: Yup.string()
     .transform(toPascalCaseAndTrim)
     .required('Your last name is required'),
-  location: Yup.string().required('Your location is required'),
-  federalState: Yup.string().required('Please select the state you live in'),
+  location: Yup.string().ensure().required('Your location is required'),
+  federalState: Yup.mixed().required('Please select the state you live in'),
 })
 
 function ModalForm({

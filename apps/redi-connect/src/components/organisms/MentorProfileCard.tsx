@@ -29,7 +29,7 @@ export function MentorProfileCard({
     categories,
   } = mentorProfile
   const tags = categories.map((category) => CATEGORIES_MAP[category])
-  const location = REDI_LOCATION_NAMES[rediLocation]
+  const location = `ReDI ${REDI_LOCATION_NAMES[rediLocation]}`
   const avatar = profileAvatarImageS3Key || placeholderImage
 
   return (
