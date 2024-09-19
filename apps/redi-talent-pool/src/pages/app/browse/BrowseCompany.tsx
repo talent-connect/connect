@@ -26,7 +26,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { useState } from 'react'
-import { Columns, Element, Tag } from 'react-bulma-components'
+import { Columns, Content, Element, Tag } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import {
   ArrayParam,
@@ -424,6 +424,15 @@ export function BrowseCompany() {
           setCurrentPageNumber={setCurrentPageNumber}
           scrollPosition={PAGINATION_SCROLL_POSITION}
         />
+      )}
+
+      {filteredJobseekerProfiles?.length === 0 && (
+        <Content>
+          <>
+            Unfortunately <strong>could not find any jobseekers</strong>{' '}
+            matching your search criterias.
+          </>
+        </Content>
       )}
     </LoggedIn>
   )
