@@ -3,12 +3,13 @@ import { useHistory } from 'react-router-dom'
 
 import {
   Button,
+  Caption,
   FormInput,
   Heading,
   Icon,
   Modal,
 } from '@talent-connect/shared-atomic-design-components'
-import { Box, Columns, Content, Section } from 'react-bulma-components'
+import { Box, Columns, Content, Element, Section } from 'react-bulma-components'
 
 import { EmptySectionPlaceholder } from '../../../../components/molecules/EmptySectionPlaceholder'
 import { LoggedIn } from '../../../../components/templates'
@@ -67,19 +68,22 @@ function CvListPage() {
    */
   return (
     <LoggedIn>
-      <Columns>
+      <Columns className="heading-section">
         <Columns.Column size={12} paddingless>
           <Columns.Column size={4} paddingless>
-            <Heading size="smaller" className="heading">
-              CV BUILDER
-            </Heading>
-            <Heading size="medium" border="bottomLeft" className="heading">
+            <Caption>CV Builder</Caption>
+            <Heading subtitle size="small" border="bottomLeft">
               Welcome to the CV Builder tool!
             </Heading>
           </Columns.Column>
         </Columns.Column>
-        <Columns.Column desktop={{ size: 12 }} mobile={{ size: 6 }} paddingless>
-          <Columns.Column size={6} paddingless style={{ marginBottom: 60 }}>
+        <Columns.Column desktop={{ size: 12 }} paddingless>
+          <Columns.Column
+            desktop={{ size: 6 }}
+            mobile={{ size: 12 }}
+            paddingless
+            style={{ marginBottom: 60 }}
+          >
             <Content>
               We build that tool to help you create, fast and easy, a perfect CV
               to download and apply for your desired position.
@@ -88,9 +92,9 @@ function CvListPage() {
         </Columns.Column>
         <Columns.Column
           desktop={{ size: 3 }}
-          mobile={{ size: 6 }}
+          mobile={{ size: 7 }}
           paddingless
-          style={{ marginBottom: 100 }}
+          style={{ marginBottom: 60 }}
         >
           <Button fullWidth onClick={() => toggleCvNameModal(true)}>
             Create a CV
@@ -104,7 +108,9 @@ function CvListPage() {
           marginBottom: 32,
         }}
       >
-        <Heading size="small">Your CVs</Heading>
+        <Element renderAs="h4" textSize={4}>
+          Your CVs
+        </Element>
       </Section>
       <Section paddingless>
         {cvList?.length > 0 ? (
