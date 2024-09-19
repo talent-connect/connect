@@ -33,7 +33,7 @@ const UserLocation = ({ location }) => {
         alt="Location"
         className="new-profile-card__location-icon"
       />
-      <p className="new-profile-card__location-text">{location}</p>
+      <p className="new-profile-card__location-text">ReDI {location}</p>
     </div>
   )
 }

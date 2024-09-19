@@ -4,7 +4,7 @@ fragment JobseekerProfileCardJobseekerProfileProp on TpJobseekerDirectoryEntry {
   desiredPositions
   topSkills
   profileAvatarImageS3Key
-  federalState
+  location
   workingLanguages {
     language
   }
