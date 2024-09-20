@@ -360,8 +360,9 @@ const FindAMentor = () => {
       {mentors?.length === 0 && !isLoading && (
         <Content>
           <>
-            Unfortunately <strong>could not find any mentors</strong> matching
-            your search criterias.
+            Unfortunately <strong>couldn't find any mentors</strong> matching
+            your search criteria. You can try adjusting your filters to find
+            more profiles.
           </>
         </Content>
       )}
