@@ -429,8 +429,10 @@ export function BrowseCompany() {
       {filteredJobseekerProfiles?.length === 0 && (
         <Content>
           <>
-            Unfortunately <strong>could not find any jobseekers</strong>{' '}
-            matching your search criterias.
+            Unfortunately, we{' '}
+            <strong>couldn't find any jobseeker profiles</strong> matching your
+            search criteria. You can try adjusting your filters to find more
+            profiles.
           </>
         </Content>
       )}
