@@ -1,12 +1,12 @@
 import {
   desiredPositionsIdToLabelMap,
+  germanFederalStates,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import { NewProfileCard } from '../../../../../libs/shared-atomic-design-components/src/lib/molecules/NewProfileCard'
 import placeholderImage from '../../assets/img-placeholder.png'
 import { JobseekerProfileCardJobseekerProfilePropFragment } from './JobseekerProfileCard.generated'
 import './JobseekerProfileCard.scss'
-import { germanFederalStates } from '@talent-connect/talent-pool/config'
 
 interface JobseekerProfileCardProps {
   jobseekerProfile: JobseekerProfileCardJobseekerProfilePropFragment
@@ -38,7 +38,10 @@ export function JobseekerProfileCard({
   const languages = workingLanguages?.map(({ language }) => language)
   const tags = topSkills?.map((skill) => topSkillsIdToLabelMap[skill])
   const avatar = profileAvatarImageS3Key || placeholderImage
-  const location = `Based in ${germanFederalStates[federalState]}`
+  const location =
+    germanFederalStates[federalState] === 'Outside Germany'
+      ? 'Based outside Germany'
+      : `Based in ${germanFederalStates[federalState]}`
 
   return (
     <div className="jobSeeker-profile-card-wrapper">
