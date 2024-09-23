@@ -105,6 +105,23 @@ export function BrowseJobseeker() {
   const jobListings =
     jobListingsQuery.data?.tpJobListings.sort(careerPartnerSortFn)
 
+  const isFavorite = (jobListingId) =>
+    favouritedTpJobListingsQuery.data?.tpJobseekerFavoritedJobListings?.some(
+      (p) => p.tpJobListingId === jobListingId
+    )
+
+  // Filter the jobListings based on the onlyFavorites flag and companyName search query
+  const filteredJobListings = jobListings?.filter((jobListing) => {
+    const matchCompanyNameSearchQuery = jobListing.companyName
+      .toLowerCase()
+      .includes(companyName.toLowerCase())
+
+    if (onlyFavorites)
+      return matchCompanyNameSearchQuery && isFavorite(jobListing.id)
+
+    return matchCompanyNameSearchQuery
+  })
+
   const handleFavoriteJobListing = async (tpJobListingId: string) => {
     const isFavorite =
       favouritedTpJobListingsQuery.data?.tpJobseekerFavoritedJobListings
@@ -219,7 +236,7 @@ export function BrowseJobseeker() {
         style={{ flexGrow: 1 }}
       >
         Browse open Job Listings{' '}
-        {jobListings?.length ? `(${jobListings.length})` : ''}
+        {filteredJobListings?.length ? `(${filteredJobListings.length})` : ''}
       </Element>
       <Element
         renderAs="p"
@@ -404,45 +421,24 @@ export function BrowseJobseeker() {
         )}
       </div>
       <Columns>
-        {jobListings
-          ?.filter((jobListing) =>
-            jobListing.companyName
-              .toLowerCase()
-              .includes(companyName.toLowerCase())
-          )
-          .filter((jobListing) => {
-            if (!onlyFavorites) return true
-            const isFavorite =
-              favouritedTpJobListingsQuery.data?.tpJobseekerFavoritedJobListings
-                ?.map((p) => p.tpJobListingId)
-                ?.includes(jobListing.id)
-            return isFavorite
-          })
-          .map((jobListing) => {
-            const isFavorite =
-              favouritedTpJobListingsQuery.data?.tpJobseekerFavoritedJobListings
-                ?.map((p) => p.tpJobListingId)
-                ?.includes(jobListing.id)
-
-            if (!isFavorite && onlyFavorites) return
-
-            return (
-              <Columns.Column key={jobListing.id} size={12}>
-                <JobListingCard
-                  jobListing={jobListing}
-                  linkTo={`/app/job-listing/${jobListing.id}`}
-                  renderCTA={() => renderFavoriteCTA(jobListing.id, isFavorite)}
-                  timestamp={`Last updated ${formatDistance(
-                    new Date(jobListing.updatedAt),
-                    new Date(),
-                    {
-                      addSuffix: true,
-                    }
-                  )}`}
-                />
-              </Columns.Column>
-            )
-          })}
+        {filteredJobListings?.map((jobListing) => (
+          <Columns.Column key={jobListing.id} size={12}>
+            <JobListingCard
+              jobListing={jobListing}
+              linkTo={`/app/job-listing/${jobListing.id}`}
+              renderCTA={() =>
+                renderFavoriteCTA(jobListing.id, isFavorite(jobListing.id))
+              }
+              timestamp={`Last updated ${formatDistance(
+                new Date(jobListing.updatedAt),
+                new Date(),
+                {
+                  addSuffix: true,
+                }
+              )}`}
+            />
+          </Columns.Column>
+        ))}
       </Columns>
     </LoggedIn>
   )
