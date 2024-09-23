@@ -399,42 +399,42 @@ export function BrowseCompany() {
           </>
         )}
       </div>
-      <Columns>
-        {currentItems.map((profile) => (
-          <Columns.Column
-            key={profile.id}
-            mobile={{ size: 12 }}
-            tablet={{ size: 6 }}
-            desktop={{ size: 4 }}
-          >
-            <JobseekerProfileCard
-              key={profile.id}
-              jobseekerProfile={profile}
-              linkTo={`/app/jobseeker-profile/${profile.id}`}
-              toggleFavorite={handleFavoriteJobseeker}
-              isFavorite={isJobseekerFavorite(profile.id)}
-            />
-          </Columns.Column>
-        ))}
-      </Columns>
-      {totalItems > JOBSEEKER_CARDS_PER_PAGE && (
-        <Pagination
-          totalPagesNumber={totalPagesNumber}
-          currentPageNumber={currentPageNumber}
-          setCurrentPageNumber={setCurrentPageNumber}
-          scrollPosition={PAGINATION_SCROLL_POSITION}
-        />
-      )}
-
-      {filteredJobseekerProfiles?.length === 0 && (
+      {filteredJobseekerProfiles?.length === 0 ? (
         <Content>
-          <>
-            Unfortunately, we{' '}
-            <strong>couldn't find any jobseeker profiles</strong> matching your
-            search criteria. You can try adjusting your filters to find more
-            profiles.
-          </>
+          Unfortunately, we{' '}
+          <strong>couldn't find any jobseeker profiles</strong> matching your
+          search criteria. You can try adjusting your filters to find more
+          profiles.
         </Content>
+      ) : (
+        <>
+          <Columns>
+            {currentItems.map((profile) => (
+              <Columns.Column
+                key={profile.id}
+                mobile={{ size: 12 }}
+                tablet={{ size: 6 }}
+                desktop={{ size: 4 }}
+              >
+                <JobseekerProfileCard
+                  key={profile.id}
+                  jobseekerProfile={profile}
+                  linkTo={`/app/jobseeker-profile/${profile.id}`}
+                  toggleFavorite={handleFavoriteJobseeker}
+                  isFavorite={isJobseekerFavorite(profile.id)}
+                />
+              </Columns.Column>
+            ))}
+          </Columns>
+          {totalItems > JOBSEEKER_CARDS_PER_PAGE && (
+            <Pagination
+              totalPagesNumber={totalPagesNumber}
+              currentPageNumber={currentPageNumber}
+              setCurrentPageNumber={setCurrentPageNumber}
+              scrollPosition={PAGINATION_SCROLL_POSITION}
+            />
+          )}
+        </>
       )}
     </LoggedIn>
   )

@@ -25,7 +25,7 @@ import {
 import { objectEntries } from '@talent-connect/typescript-utilities'
 import { formatDistance } from 'date-fns'
 import { useState } from 'react'
-import { Columns, Element, Tag } from 'react-bulma-components'
+import { Columns, Content, Element, Tag } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import { Redirect } from 'react-router-dom'
 import {
@@ -420,26 +420,34 @@ export function BrowseJobseeker() {
           </>
         )}
       </div>
-      <Columns>
-        {filteredJobListings?.map((jobListing) => (
-          <Columns.Column key={jobListing.id} size={12}>
-            <JobListingCard
-              jobListing={jobListing}
-              linkTo={`/app/job-listing/${jobListing.id}`}
-              renderCTA={() =>
-                renderFavoriteCTA(jobListing.id, isFavorite(jobListing.id))
-              }
-              timestamp={`Last updated ${formatDistance(
-                new Date(jobListing.updatedAt),
-                new Date(),
-                {
-                  addSuffix: true,
+      {filteredJobListings?.length === 0 ? (
+        <Content>
+          Unfortunately, we <strong>couldn't find any job listings</strong>{' '}
+          matching your search criteria. You can try adjusting your filters to
+          find more opportunities.
+        </Content>
+      ) : (
+        <Columns>
+          {filteredJobListings?.map((jobListing) => (
+            <Columns.Column key={jobListing.id} size={12}>
+              <JobListingCard
+                jobListing={jobListing}
+                linkTo={`/app/job-listing/${jobListing.id}`}
+                renderCTA={() =>
+                  renderFavoriteCTA(jobListing.id, isFavorite(jobListing.id))
                 }
-              )}`}
-            />
-          </Columns.Column>
-        ))}
-      </Columns>
+                timestamp={`Last updated ${formatDistance(
+                  new Date(jobListing.updatedAt),
+                  new Date(),
+                  {
+                    addSuffix: true,
+                  }
+                )}`}
+              />
+            </Columns.Column>
+          ))}
+        </Columns>
+      )}
     </LoggedIn>
   )
 }
