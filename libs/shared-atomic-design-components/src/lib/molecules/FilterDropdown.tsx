@@ -8,9 +8,10 @@ type Item = { label: string; value: string }
 interface Props {
   label: string
   className: string
-  selected: string[]
+  selected?: string[]
   items: Item[]
   onChange: (item: string) => void
+  singleSelect?: boolean
 }
 
 const baseClass = 'filter-dropdown'
@@ -21,6 +22,7 @@ const FilterDropdown = ({
   selected,
   items,
   onChange,
+  singleSelect = false,
 }: Props) => {
   const filterDropdown = useRef<any>(null)
   const [showDropdown, setShowDropdown] = useState(false)
@@ -30,6 +32,11 @@ const FilterDropdown = ({
       setShowDropdown(false)
     }
   }, [])
+
+  const handleSingleSelectOptionClick = (item: string) => {
+    onChange(item)
+    setShowDropdown(false)
+  }
 
   useEffect(() => {
     document.addEventListener('click', handleClick)
@@ -66,12 +73,22 @@ const FilterDropdown = ({
       >
         {items.map((item) => (
           <li key={item.value}>
-            <Checkbox
-              handleChange={() => onChange(item.value)}
-              checked={selected.includes(item.value)}
-            >
-              {item.label}
-            </Checkbox>
+            {singleSelect ? (
+              <span
+                className="listItem--singleSelect"
+                role="listitem"
+                onClick={() => handleSingleSelectOptionClick(item.value)}
+              >
+                {item.label}
+              </span>
+            ) : (
+              <Checkbox
+                handleChange={() => onChange(item.value)}
+                checked={selected.includes(item.value)}
+              >
+                {item.label}
+              </Checkbox>
+            )}
           </li>
         ))}
       </ul>

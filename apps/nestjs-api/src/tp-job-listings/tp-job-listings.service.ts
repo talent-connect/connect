@@ -11,6 +11,7 @@ import {
   TpJobListingStatus,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
+import * as jsforce from 'jsforce'
 import { CurrentUserInfo } from '../auth/current-user.interface'
 import { SfApiTpJobListingsService } from '../salesforce-api/sf-api-tp-job-listings.service'
 import { TpCompanyRepresentativeRelationshipsService } from '../tp-company-profiles/tp-company-representative-relationships.service'
@@ -66,6 +67,16 @@ export class TpJobListingsService {
     }
     if (_filter.filter.isRemotePossible) {
       filter.Remote_Possible__c = true
+    }
+    if (_filter.filter.datePosted) {
+      const createdDate = new Date()
+      createdDate.setDate(
+        createdDate.getDate() - parseInt(_filter.filter.datePosted)
+      )
+
+      filter.CreatedDate = {
+        $gte: jsforce.SfDate.toDateTimeLiteral(createdDate),
+      }
     }
     /**
      * Job Fair Boolean Field(s)

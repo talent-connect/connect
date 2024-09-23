@@ -31,6 +31,7 @@ import { Redirect } from 'react-router-dom'
 import {
   ArrayParam,
   BooleanParam,
+  StringParam,
   useQueryParams,
   withDefault,
 } from 'use-query-params'
@@ -61,6 +62,7 @@ export function BrowseJobseeker() {
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
     isRemotePossible: withDefault(BooleanParam, undefined),
+    datePosted: withDefault(StringParam, ''),
     /**
      * Job Fair Boolean Field(s)
      * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
@@ -74,6 +76,7 @@ export function BrowseJobseeker() {
   const federalStates = query.federalStates as FederalState[]
   const onlyFavorites = query.onlyFavorites
   const isRemotePossible = query.isRemotePossible
+  const datePosted = query.datePosted
   /**
    * Job Fair Boolean Field(s)
    * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
@@ -88,6 +91,7 @@ export function BrowseJobseeker() {
       employmentTypes: employmentType,
       federalStates,
       isRemotePossible,
+      datePosted,
       /**
        * Job Fair Boolean Field(s)
        * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
@@ -138,6 +142,13 @@ export function BrowseJobseeker() {
     }))
   }
 
+  const onSelectDatePosted = (item) => {
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      datePosted: item === '' ? undefined : item,
+    }))
+  }
+
   const toggleFilters = (filtersArr, filterName, item) => {
     const newFilters = toggleValueInArray(filtersArr, item)
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
@@ -177,7 +188,8 @@ export function BrowseJobseeker() {
     idealTechnicalSkills.length !== 0 ||
     employmentType.length !== 0 ||
     federalStates.length !== 0 ||
-    isRemotePossible
+    isRemotePossible ||
+    datePosted
   /**
    * Job Fair Boolean Field(s)
    * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
@@ -284,7 +296,15 @@ export function BrowseJobseeker() {
             }
           />
         </div>
-        <div className="filters-inner"></div>
+        <div className="filters-inner">
+          <FilterDropdown
+            items={datePostedOptions}
+            className="filters__dropdown"
+            label="Date Posted"
+            onChange={onSelectDatePosted}
+            singleSelect
+          />
+        </div>
       </div>
       <div className="filters">
         <div className="filters-inner">
@@ -383,6 +403,17 @@ export function BrowseJobseeker() {
                 onClickHandler={toggleRemoteAvailableFilter}
               />
             )}
+            {datePosted && (
+              <FilterTag
+                key="date-posted"
+                id="date-posted"
+                label={
+                  datePostedOptions.find((item) => item.value === datePosted)
+                    ?.label
+                }
+                onClickHandler={() => onSelectDatePosted('')}
+              />
+            )}
             {/*
              * Job Fair Boolean Field(s)
              * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next FilterTag when there's an upcoming Job Fair
@@ -439,6 +470,7 @@ export function BrowseJobseeker() {
                       addSuffix: true,
                     }
                   )}`}
+                  showPromotedLabel
                 />
               </Columns.Column>
             )
@@ -494,3 +526,10 @@ const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
     label,
   })
 )
+
+const datePostedOptions = [
+  { value: '', label: 'Any Time' },
+  { value: '1d', label: 'Past 24 hours' },
+  { value: '7d', label: 'Past Week' },
+  { value: '30d', label: 'Past Month' },
+]

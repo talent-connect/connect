@@ -239,6 +239,7 @@ export enum FederalState {
 }
 
 export type FindAllVisibleTpJobListingsArgsFilter = {
+  datePosted?: InputMaybe<Scalars['String']>;
   employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
   federalStates?: InputMaybe<Array<FederalState>>;
   isRemotePossible?: InputMaybe<Scalars['Boolean']>;

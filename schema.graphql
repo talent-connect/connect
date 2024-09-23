@@ -217,6 +217,7 @@ enum FederalState {
 }
 
 input FindAllVisibleTpJobListingsArgsFilter {
+  datePosted: String
   employmentTypes: [TpEmploymentType!]
   federalStates: [FederalState!]
   isRemotePossible: Boolean

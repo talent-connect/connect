@@ -57,6 +57,11 @@
       + li {
         margin-top: 0.5rem;
       }
+
+      .listItem--singleSelect {
+        display: flex;
+        cursor: pointer;
+      }
     }
   }
 }
