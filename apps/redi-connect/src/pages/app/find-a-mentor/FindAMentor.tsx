@@ -38,7 +38,6 @@ import {
 import { paginateItems } from '@talent-connect/shared-utils'
 import { MentorProfileCard } from '../../../components/organisms/MentorProfileCard'
 import { LoggedIn } from '../../../components/templates'
-import { useLoading } from '../../../hooks/WithLoading'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 import './FindAMentor.scss'
 import { toggleValueInArray } from './utils'
@@ -83,7 +82,6 @@ const FindAMentor = () => {
   const favoriteMentorMutation = useFavoriteMentorMutation()
   const unfavoriteMentorMutation = useUnfavoriteMentorMutation()
 
-  const { Loading, isLoading } = useLoading()
   const history = useHistory()
   const profile = myProfileQuery.data?.conProfile
 
@@ -209,7 +207,7 @@ const FindAMentor = () => {
     history.replace(`/app/mentorships/${matchId}`)
   }
 
-  const mentors = mentorsQuery.data?.conProfilesAvailableMentors
+  const filteredMentorProfiles = mentorsQuery.data?.conProfilesAvailableMentors
     // This logic filters away mentors that have have opted out of being
     // receiving application form mentees from other locations
     .filter(
@@ -221,7 +219,7 @@ const FindAMentor = () => {
     .filter((mentor) => (onlyFavorites ? isMentorFavorite(mentor.id) : true))
 
   const { currentItems, totalItems, totalPagesNumber } = paginateItems({
-    items: mentors ?? [],
+    items: filteredMentorProfiles ?? [],
     currentPageNumber,
     itemsPerPage: MENTOR_CARDS_PER_PAGE,
   })
@@ -229,7 +227,7 @@ const FindAMentor = () => {
   return (
     <LoggedIn>
       <Heading subtitle size="small" className="oneandhalf-bs">
-        Available mentors {mentors?.length ? `(${mentors.length})` : ''}
+        Available mentors {totalItems ? `(${totalItems})` : ''}
       </Heading>
       <div className="filters">
         <div className="filters-inner">
@@ -330,41 +328,40 @@ const FindAMentor = () => {
           </>
         )}
       </div>
-
-      <Columns>
-        {currentItems.map((mentor) => (
-          <Columns.Column
-            mobile={{ size: 12 }}
-            tablet={{ size: 6 }}
-            desktop={{ size: 4 }}
-            key={mentor.id}
-          >
-            <MentorProfileCard
-              mentorProfile={mentor}
-              linkTo={`/app/find-a-mentor/profile/${mentor.id}`}
-              toggleFavorite={() => toggleFavorite(mentor.id)}
-              isFavorite={isMentorFavorite(mentor.id)}
-            />
-          </Columns.Column>
-        ))}
-      </Columns>
-      {totalItems > MENTOR_CARDS_PER_PAGE && (
-        <Pagination
-          totalPagesNumber={totalPagesNumber}
-          currentPageNumber={currentPageNumber}
-          setCurrentPageNumber={setCurrentPageNumber}
-          scrollPosition={PAGINATION_SCROLL_POSITION}
-        />
-      )}
-
-      {mentors?.length === 0 && !isLoading && (
+      {filteredMentorProfiles?.length === 0 ? (
         <Content>
-          <>
-            Unfortunately <strong>couldn't find any mentors</strong> matching
-            your search criteria. You can try adjusting your filters to find
-            more profiles.
-          </>
+          Unfortunately <strong>couldn't find any mentors</strong> matching your
+          search criteria. You can try adjusting your filters to find more
+          profiles.
         </Content>
+      ) : (
+        <>
+          <Columns>
+            {currentItems.map((mentor) => (
+              <Columns.Column
+                mobile={{ size: 12 }}
+                tablet={{ size: 6 }}
+                desktop={{ size: 4 }}
+                key={mentor.id}
+              >
+                <MentorProfileCard
+                  mentorProfile={mentor}
+                  linkTo={`/app/find-a-mentor/profile/${mentor.id}`}
+                  toggleFavorite={() => toggleFavorite(mentor.id)}
+                  isFavorite={isMentorFavorite(mentor.id)}
+                />
+              </Columns.Column>
+            ))}
+          </Columns>
+          {totalItems > MENTOR_CARDS_PER_PAGE && (
+            <Pagination
+              totalPagesNumber={totalPagesNumber}
+              currentPageNumber={currentPageNumber}
+              setCurrentPageNumber={setCurrentPageNumber}
+              scrollPosition={PAGINATION_SCROLL_POSITION}
+            />
+          )}
+        </>
       )}
     </LoggedIn>
   )
