@@ -29,7 +29,10 @@ import {
 import DeclineMentorshipButton from '../../../components/organisms/DeclineMentorshipButton'
 import { LoggedIn } from '../../../components/templates'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
-import { useProfilePageQueryQuery } from './Profile.generated'
+import {
+  ProfilePageQueryQuery,
+  useProfilePageQueryQuery,
+} from './Profile.generated'
 import './Profile.scss'
 
 interface RouteParams {
@@ -86,8 +89,10 @@ function Profile() {
 
   const shouldHidePrivateContactInfo = currentUserIsMentee && !isAcceptedMatch
 
-  return (
-    <LoggedIn>
+  const viewMode = determineViewMode(profile)
+
+  const profileView = (
+    <>
       {currentUserIsMentee && hasOpenApplication && (
         <Notification>
           Awesome, your application has been sent. If you want to read it later
@@ -204,7 +209,7 @@ function Profile() {
                   </Columns.Column>
                 )}
                 <Columns.Column>
-                  {/* Commented until we implement it using the data available in Salesforce */}
+                  {/* Commented until we implement it using the data display in Salesforce */}
                   {/* <ReadRediClass.Some profile={profile} /> */}
                   <ReadOccupation.Some profile={profile} />
                 </Columns.Column>
@@ -225,8 +230,89 @@ function Profile() {
           )}
         </>
       )}
+    </>
+  )
+
+  if (viewMode === 'display') return <LoggedIn>{profileView}</LoggedIn>
+
+  const messages: Partial<Record<ViewMode, React.ReactNode>> = {
+    notActivelyMentoring: (
+      <>
+        Hi there! It looks like mentor has decided to take a short break from
+        mentoring. No worries, though! You can easily{' '}
+        <a href="/app/find-a-mentor">find another mentor</a>. If you have any
+        questions in the meantime, feel free to check out the{' '}
+        <a href="/faq">FAQ</a>.
+      </>
+    ),
+    mentoringButNoFreeSpots: (
+      <>
+        Hey there! It looks like another mentee got to this mentor first, and
+        their application has already been accepted. You can save this link to
+        check if this mentor becomes display again, or you can{' '}
+        <a href="/app/find-a-mentor">find another mentor</a>. If you have any
+        questions in the meantime, feel free to check out the{' '}
+        <a href="/faq">FAQ</a>.
+      </>
+    ),
+  }
+  return (
+    <LoggedIn>
+      <div style={{ position: 'relative' }}>
+        {profileView}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backdropFilter: 'blur(8px)',
+            backgroundColor: 'rgba(255, 255, 255, 0.4)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 10,
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: 'white',
+              padding: '2.5rem',
+              borderRadius: '12px',
+              boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
+              textAlign: 'center',
+              maxWidth: '90%',
+              width: '500px',
+            }}
+          >
+            <p
+              style={{
+                color: '#333',
+                fontSize: '1.3em',
+                lineHeight: '1.6',
+                marginBottom: '1.5rem',
+              }}
+            >
+              {messages[viewMode]}
+            </p>
+          </div>
+        </div>
+      </div>
     </LoggedIn>
   )
+}
+
+type ViewMode = 'display' | 'notActivelyMentoring' | 'mentoringButNoFreeSpots'
+
+function determineViewMode(
+  profile: ProfilePageQueryQuery['conProfile']
+): ViewMode {
+  if (profile.userType !== UserType.Mentor) return 'display'
+  if (profile.menteeCountCapacity === 0) return 'notActivelyMentoring'
+  if (profile.doesNotHaveAvailableMentorshipSlot)
+    return 'mentoringButNoFreeSpots'
+  return 'display'
 }
 
 export default Profile

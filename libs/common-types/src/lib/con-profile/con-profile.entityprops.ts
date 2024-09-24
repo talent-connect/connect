@@ -64,4 +64,5 @@ export class ConProfileEntityProps implements EntityProps {
   age?: number
   fullName: string
   doesNotHaveAvailableMentorshipSlot: boolean
+  availableMentorshipSlots: number
 }

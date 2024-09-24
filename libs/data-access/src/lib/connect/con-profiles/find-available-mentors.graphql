@@ -10,5 +10,7 @@ query findAvailableMentors($filter: FindConProfilesArgsFilter!) {
     rediLocation
     profileAvatarImageS3Key
     optOutOfMenteesFromOtherRediLocation
+    menteeCountCapacity
+    doesNotHaveAvailableMentorshipSlot
   }
 }

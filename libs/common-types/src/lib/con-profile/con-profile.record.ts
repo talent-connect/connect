@@ -66,6 +66,7 @@ export class ConProfileRecord extends Record<ConProfileRecordProps> {
       'Active_Mentorship_Matches_Mentor__c',
       'Has_Available_Mentorship_Slot__c',
       'Doesnt_Have_Available_Mentorship_Slot__c',
+      'Available_Mentorship_Slots__c',
     ],
     SALESFORCE_ORDER_BY: ['LastModifiedDate', 'DESC'],
   }

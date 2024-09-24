@@ -87,6 +87,7 @@ export class ConProfileMapper
     props.fullName = raw.props.Contact__r.Name
     props.doesNotHaveAvailableMentorshipSlot =
       raw.props.Doesnt_Have_Available_Mentorship_Slot__c
+    props.availableMentorshipSlots = raw.props.Available_Mentorship_Slots__c
 
     const entity = ConProfileEntity.create(props)
 
