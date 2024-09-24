@@ -330,9 +330,9 @@ const FindAMentor = () => {
       </div>
       {filteredMentorProfiles?.length === 0 ? (
         <Content>
-          Unfortunately <strong>couldn't find any mentors</strong> matching your
-          search criteria. You can try adjusting your filters to find more
-          profiles.
+          Unfortunately <strong>couldn't find any mentor profiles</strong>{' '}
+          matching your search criteria. You can try adjusting your filters to
+          find more profiles.
         </Content>
       ) : (
         <>
