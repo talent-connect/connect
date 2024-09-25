@@ -249,7 +249,7 @@ function Profile() {
       <>
         Hey there! It looks like another mentee got to this mentor first, and
         their application has already been accepted. You can save this link to
-        check if this mentor becomes display again, or you can{' '}
+        check if this mentor becomes available again, or you can{' '}
         <a href="/app/find-a-mentor">find another mentor</a>. If you have any
         questions in the meantime, feel free to check out the{' '}
         <a href="/faq">FAQ</a>.
