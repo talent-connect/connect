@@ -11,6 +11,7 @@ import {
   TpJobListingStatus,
 } from '@talent-connect/common-types'
 import { deleteUndefinedProperties } from '@talent-connect/shared-utils'
+import { jobListingCreatedDateInAge } from '@talent-connect/talent-pool/config'
 import * as jsforce from 'jsforce'
 import { CurrentUserInfo } from '../auth/current-user.interface'
 import { SfApiTpJobListingsService } from '../salesforce-api/sf-api-tp-job-listings.service'
@@ -70,8 +71,10 @@ export class TpJobListingsService {
     }
     if (_filter.filter.datePosted) {
       const createdDate = new Date()
+
       createdDate.setDate(
-        createdDate.getDate() - parseInt(_filter.filter.datePosted)
+        createdDate.getDate() -
+          jobListingCreatedDateInAge[_filter.filter.datePosted]
       )
 
       filter.CreatedDate = {

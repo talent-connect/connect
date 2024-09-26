@@ -19,6 +19,7 @@ import {
   employmentTypes,
   employmentTypesIdToLabelMap,
   germanFederalStates,
+  jobListingCreatedDate,
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
@@ -62,7 +63,7 @@ export function BrowseJobseeker() {
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
     isRemotePossible: withDefault(BooleanParam, undefined),
-    datePosted: withDefault(StringParam, ''),
+    datePosted: withDefault(StringParam, undefined),
     /**
      * Job Fair Boolean Field(s)
      * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
@@ -147,7 +148,7 @@ export function BrowseJobseeker() {
   const onSelectDatePosted = (item) => {
     setQuery((latestQuery) => ({
       ...latestQuery,
-      datePosted: item === '' ? undefined : item,
+      datePosted: item ?? undefined,
     }))
   }
 
@@ -176,7 +177,7 @@ export function BrowseJobseeker() {
       employmentType: [],
       federalStates: [],
       isRemotePossible: undefined,
-      datePosted: '',
+      datePosted: undefined,
       /**
        * Job Fair Boolean Field(s)
        * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
@@ -530,9 +531,11 @@ const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
   })
 )
 
+// Adding the 'Any time' option to the date posted filter as undefined cannot be used as a key
 const datePostedOptions = [
-  { value: '', label: 'Any Time' },
-  { value: '1d', label: 'Past 24 hours' },
-  { value: '7d', label: 'Past Week' },
-  { value: '30d', label: 'Past Month' },
+  { value: null, label: 'Any time' },
+  ...objectEntries(jobListingCreatedDate).map(([value, label]) => ({
+    value,
+    label,
+  })),
 ]

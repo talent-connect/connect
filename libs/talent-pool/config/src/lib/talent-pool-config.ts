@@ -749,3 +749,16 @@ export const germanFederalStates = {
   THUERINGEN: 'Thüringen',
   OUTSIDE_GERMANY: 'Outside Germany',
 } as const
+
+export const jobListingCreatedDate = {
+  PAST_24_HOURS: 'Past 24 hours',
+  PAST_WEEK: 'Past Week',
+  PAST_MONTH: 'Past Month',
+} as const
+
+export const jobListingCreatedDateInAge = {
+  ANY_TIME: 0,
+  PAST_24_HOURS: 1,
+  PAST_WEEK: 7,
+  PAST_MONTH: 30,
+} as const
