@@ -174,6 +174,7 @@ export function BrowseJobseeker() {
       employmentType: [],
       federalStates: [],
       isRemotePossible: undefined,
+      datePosted: '',
       /**
        * Job Fair Boolean Field(s)
        * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
