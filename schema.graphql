@@ -105,7 +105,6 @@ type ConMentorshipMatchesDeclineMentorshipOutputDto {
 
 type ConProfile {
   age: Float
-  availableMentorshipSlots: Float!
   birthDate: DateTime
   categories: [MentoringTopic!]!
   createdAt: DateTime!

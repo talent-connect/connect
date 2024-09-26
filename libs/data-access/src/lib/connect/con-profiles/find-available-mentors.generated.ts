@@ -8,7 +8,7 @@ export type FindAvailableMentorsQueryVariables = Types.Exact<{
 }>;
 
 
-export type FindAvailableMentorsQuery = { __typename?: 'Query', conProfilesAvailableMentors: Array<{ __typename?: 'ConProfile', id: string, userType: Types.UserType, firstName: string, lastName: string, categories: Array<Types.MentoringTopic>, languages?: Array<Types.Language> | null, fullName: string, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null, optOutOfMenteesFromOtherRediLocation: boolean, menteeCountCapacity?: number | null, doesNotHaveAvailableMentorshipSlot: boolean }> };
+export type FindAvailableMentorsQuery = { __typename?: 'Query', conProfilesAvailableMentors: Array<{ __typename?: 'ConProfile', id: string, userType: Types.UserType, firstName: string, lastName: string, categories: Array<Types.MentoringTopic>, languages?: Array<Types.Language> | null, fullName: string, rediLocation: Types.RediLocation, profileAvatarImageS3Key?: string | null, optOutOfMenteesFromOtherRediLocation: boolean }> };
 
 
 export const FindAvailableMentorsDocument = `
@@ -24,8 +24,6 @@ export const FindAvailableMentorsDocument = `
     rediLocation
     profileAvatarImageS3Key
     optOutOfMenteesFromOtherRediLocation
-    menteeCountCapacity
-    doesNotHaveAvailableMentorshipSlot
   }
 }
     `;

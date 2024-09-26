@@ -1,7 +1,6 @@
 fragment AllConProfileFields on ConProfile {
   userId
   age
-  availableMentorshipSlots
   birthDate
   categories
   createdAt

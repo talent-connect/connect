@@ -132,7 +132,6 @@ export type ConMentorshipMatchesDeclineMentorshipOutputDto = {
 export type ConProfile = {
   __typename?: 'ConProfile';
   age?: Maybe<Scalars['Float']>;
-  availableMentorshipSlots: Scalars['Float'];
   birthDate?: Maybe<Scalars['DateTime']>;
   categories: Array<MentoringTopic>;
   createdAt: Scalars['DateTime'];
