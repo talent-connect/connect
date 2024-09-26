@@ -9,7 +9,7 @@ import {
   FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import { CATEGORIES, CATEGORY_GROUPS } from '@talent-connect/shared-config'
-import { objectEntries } from '@talent-connect/typescript-utilities'
+import { objectEntries, objectKeys } from '@talent-connect/typescript-utilities'
 import { useFormik } from 'formik'
 
 import groupBy from 'lodash/groupBy'
@@ -53,14 +53,14 @@ const getInitialValues = ({
   userType: ProfileUserType
   categories: MentoringTopic[]
 }) => {
-  const groups = Object.keys(CATEGORY_GROUPS) as unknown as CategoryGroup[]
+  const groups = objectKeys(CATEGORY_GROUPS)
 
   const emptyGroups = Object.fromEntries(
     groups.map((key) => [key, []])
-  ) as Record<CategoryGroup, []>
+  ) as Record<CategoryGroup, MentoringTopic[]>
 
   const initialValues: MentoringFormValues = {
-    isMentor: userType === 'MENTOR',
+    isMentor: userType === ProfileUserType.Mentor,
     ...emptyGroups,
   }
   for (const groupName of groups) {
@@ -91,7 +91,7 @@ function EditableMentoringTopics() {
   const profile = myProfileQuery.data?.conProfile
   const userType = profile?.userType
   const categories = profile?.categories
-  const isMentee = userType === 'MENTEE'
+  const isMentee = userType === ProfileUserType.Mentee
 
   const submitForm = async (values: MentoringFormValues) => {
     const { isMentor, ...formCategories } = values
