@@ -107,7 +107,9 @@ export function BrowseJobseeker() {
    * - All fetch job listing queries are using one findAll query, which means this sort would have unexpected side effects
    */
   const jobListings =
-    jobListingsQuery.data?.tpJobListings.sort(careerPartnerSortFn)
+    datePosted === ''
+      ? jobListingsQuery.data?.tpJobListings.sort(careerPartnerSortFn)
+      : jobListingsQuery.data?.tpJobListings
 
   const handleFavoriteJobListing = async (tpJobListingId: string) => {
     const isFavorite =
