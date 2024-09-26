@@ -1160,6 +1160,7 @@ type TpJobseekerProfile {
   Duplicate if there are multiple Job Fairs coming
   """
   isProfileVisibleToCompanies: Boolean!
+  isSubscribedToTPMarketingEmails: Boolean!
   location: String
   profileAvatarImageS3Key: String
   rediLocation: RediLocation
@@ -1314,6 +1315,7 @@ input TpJobseekerProfilePatchInput {
   Duplicate if there are multiple Job Fairs coming
   """
   isProfileVisibleToCompanies: Boolean
+  isSubscribedToTPMarketingEmails: Boolean
   location: String
   profileAvatarImageS3Key: String
   rediLocation: RediLocation

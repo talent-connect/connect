@@ -53,6 +53,8 @@ export class TpJobseekerProfileMapper
     props.immigrationStatus = raw.props.Immigration_Status__c as unknown as
       | ImmigrationStatus
       | undefined
+    props.isSubscribedToTPMarketingEmails =
+      raw.props.Subscribed_to_TP_Marketing_Emails__c
 
     props.userId = raw.props.Contact__c
 
