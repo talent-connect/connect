@@ -82,6 +82,7 @@ export class ConProfilesService {
 
     const filter: any = {
       'RecordType.DeveloperName': UserType.MENTOR,
+      Available_Mentorship_Slots__c: { $gte: 1 },
       Profile_Status__c: ConnectProfileStatus.APPROVED,
     }
     if (_filter.filter.name)
