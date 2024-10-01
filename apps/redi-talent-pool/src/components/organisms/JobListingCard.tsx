@@ -1,9 +1,9 @@
-import { useMediaQuery, useTheme } from '@mui/material'
+import { Tooltip, useMediaQuery, useTheme } from '@mui/material'
 import { CardTags } from '@talent-connect/shared-atomic-design-components'
 import { topSkillsIdToLabelMap } from '@talent-connect/talent-pool/config'
 import React from 'react'
 import { Card } from 'react-bulma-components'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import CardLocation from '../../../../../libs/shared-atomic-design-components/src/lib/atoms/CardLocation'
 import placeholderImage from '../../assets/images/company-placeholder-img.svg'
 import './JobListingCard.scss'
@@ -15,6 +15,7 @@ interface JobListingCardProps {
   toggleFavorite?: (id: string) => void
   linkTo?: string
   timestamp?: string
+  showPromotedLabel?: boolean
   renderCTA?: () => React.ReactNode
 
   onClick?: (e: React.MouseEvent) => void
@@ -25,6 +26,7 @@ export function JobListingCard({
   linkTo,
   onClick,
   timestamp,
+  showPromotedLabel = false,
   renderCTA,
 }: JobListingCardProps) {
   const {
@@ -71,8 +73,28 @@ export function JobListingCard({
         <div className="job-posting-card__lastColumn">
           <div className="job-posting-card__timeFooterBox">
             {isTabletOrDesktop && renderCTA && renderCTA()}
-            {timestamp && (
-              <div className="job-posting-card__timestamp">{timestamp}</div>
+            {timestamp &&
+              (!showPromotedLabel || !jobListing.isFromCareerPartner) && (
+                <div className="job-posting-card__timestamp">{timestamp}</div>
+              )}
+            {showPromotedLabel && jobListing.isFromCareerPartner && (
+              <div className="job-posting-card__timestamp">
+                <Tooltip
+                  title={
+                    <span>
+                      This job listing is promoted because it is posted by a
+                      ReDI Career Partner. You can learn more about why we do
+                      this by visiting the{' '}
+                      <Link to="/faq" target="_blank">
+                        FAQ section
+                      </Link>
+                    </span>
+                  }
+                  placement="top"
+                >
+                  <span>Promoted</span>
+                </Tooltip>
+              </div>
             )}
           </div>
         </div>

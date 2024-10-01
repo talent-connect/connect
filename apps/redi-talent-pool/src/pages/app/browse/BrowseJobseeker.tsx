@@ -19,6 +19,7 @@ import {
   employmentTypes,
   employmentTypesIdToLabelMap,
   germanFederalStates,
+  jobListingCreatedDate,
   topSkills,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
@@ -31,6 +32,7 @@ import { Redirect } from 'react-router-dom'
 import {
   ArrayParam,
   BooleanParam,
+  StringParam,
   useQueryParams,
   withDefault,
 } from 'use-query-params'
@@ -61,6 +63,7 @@ export function BrowseJobseeker() {
     federalStates: withDefault(ArrayParam, []),
     onlyFavorites: withDefault(BooleanParam, undefined),
     isRemotePossible: withDefault(BooleanParam, undefined),
+    datePosted: withDefault(StringParam, undefined),
     /**
      * Job Fair Boolean Field(s)
      * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
@@ -74,6 +77,7 @@ export function BrowseJobseeker() {
   const federalStates = query.federalStates as FederalState[]
   const onlyFavorites = query.onlyFavorites
   const isRemotePossible = query.isRemotePossible
+  const datePosted = query.datePosted
   /**
    * Job Fair Boolean Field(s)
    * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
@@ -88,6 +92,7 @@ export function BrowseJobseeker() {
       employmentTypes: employmentType,
       federalStates,
       isRemotePossible,
+      datePosted,
       /**
        * Job Fair Boolean Field(s)
        * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
@@ -102,8 +107,9 @@ export function BrowseJobseeker() {
    * - Backend currently supports only sorting by one field, which is used for sorting by date
    * - All fetch job listing queries are using one findAll query, which means this sort would have unexpected side effects
    */
-  const jobListings =
-    jobListingsQuery.data?.tpJobListings.sort(careerPartnerSortFn)
+  const jobListings = !datePosted
+    ? jobListingsQuery.data?.tpJobListings.sort(careerPartnerSortFn)
+    : jobListingsQuery.data?.tpJobListings
 
   const isFavorite = (jobListingId) =>
     favouritedTpJobListingsQuery.data?.tpJobseekerFavoritedJobListings?.some(
@@ -155,6 +161,13 @@ export function BrowseJobseeker() {
     }))
   }
 
+  const onSelectDatePosted = (item) => {
+    setQuery((latestQuery) => ({
+      ...latestQuery,
+      datePosted: item ?? undefined,
+    }))
+  }
+
   const toggleFilters = (filtersArr, filterName, item) => {
     const newFilters = toggleValueInArray(filtersArr, item)
     setQuery((latestQuery) => ({ ...latestQuery, [filterName]: newFilters }))
@@ -180,6 +193,7 @@ export function BrowseJobseeker() {
       employmentType: [],
       federalStates: [],
       isRemotePossible: undefined,
+      datePosted: undefined,
       /**
        * Job Fair Boolean Field(s)
        * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
@@ -194,7 +208,8 @@ export function BrowseJobseeker() {
     idealTechnicalSkills.length !== 0 ||
     employmentType.length !== 0 ||
     federalStates.length !== 0 ||
-    isRemotePossible
+    isRemotePossible ||
+    datePosted
   /**
    * Job Fair Boolean Field(s)
    * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
@@ -301,7 +316,15 @@ export function BrowseJobseeker() {
             }
           />
         </div>
-        <div className="filters-inner"></div>
+        <div className="filters-inner">
+          <FilterDropdown
+            items={datePostedOptions}
+            className="filters__dropdown"
+            label="Date Posted"
+            onChange={onSelectDatePosted}
+            singleSelect
+          />
+        </div>
       </div>
       <div className="filters">
         <div className="filters-inner">
@@ -400,6 +423,17 @@ export function BrowseJobseeker() {
                 onClickHandler={toggleRemoteAvailableFilter}
               />
             )}
+            {datePosted && (
+              <FilterTag
+                key="date-posted"
+                id="date-posted"
+                label={
+                  datePostedOptions.find((item) => item.value === datePosted)
+                    ?.label
+                }
+                onClickHandler={() => onSelectDatePosted('')}
+              />
+            )}
             {/*
              * Job Fair Boolean Field(s)
              * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next FilterTag when there's an upcoming Job Fair
@@ -443,6 +477,7 @@ export function BrowseJobseeker() {
                     addSuffix: true,
                   }
                 )}`}
+                showPromotedLabel
               />
             </Columns.Column>
           ))}
@@ -498,3 +533,12 @@ const germanFederalStatesOptions = objectEntries(germanFederalStates).map(
     label,
   })
 )
+
+// Adding the 'Any time' option to the date posted filter as undefined cannot be used as a key
+const datePostedOptions = [
+  { value: null, label: 'Any time' },
+  ...objectEntries(jobListingCreatedDate).map(([value, label]) => ({
+    value,
+    label,
+  })),
+]
