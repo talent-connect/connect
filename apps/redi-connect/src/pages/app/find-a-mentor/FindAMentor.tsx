@@ -2,6 +2,7 @@ import {
   ConnectProfileStatus,
   Language,
   MentoringTopic,
+  MentorshipMatchStatus,
   RediLocation,
   useFavoriteMentorMutation,
   useFindAvailableMentorsQuery,
@@ -200,10 +201,14 @@ const FindAMentor = () => {
   const menteeHasAnActiveMatch =
     profile?.userType === 'MENTEE' &&
     profile?.mentorshipMatches.length > 0 &&
-    profile?.mentorshipMatches?.[0].status === 'ACCEPTED'
+    profile?.mentorshipMatches?.some(match =>
+      match.status === MentorshipMatchStatus.Accepted
+    )
 
   if (menteeHasAnActiveMatch) {
-    const matchId = profile?.mentorshipMatches?.[0].id
+    const matchId = profile?.mentorshipMatches?.find(match =>
+      match.status === MentorshipMatchStatus.Accepted
+    ).id
     history.replace(`/app/mentorships/${matchId}`)
   }
 
