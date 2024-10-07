@@ -80,7 +80,6 @@ export function JobListingCard({
             {showPromotedLabel && jobListing.isFromCareerPartner && (
               <div className="job-posting-card__timestamp">
                 <Tooltip
-                  open
                   title={
                     <span className="job-posting-card__tooltip-text">
                       This job listing is promoted because it is posted by a
