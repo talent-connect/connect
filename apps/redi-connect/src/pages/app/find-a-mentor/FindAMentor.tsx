@@ -206,10 +206,23 @@ const FindAMentor = () => {
     )
 
   if (menteeHasAnActiveMatch) {
-    const matchId = profile?.mentorshipMatches?.find(match =>
-      match.status === MentorshipMatchStatus.Accepted
-    ).id
-    history.replace(`/app/mentorships/${matchId}`)
+    const activeMentorshipMatch = 
+      profile.mentorshipMatches.find(match =>
+        match.status === MentorshipMatchStatus.Accepted
+      )
+    return (
+      <LoggedIn>
+        <Content>
+          Hey there! It looks like you already have{' '}
+          <a href={`/app/mentorships/${activeMentorshipMatch?.mentorId}`}>an ongoing mentorship</a> with
+          another mentor. Please remember that you can only have one mentor at a
+          time. You can save this link to check if this mentor remains available
+          once you complete your current mentorship match. If you have any
+          questions in the meantime, feel free to check out the{' '}
+          <a href="/faq">FAQ</a>.
+        </Content>
+      </LoggedIn>
+    )
   }
 
   const filteredMentorProfiles = mentorsQuery.data?.conProfilesAvailableMentors
