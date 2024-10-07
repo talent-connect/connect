@@ -168,6 +168,10 @@
       margin-top: 16px;
     }
   }
+
+  &__tooltip-text {
+    font-family: Avenir LT Std;
+  }
 }
 
 @include mobile {

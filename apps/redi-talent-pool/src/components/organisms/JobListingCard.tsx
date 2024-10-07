@@ -3,7 +3,7 @@ import { CardTags } from '@talent-connect/shared-atomic-design-components'
 import { topSkillsIdToLabelMap } from '@talent-connect/talent-pool/config'
 import React from 'react'
 import { Card } from 'react-bulma-components'
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import CardLocation from '../../../../../libs/shared-atomic-design-components/src/lib/atoms/CardLocation'
 import placeholderImage from '../../assets/images/company-placeholder-img.svg'
 import './JobListingCard.scss'
@@ -80,14 +80,12 @@ export function JobListingCard({
             {showPromotedLabel && jobListing.isFromCareerPartner && (
               <div className="job-posting-card__timestamp">
                 <Tooltip
+                  open
                   title={
-                    <span>
+                    <span className="job-posting-card__tooltip-text">
                       This job listing is promoted because it is posted by a
                       ReDI Career Partner. You can learn more about why we do
-                      this by visiting the{' '}
-                      <Link to="/faq" target="_blank">
-                        FAQ section
-                      </Link>
+                      this by visiting the FAQ section.
                     </span>
                   }
                   placement="top"
