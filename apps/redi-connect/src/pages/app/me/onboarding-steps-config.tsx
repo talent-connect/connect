@@ -62,7 +62,7 @@ export const ONBOARDING_STEPS = [
             href={
               rediLocation === RediLocation.Malmo
                 ? 'https://calendar.app.google/zQJr8PJsNF2arm236'
-                : 'https://calendly.com/hadeertalentsucess/mentors-onboarding-session?month=2024-02'
+                : 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2B1CHHA9ix2M3ED1d4bvXnyIFE9JJKSIsHzaq2hqqXaiqV0V3jEYATpspiqQ5jlStcJ99nHqCj'
             }
             target="__blank"
           >
