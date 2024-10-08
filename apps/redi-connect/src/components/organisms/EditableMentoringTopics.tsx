@@ -2,17 +2,18 @@ import {
   MentoringTopic,
   useLoadMyProfileQuery,
   usePatchMyProfileMutation,
+  UserType as ProfileUserType,
 } from '@talent-connect/data-access'
 import {
-  Checkbox,
   Editable,
+  FormSelect,
 } from '@talent-connect/shared-atomic-design-components'
 import { CATEGORIES, CATEGORY_GROUPS } from '@talent-connect/shared-config'
-import { objectEntries } from '@talent-connect/typescript-utilities'
-import { FormikValues, useFormik } from 'formik'
-import { omit } from 'lodash'
+import { objectEntries, objectKeys } from '@talent-connect/typescript-utilities'
+import { useFormik } from 'formik'
+
 import groupBy from 'lodash/groupBy'
-import { Columns, Content, Element, Heading } from 'react-bulma-components'
+import { Content, Notification } from 'react-bulma-components'
 import { useQueryClient } from 'react-query'
 import * as Yup from 'yup'
 import { getAccessTokenFromLocalStorage } from '../../services/auth/auth'
@@ -24,10 +25,11 @@ export type UserType =
   | 'public-sign-up-mentor-pending-review'
   | 'public-sign-up-mentee-pending-review'
 
-export interface MentoringFormValues {
+export type CategoryGroup = keyof typeof CATEGORY_GROUPS
+
+export type MentoringFormValues = {
   isMentor: boolean
-  categories: MentoringTopic[]
-}
+} & Record<CategoryGroup, MentoringTopic[]>
 
 const MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE = 4
 
@@ -44,55 +46,113 @@ const categoriesByGroup = groupBy(CATEGORIES, (category) => category.group)
 
 const formCategoryGroups = objectEntries(CATEGORY_GROUPS)
 
+const getInitialValues = ({
+  userType,
+  categories,
+}: {
+  userType: ProfileUserType
+  categories: MentoringTopic[]
+}) => {
+  const groups = objectKeys(CATEGORY_GROUPS)
+
+  const emptyGroups = Object.fromEntries(
+    groups.map((key) => [key, []])
+  ) as Record<CategoryGroup, MentoringTopic[]>
+
+  const initialValues: MentoringFormValues = {
+    isMentor: userType === ProfileUserType.Mentor,
+    ...emptyGroups,
+  }
+  for (const groupName of groups) {
+    const groupItems = categoriesByGroup[groupName]
+
+    for (const groupItem of groupItems) {
+      const itemId = groupItem.id as MentoringTopic
+
+      if (categories.includes(itemId)) {
+        initialValues[groupName].push(itemId)
+      }
+    }
+  }
+  return initialValues
+}
+
+const getFormSelectItemsFromCategory = (category) => {
+  return category.map((entry) => {
+    return { name: entry.label, value: entry.id, label: entry.label }
+  })
+}
+
 function EditableMentoringTopics() {
   const loopbackUserId = getAccessTokenFromLocalStorage().userId
   const queryClient = useQueryClient()
   const myProfileQuery = useLoadMyProfileQuery({ loopbackUserId })
   const patchMyProfileMutation = usePatchMyProfileMutation()
-
   const profile = myProfileQuery.data?.conProfile
-
   const userType = profile?.userType
   const categories = profile?.categories
+  const isMentee = userType === ProfileUserType.Mentee
 
-  const submitForm = async (values: FormikValues) => {
-    const cleanValues = omit(values, ['isMentor'])
+  const submitForm = async (values: MentoringFormValues) => {
+    const { isMentor, ...formCategories } = values
+    const valuesOfCategories = Object.entries(formCategories)
+      .map(([, value]) => value)
+      .flat()
+
+    const uniqueCategories = {
+      categories: [...new Set(valuesOfCategories)],
+    }
     const mutationResult = await patchMyProfileMutation.mutateAsync({
-      input: cleanValues,
+      input: uniqueCategories,
     })
     queryClient.setQueryData(useLoadMyProfileQuery.getKey({ loopbackUserId }), {
       conProfile: mutationResult.patchConProfile,
     })
   }
 
-  const initialValues: MentoringFormValues = {
-    isMentor: userType === 'MENTOR',
-    categories: categories || [],
-  }
-
-  const formik = useFormik({
-    initialValues,
+  const formik = useFormik<MentoringFormValues>({
+    initialValues: getInitialValues({
+      userType,
+      categories,
+    }),
     enableReinitialize: true,
     validationSchema,
     onSubmit: submitForm,
   })
 
-  const { categories: selectedCategories } = formik.values
-
-  const categoriesChange = (e: any) => {
-    e.persist()
-    const value = e.target.value
-    let newCategories
-    if (e.target.checked) {
-      newCategories = selectedCategories.concat(value)
-    } else {
-      newCategories = selectedCategories.filter((cat: any) => cat !== value)
-    }
-    formik.setFieldValue('categories', newCategories)
-    formik.setFieldTouched('categories', true, false)
-  }
+  const selectionsLeft =
+    MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE -
+    (Object.entries(formik.values)
+      .map(([, value]) => value)
+      .flat().length -
+      1)
 
   if (!myProfileQuery.isSuccess) return null
+
+  const customOnChange =
+    (groupId) =>
+    (selectedOption: any = []) => {
+      const { setFieldValue, setFieldTouched, values } = formik
+
+      const isUserTryingToAddNewValue =
+        selectedOption.length > values[groupId].length
+      setFieldTouched(groupId, true, false)
+
+      if (isUserTryingToAddNewValue && !selectionsLeft) {
+        return
+      }
+
+      // this is a copy of the default onChange
+      if (!selectedOption) {
+        setFieldValue(groupId, [], true)
+      } else {
+        setFieldValue(
+          groupId,
+          selectedOption ? selectedOption.map((item: any) => item.value) : [],
+          true
+        )
+      }
+    }
 
   return (
     <Editable
@@ -104,69 +164,34 @@ function EditableMentoringTopics() {
       className="mentoring"
     >
       <Content>
-        {userType === 'MENTOR'
-          ? 'Select at least one topic where you would like to support mentees.'
-          : 'You can select between 1 and up to 4 topics.'}
+        {!isMentee ? (
+          'Select at least one topic where you would like to support mentees.'
+        ) : selectionsLeft ? (
+          `You can select between 1 and up to 4 topics.`
+        ) : (
+          <Notification color="info" className="is-light">
+            You’ve selected the maximum number of topics. If you wish to choose
+            another, please deselect one.
+          </Notification>
+        )}
       </Content>
-      <Columns>
-        {formCategoryGroups.map(([groupId, groupLabel]) => (
-          <CategoryGroup
-            key={groupId}
-            id={groupId}
-            label={groupLabel}
-            selectedCategories={selectedCategories}
-            onChange={categoriesChange}
-            formik={formik}
-          />
-        ))}
-      </Columns>
+
+      {formCategoryGroups.map(([groupId, groupLabel]) => (
+        <FormSelect
+          label={groupLabel}
+          name={groupId}
+          key={groupId}
+          items={getFormSelectItemsFromCategory(categoriesByGroup[groupId])}
+          multiselect
+          disabled={
+            isMentee && formik.values[groupId].length === 0 && !selectionsLeft
+          }
+          placeholder="Start typing and select a Topic"
+          formik={formik}
+          customOnChange={isMentee && customOnChange(groupId)}
+        />
+      ))}
     </Editable>
-  )
-}
-
-const CategoryGroup = ({
-  id,
-  label,
-  selectedCategories,
-  onChange,
-  formik,
-}: any) => {
-  // The current REDI_LOCATION might not use the current CategoryGroup (e.g.
-  // Munich doesnt, at the time or writing, use 'coding' or 'other'. If it's the case, return null
-
-  if (!categoriesByGroup[id]) return null
-  return (
-    <Columns.Column size={4}>
-      <Heading
-        size={6}
-        weight="normal"
-        renderAs="h3"
-        subtitle
-        textTransform="uppercase"
-      >
-        {label}
-      </Heading>
-      <Element className="mentoring__group">
-        {categoriesByGroup[id].map((groupItem) => (
-          <Checkbox.Form
-            name={`categories-${groupItem.id}`}
-            key={groupItem.id}
-            value={groupItem.id}
-            checked={selectedCategories.includes(groupItem.id)}
-            customOnChange={onChange}
-            disabled={
-              !formik.values.isMentor &&
-              selectedCategories.length >=
-                MAX_MENTORING_TOPICS_IF_USER_IS_MENTEE &&
-              !selectedCategories.includes(groupItem.id)
-            }
-            {...formik}
-          >
-            {groupItem.label}
-          </Checkbox.Form>
-        ))}
-      </Element>
-    </Columns.Column>
   )
 }
 
