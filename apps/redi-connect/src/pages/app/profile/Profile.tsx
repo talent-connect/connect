@@ -334,12 +334,15 @@ function determineViewMode(
   // "special" one. 
   if (profile.userType === UserType.Mentee) return 'display'
   
-  // Is current user a mentee, does that mentee have an active match, and is
-  // that match with another mentor than the one we're currently looking at?
   const activeMentorshipMatch = 
     currentUserProfile.mentorshipMatches.find(match =>
       match.status === MentorshipMatchStatus.Accepted
     )
+
+  // Is current user a mentee, does that mentee have an active match, and is
+  // that match with another mentor than the one we're currently looking at?
+  if (activeMentorshipMatch.mentor.id === currentUserProfile.id) return 'display'
+
   if (
     currentUserProfile.userType === UserType.Mentee &&
     activeMentorshipMatch?.status === MentorshipMatchStatus.Accepted &&
