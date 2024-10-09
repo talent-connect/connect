@@ -214,7 +214,7 @@ const FindAMentor = () => {
       <LoggedIn>
         <Content>
           Hey there! It looks like you already have{' '}
-          <a href={`/app/mentorships/${activeMentorshipMatch?.mentorId}`}>an ongoing mentorship</a> with
+          <a href={`/app/mentorships/${activeMentorshipMatch?.mentor.id}`}>an ongoing mentorship</a> with
           another mentor. Please remember that you can only have one mentor at a
           time. You can save this link to check if this mentor remains available
           once you complete your current mentorship match. If you have any

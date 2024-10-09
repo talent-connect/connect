@@ -343,7 +343,7 @@ function determineViewMode(
   if (
     currentUserProfile.userType === UserType.Mentee &&
     activeMentorshipMatch?.status === MentorshipMatchStatus.Accepted &&
-    activeMentorshipMatch?.mentorId != activeMentorshipMatch.mentorId
+    activeMentorshipMatch?.mentor.id !== profile.userId
   ) {
     return 'currentUserIsMenteeAndViewsNotTheirMentor'
   }
