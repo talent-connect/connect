@@ -198,18 +198,16 @@ const FindAMentor = () => {
   if (profile && profile?.profileStatus !== ConnectProfileStatus.Approved)
     return <LoggedIn />
 
-  const menteeHasAnActiveMatch =
-    profile?.userType === 'MENTEE' &&
-    profile?.mentorshipMatches.length > 0 &&
-    profile?.mentorshipMatches?.some(match =>
-      match.status === MentorshipMatchStatus.Accepted
-    )
-
-  if (menteeHasAnActiveMatch) {
-    const activeMentorshipMatch = 
+  const activeMentorshipMatch = 
       profile.mentorshipMatches.find(match =>
         match.status === MentorshipMatchStatus.Accepted
       )
+  const menteeHasAnActiveMatch =
+    profile?.userType === 'MENTEE' &&
+    profile?.mentorshipMatches.length > 0 &&
+    activeMentorshipMatch
+  
+  if (menteeHasAnActiveMatch) {  
     return (
       <LoggedIn>
         <Content>
