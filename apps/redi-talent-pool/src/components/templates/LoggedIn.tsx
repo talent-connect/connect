@@ -46,7 +46,7 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
         return undefined
     }
   })()
-  console.log('logging current user as type', userType)
+
   if ((window as any).hj) {
     ;(window as any).hj(
       'identify',

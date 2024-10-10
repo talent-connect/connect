@@ -92,6 +92,8 @@ export class TpJobseekerDirectoryEntryMapper
       jobseekerProfileRecord.Immigration_Status__c as unknown as
         | ImmigrationStatus
         | undefined
+    props.isSubscribedToTPMarketingEmails =
+      jobseekerProfileRecord.Subscribed_to_TP_Marketing_Emails__c
 
     props.updatedAt = jobseekerProfileRecord.LastModifiedDate
     props.createdAt = jobseekerProfileRecord.CreatedDate

@@ -1434,6 +1434,7 @@ export type TpJobseekerDirectoryEntry = {
    * Duplicate if there are multiple Job Fairs coming
    */
   isProfileVisibleToCompanies: Scalars['Boolean'];
+  isSubscribedToTPMarketingEmails: Scalars['Boolean'];
   lastName: Scalars['String'];
   linkedInUrl?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
@@ -1497,6 +1498,7 @@ export type TpJobseekerProfile = {
    * Duplicate if there are multiple Job Fairs coming
    */
   isProfileVisibleToCompanies: Scalars['Boolean'];
+  isSubscribedToTPMarketingEmails: Scalars['Boolean'];
   location?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
   rediLocation?: Maybe<RediLocation>;
@@ -1653,6 +1655,7 @@ export type TpJobseekerProfilePatchInput = {
    * Duplicate if there are multiple Job Fairs coming
    */
   isProfileVisibleToCompanies?: InputMaybe<Scalars['Boolean']>;
+  isSubscribedToTPMarketingEmails?: InputMaybe<Scalars['Boolean']>;
   location?: InputMaybe<Scalars['String']>;
   profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
   rediLocation?: InputMaybe<RediLocation>;

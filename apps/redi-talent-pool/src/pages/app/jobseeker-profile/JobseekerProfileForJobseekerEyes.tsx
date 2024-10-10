@@ -45,6 +45,16 @@ export function JobseekerProfileForJobseekerEyes() {
     queryClient.invalidateQueries()
   }
 
+  const onSubscribeToMarketingEmailsChange = async () => {
+    await mutation.mutateAsync({
+      input: {
+        isSubscribedToTPMarketingEmails:
+          !profile?.isSubscribedToTPMarketingEmails,
+      },
+    })
+    queryClient.invalidateQueries()
+  }
+
   /**
    * Job Fair Boolean Field(s)
    * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next method when there's an upcoming Job Fair
@@ -129,6 +139,12 @@ export function JobseekerProfileForJobseekerEyes() {
             customOnChange={onHideFromCompaniesCheckboxChange}
           >
             Hide my profile from companies
+          </Checkbox>
+          <Checkbox
+            checked={profile?.isSubscribedToTPMarketingEmails}
+            customOnChange={onSubscribeToMarketingEmailsChange}
+          >
+            Subscribe to marketing emails
           </Checkbox>
         </Columns.Column>
       </Columns>

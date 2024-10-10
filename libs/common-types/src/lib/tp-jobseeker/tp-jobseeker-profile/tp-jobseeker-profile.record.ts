@@ -35,6 +35,7 @@ export class TpJobseekerProfileRecord extends Record<TpJobseekerProfileRecordPro
       'Federal_State__c',
       'Willing_to_Relocate__c',
       'Immigration_Status__c',
+      'Subscribed_to_TP_Marketing_Emails__c',
       'Contact__c',
     ],
   }

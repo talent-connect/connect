@@ -53,6 +53,8 @@ export class TpJobseekerProfileMapper
     props.immigrationStatus = raw.props.Immigration_Status__c as unknown as
       | ImmigrationStatus
       | undefined
+    props.isSubscribedToTPMarketingEmails =
+      raw.props.Subscribed_to_TP_Marketing_Emails__c
 
     props.userId = raw.props.Contact__c
 
@@ -90,6 +92,8 @@ export class TpJobseekerProfileMapper
      */
     //  props.Joins_Munich_24_Summer_Job_Fair__c = source.props.joinsMunich24SummerJobFair
     props.Is_Visible_to_Companies__c = source.props.isProfileVisibleToCompanies
+    props.Subscribed_to_TP_Marketing_Emails__c =
+      source.props.isSubscribedToTPMarketingEmails
     props.Federal_State__c = source.props.federalState
     props.Willing_to_Relocate__c = source.props.willingToRelocate
     props.Immigration_Status__c = source.props.immigrationStatus as unknown as

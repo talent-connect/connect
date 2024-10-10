@@ -18,6 +18,7 @@ fragment AllTpJobseekerDirectoryEntryFields on TpJobseekerDirectoryEntry {
 
   availability
   isProfileVisibleToCompanies
+  isSubscribedToTPMarketingEmails
   lastName
   linkedInUrl
   location
