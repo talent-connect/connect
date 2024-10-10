@@ -296,7 +296,6 @@ const formLanguages = Object.entries(LANGUAGES).map(([value, label]) => ({
   value,
   label,
 }))
-console.log(formLanguages)
 
 const formLanguageProficiencyLevels = languageProficiencyLevels.map(
   ({ id, label }) => ({
