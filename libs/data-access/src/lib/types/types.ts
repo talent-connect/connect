@@ -1433,6 +1433,7 @@ export type TpJobseekerDirectoryEntry = {
    * Duplicate if there are multiple Job Fairs coming
    */
   isProfileVisibleToCompanies: Scalars['Boolean'];
+  isSubscribedToTPMarketingEmails: Scalars['Boolean'];
   lastName: Scalars['String'];
   linkedInUrl?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
