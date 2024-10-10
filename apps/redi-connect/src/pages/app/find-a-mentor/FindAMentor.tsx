@@ -198,26 +198,26 @@ const FindAMentor = () => {
   if (profile && profile?.profileStatus !== ConnectProfileStatus.Approved)
     return <LoggedIn />
 
-  const activeMentorshipMatch = 
-      profile.mentorshipMatches.find(match =>
-        match.status === MentorshipMatchStatus.Accepted
-      )
+  const activeMentorshipMatch = profile?.mentorshipMatches.find(
+    (match) => match.status === MentorshipMatchStatus.Accepted
+  )
   const menteeHasAnActiveMatch =
     profile?.userType === 'MENTEE' &&
     profile?.mentorshipMatches.length > 0 &&
     activeMentorshipMatch
-  
-  if (menteeHasAnActiveMatch) {  
+
+  if (menteeHasAnActiveMatch) {
     return (
       <LoggedIn>
         <Content>
           Hey there! It looks like you already have{' '}
-          <a href={`/app/mentorships/${activeMentorshipMatch?.mentor.id}`}>an ongoing mentorship</a> with
-          another mentor. Please remember that you can only have one mentor at a
-          time. You can save this link to check if this mentor remains available
-          once you complete your current mentorship match. If you have any
-          questions in the meantime, feel free to check out the{' '}
-          <a href="/faq">FAQ</a>.
+          <a href={`/app/mentorships/${activeMentorshipMatch?.mentor.id}`}>
+            an ongoing mentorship
+          </a>{' '}
+          with another mentor. Please remember that you can only have one mentor
+          at a time. You can check available mentors once you complete your
+          current mentorship match. If you have any questions in the meantime,
+          feel free to check out the <a href="/faq">FAQ</a>.
         </Content>
       </LoggedIn>
     )
