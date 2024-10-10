@@ -267,10 +267,9 @@ function Profile() {
           an ongoing mentorship
         </a>{' '}
         with another mentor. Please remember that you can only have one mentor
-        at a time. You can save this link to check if this mentor remains
-        available once you complete your current mentorship match. If you have
-        any questions in the meantime, feel free to check out the{' '}
-        <a href="/faq">FAQ</a>.
+        at a time. You can check available mentors once you complete your
+        current mentorship match. If you have any questions in the meantime,
+        feel free to check out the <a href="/faq">FAQ</a>.
       </>
     ),
   }
