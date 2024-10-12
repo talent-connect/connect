@@ -263,7 +263,7 @@ function Profile() {
     currentUserIsMenteeAndViewsNotTheirMentor: (
       <>
         Hey there! It looks like you already have{' '}
-        <a href={`/app/mentorships/${activeMentorshipMatch?.mentorId}`}>
+        <a href={`/app/mentorships/${activeMentorshipMatch?.id}`}>
           an ongoing mentorship
         </a>{' '}
         with another mentor. Please remember that you can only have one mentor
