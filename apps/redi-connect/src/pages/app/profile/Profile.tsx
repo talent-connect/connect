@@ -1,4 +1,5 @@
 import {
+  LoadMyProfileQuery,
   MentorshipMatchStatus,
   useLoadMyProfileQuery,
   UserType,
@@ -89,7 +90,11 @@ function Profile() {
 
   const shouldHidePrivateContactInfo = currentUserIsMentee && !isAcceptedMatch
 
-  const viewMode = determineViewMode(profile)
+  const activeMentorshipMatch = myProfile.mentorshipMatches.find(
+    (match) => match.status === MentorshipMatchStatus.Accepted
+  )
+
+  const viewMode = determineViewMode(profile, myProfile)
 
   const profileView = (
     <>
@@ -255,6 +260,18 @@ function Profile() {
         <a href="/faq">FAQ</a>.
       </>
     ),
+    currentUserIsMenteeAndViewsNotTheirMentor: (
+      <>
+        Hey there! It looks like you already have{' '}
+        <a href={`/app/mentorships/${activeMentorshipMatch?.id}`}>
+          an ongoing mentorship
+        </a>{' '}
+        with another mentor. Please remember that you can only have one mentor
+        at a time. You can check available mentors once you complete your
+        current mentorship match. If you have any questions in the meantime,
+        feel free to check out the <a href="/faq">FAQ</a>.
+      </>
+    ),
   }
   return (
     <LoggedIn>
@@ -303,12 +320,39 @@ function Profile() {
   )
 }
 
-type ViewMode = 'display' | 'notActivelyMentoring' | 'mentoringButNoFreeSpots'
+type ViewMode =
+  | 'display'
+  | 'notActivelyMentoring'
+  | 'mentoringButNoFreeSpots'
+  | 'currentUserIsMenteeAndViewsNotTheirMentor'
 
 function determineViewMode(
-  profile: ProfilePageQueryQuery['conProfile']
+  profile: ProfilePageQueryQuery['conProfile'],
+  currentUserProfile: LoadMyProfileQuery['conProfile']
 ): ViewMode {
-  if (profile.userType !== UserType.Mentor) return 'display'
+  // If we're looking at a mentee, show the profile. Otherwise, the profile
+  // is a mentor's profile, so continue to determine if the view mode is a
+  // "special" one.
+  if (profile.userType === UserType.Mentee) return 'display'
+
+  const activeMentorshipMatch = currentUserProfile.mentorshipMatches.find(
+    (match) => match.status === MentorshipMatchStatus.Accepted
+  )
+
+  // Is current user a mentee, does that mentee have an active match, and is
+  // that match with another mentor than the one we're currently looking at?
+  if (activeMentorshipMatch.mentorId === currentUserProfile.id) return 'display'
+
+  console.log(activeMentorshipMatch, profile)
+
+  if (
+    currentUserProfile.userType === UserType.Mentee &&
+    activeMentorshipMatch?.status === MentorshipMatchStatus.Accepted &&
+    activeMentorshipMatch?.mentorId !== profile.userId
+  ) {
+    return 'currentUserIsMenteeAndViewsNotTheirMentor'
+  }
+
   if (profile.menteeCountCapacity === 0) return 'notActivelyMentoring'
   if (profile.doesNotHaveAvailableMentorshipSlot)
     return 'mentoringButNoFreeSpots'
