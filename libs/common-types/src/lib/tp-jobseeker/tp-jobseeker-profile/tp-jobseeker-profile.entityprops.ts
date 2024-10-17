@@ -45,6 +45,7 @@ export class TpJobseekerProfileEntityProps implements EntityProps {
   willingToRelocate: boolean
   @Field((type) => ImmigrationStatus)
   immigrationStatus?: ImmigrationStatus
+  isSubscribedToTPMarketingEmails: boolean
 
   @Field(() => ID)
   userId: string

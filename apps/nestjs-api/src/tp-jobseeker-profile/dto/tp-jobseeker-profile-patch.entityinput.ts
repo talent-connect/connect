@@ -27,5 +27,6 @@ export class TpJobseekerProfilePatchInput extends PartialType(
     'topSkills',
     'willingToRelocate',
     'immigrationStatus',
+    'isSubscribedToTPMarketingEmails',
   ] as const)
 ) {}
