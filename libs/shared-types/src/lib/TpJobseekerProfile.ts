@@ -50,7 +50,6 @@ export type TpJobseekerProfile = {
   hrSummit2021JobFairCompanyJobPreferences?: HrSummit2021JobFairCompanyJobPreferenceRecord[]
 
   isProfileVisibleToCompanies: boolean
-  isSubscribedToTPMarketingEmails: boolean
 
   favouritedTpJobListingIds: string[]
 }
