@@ -339,18 +339,18 @@ function determineViewMode(
     (match) => match.status === MentorshipMatchStatus.Accepted
   )
 
-  // Is current user a mentee, does that mentee have an active match, and is
-  // that match with another mentor than the one we're currently looking at?
-  if (activeMentorshipMatch.mentorId === currentUserProfile.id) return 'display'
+  if (activeMentorshipMatch) {
+    // Is current user a mentee, does that mentee have an active match, and is
+    // that match with another mentor than the one we're currently looking at?
+    if (activeMentorshipMatch.mentor?.id === profile.id) return 'display'
 
-  console.log(activeMentorshipMatch, profile)
-
-  if (
-    currentUserProfile.userType === UserType.Mentee &&
-    activeMentorshipMatch?.status === MentorshipMatchStatus.Accepted &&
-    activeMentorshipMatch?.mentorId !== profile.userId
-  ) {
-    return 'currentUserIsMenteeAndViewsNotTheirMentor'
+    if (
+      currentUserProfile.userType === UserType.Mentee &&
+      activeMentorshipMatch?.status === MentorshipMatchStatus.Accepted &&
+      activeMentorshipMatch?.mentor?.id !== profile.id
+    ) {
+      return 'currentUserIsMenteeAndViewsNotTheirMentor'
+    }
   }
 
   if (profile.menteeCountCapacity === 0) return 'notActivelyMentoring'
