@@ -1,25 +1,25 @@
-import placeholderImage from '../../assets/images/img-placeholder.png'
-import { ProfileCardProfilePropFragment } from './ProfileCard.generated'
-import './MentorProfileCard.scss'
-import { NewProfileCard } from '../../../../../libs/shared-atomic-design-components/src/lib/molecules/NewProfileCard'
+import { NewProfileCard } from '@talent-connect/shared-atomic-design-components'
 import {
-  REDI_LOCATION_NAMES,
   CATEGORIES_MAP,
+  REDI_LOCATION_NAMES,
 } from '@talent-connect/shared-config'
+import placeholderImage from '../../assets/images/img-placeholder.png'
+import './ConUserProfileCard.scss'
+import { ProfileCardProfilePropFragment } from './ProfileCard.generated'
 
-interface MentorProfileCardProps {
-  mentorProfile: ProfileCardProfilePropFragment
+interface ConUserProfileCardProps {
+  profile: ProfileCardProfilePropFragment
   linkTo?: string
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
 }
 
-export function MentorProfileCard({
-  mentorProfile,
+const ConUserProfileCard = ({
+  profile,
   toggleFavorite,
   linkTo,
   isFavorite,
-}: MentorProfileCardProps) {
+}: ConUserProfileCardProps) => {
   const {
     id,
     profileAvatarImageS3Key,
@@ -27,13 +27,13 @@ export function MentorProfileCard({
     rediLocation,
     languages,
     categories,
-  } = mentorProfile
+  } = profile
   const tags = categories.map((category) => CATEGORIES_MAP[category])
   const location = `ReDI ${REDI_LOCATION_NAMES[rediLocation]}`
   const avatar = profileAvatarImageS3Key || placeholderImage
 
   return (
-    <div className="mentor-profile-card-wrapper">
+    <div className="profile-card-wrapper">
       <NewProfileCard
         profile={{ id, avatar, fullName, location, languages }}
         tags={tags}
@@ -44,3 +44,5 @@ export function MentorProfileCard({
     </div>
   )
 }
+
+export default ConUserProfileCard

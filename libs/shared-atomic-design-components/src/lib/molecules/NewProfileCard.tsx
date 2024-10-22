@@ -1,6 +1,6 @@
 import { CardTags, Icon } from '@talent-connect/shared-atomic-design-components'
-import React, { ReactNode } from 'react'
-import { Card, Tag } from 'react-bulma-components'
+import React from 'react'
+import { Card } from 'react-bulma-components'
 import { NavLink } from 'react-router-dom'
 import LanguagesIcon from '../../assets/images/globe.svg'
 import LocationIcon from '../../assets/images/location.svg'
@@ -56,14 +56,14 @@ const UserLanguages = ({ languages }: UserLanguagesProps) => {
   )
 }
 
-export function NewProfileCard({
+const NewProfileCard = ({
   profile: { id, avatar, fullName, location, languages },
   tags,
   subheader,
   linkTo,
   toggleFavorite,
   isFavorite,
-}: NewProfileCardProps) {
+}: NewProfileCardProps) => {
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault()
     toggleFavorite && toggleFavorite(id)
@@ -104,3 +104,5 @@ export function NewProfileCard({
     </NavLink>
   )
 }
+
+export default NewProfileCard
