@@ -5,7 +5,7 @@ import {
 import { Heading } from '@talent-connect/shared-atomic-design-components'
 import { Columns, Content } from 'react-bulma-components'
 import { Redirect } from 'react-router-dom'
-import { ProfileCard } from '../../../components/organisms'
+import { ConUserProfileCard } from '../../../components/organisms'
 import LoggedIn from '../../../components/templates/LoggedIn'
 
 function MentorshipList() {
@@ -51,9 +51,9 @@ function MentorshipList() {
       <Columns>
         {myActiveMatches.map((match) => (
           <Columns.Column size={4} key={match.id}>
-            <ProfileCard
-              linkTo={`/app/mentorships/${match.id}`}
+            <ConUserProfileCard
               profile={match.mentee}
+              linkTo={`/app/mentorships/${match.id}`}
             />
           </Columns.Column>
         ))}

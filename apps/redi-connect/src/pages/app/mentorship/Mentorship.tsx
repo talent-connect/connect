@@ -13,9 +13,9 @@ import { Columns, Content } from 'react-bulma-components'
 import { useHistory, useParams } from 'react-router-dom'
 import {
   CompleteMentorship,
+  ConUserProfileCard,
   MContacts,
   MSessions,
-  ProfileCard,
   ReportProblem,
 } from '../../../components/organisms'
 import { LoggedIn } from '../../../components/templates'
@@ -93,7 +93,7 @@ function Mentorship() {
 
       <Columns>
         <Columns.Column size={4}>
-          <ProfileCard
+          <ConUserProfileCard
             profile={viewProfile}
             linkTo={`/app/mentorships/profile/${viewProfile.id}`}
           />
