@@ -4,11 +4,11 @@ import {
   REDI_LOCATION_NAMES,
 } from '@talent-connect/shared-config'
 import placeholderImage from '../../assets/images/img-placeholder.png'
+import { ConUserProfileCardProfilePropFragment } from './ConUserProfileCard.generated'
 import './ConUserProfileCard.scss'
-import { ProfileCardProfilePropFragment } from './ProfileCard.generated'
 
 interface ConUserProfileCardProps {
-  profile: ProfileCardProfilePropFragment
+  profile: ConUserProfileCardProfilePropFragment
   linkTo?: string
   isFavorite?: boolean
   toggleFavorite?: (id: string) => void
