@@ -1,8 +1,0 @@
-fragment ProfileCardProfileProp on ConProfile {
-  id
-  fullName
-  languages
-  categories
-  rediLocation
-  profileAvatarImageS3Key
-}
