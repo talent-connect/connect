@@ -120,6 +120,10 @@
             "answer": "Absolutely! Simply select the checkbox that says 'Hide my profile from companies' on your profile page. This way, your profile won't be visible to companies when they're looking for potential talents."
           },
           {
+            "question": "How can I stay updated about new companies, job listings, and profile updates in the Talent Pool?",
+            "answer": "You can receive automated email reminders about new companies joining the Talent Pool, fresh job listings, and reminders to keep your profile updated by selecting the checkbox in your profile settings. If you choose to deselect this option, you will no longer receive these updates but can still access the Talent Pool and browse opportunities at any time. These reminders help ensure you don’t miss out on important opportunities and that your profile stays current and visible to potential employers."
+          },
+          {
             "question": "Can I make changes to my profile after it's been approved?",
             "answer": "Certainly! We encourage you to regularly update your profile with any new skills you acquire and projects you become involved in even after it has been approved. Keeping your profile current helps showcase your growth and achievements accurately."
           }

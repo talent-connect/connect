@@ -138,13 +138,34 @@ export function JobseekerProfileForJobseekerEyes() {
             checked={!profile?.isProfileVisibleToCompanies}
             customOnChange={onHideFromCompaniesCheckboxChange}
           >
-            Hide my profile from companies
+            <Tooltip
+              title={
+                <span className="tooltip-text">
+                  By selecting this option, you will hide your profile from
+                  companies looking for potential talents.
+                </span>
+              }
+              placement="top-start"
+            >
+              <span>Hide my profile from companies</span>
+            </Tooltip>
           </Checkbox>
           <Checkbox
             checked={profile?.isSubscribedToTPMarketingEmails}
             customOnChange={onSubscribeToMarketingEmailsChange}
           >
-            Subscribe to marketing emails
+            <Tooltip
+              title={
+                <span className="tooltip-text">
+                  By selecting this option, you will receive email notifications
+                  about new companies joining the Talent Pool, newly posted job
+                  listings, and reminders to keep your profile updated.
+                </span>
+              }
+              placement="bottom-start"
+            >
+              <span>Receive jobseeker updates</span>
+            </Tooltip>
           </Checkbox>
         </Columns.Column>
       </Columns>
