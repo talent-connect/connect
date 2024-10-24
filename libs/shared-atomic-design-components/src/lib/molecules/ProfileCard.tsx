@@ -4,9 +4,9 @@ import { Card } from 'react-bulma-components'
 import { NavLink } from 'react-router-dom'
 import LanguagesIcon from '../../assets/images/globe.svg'
 import LocationIcon from '../../assets/images/location.svg'
-import './NewProfileCard.scss'
+import './ProfileCard.scss'
 
-interface NewProfileCardProps {
+interface ProfileCardProps {
   profile: {
     id: string
     avatar: string
@@ -27,13 +27,13 @@ interface UserLanguagesProps {
 
 const UserLocation = ({ location }) => {
   return (
-    <div className="new-profile-card__location-container">
+    <div className="profile-card__location-container">
       <img
         src={LocationIcon}
         alt="Location"
-        className="new-profile-card__location-icon"
+        className="profile-card__location-icon"
       />
-      <p className="new-profile-card__location-text">{location}</p>
+      <p className="profile-card__location-text">{location}</p>
     </div>
   )
 }
@@ -45,25 +45,25 @@ const UserLanguages = ({ languages }: UserLanguagesProps) => {
       : languages.join(', ')
 
   return (
-    <div className="new-profile-card__languages-container">
+    <div className="profile-card__languages-container">
       <img
         src={LanguagesIcon}
         alt="Languages"
-        className="new-profile-card__languages-icon"
+        className="profile-card__languages-icon"
       />
-      <p className="new-profile-card__languages-text">{languagesShort}</p>
+      <p className="profile-card__languages-text">{languagesShort}</p>
     </div>
   )
 }
 
-const NewProfileCard = ({
+const ProfileCard = ({
   profile: { id, avatar, fullName, location, languages },
   tags,
   subheader,
   linkTo,
   toggleFavorite,
   isFavorite,
-}: NewProfileCardProps) => {
+}: ProfileCardProps) => {
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault()
     toggleFavorite && toggleFavorite(id)
@@ -71,31 +71,29 @@ const NewProfileCard = ({
 
   return (
     <NavLink to={linkTo} className="profile-link">
-      <Card className="new-profile-card">
-        <img className="new-profile-card__avatar" src={avatar} alt={fullName} />
+      <Card className="profile-card">
+        <img className="profile-card__avatar" src={avatar} alt={fullName} />
         <div>
           {toggleFavorite && (
             <div
-              className="new-profile-card__favorite"
+              className="profile-card__favorite"
               onClick={handleFavoriteClick}
             >
               <Icon
                 icon={isFavorite ? 'heartFilled' : 'heart'}
-                className="new-profile-card__favorite__icon"
+                className="profile-card__favorite__icon"
               />
             </div>
           )}
-          <p key="name" className="new-profile-card__name">
+          <p key="name" className="profile-card__name">
             {fullName}
           </p>
-          {subheader && (
-            <p className="new-profile-card__subheader">{subheader}</p>
-          )}
+          {subheader && <p className="profile-card__subheader">{subheader}</p>}
 
           {languages?.length > 0 && <UserLanguages languages={languages} />}
           {location && <UserLocation location={location} />}
           {tags?.length > 0 && (
-            <div className="new-profile-card__tags">
+            <div className="profile-card__tags">
               <CardTags items={tags} shortList />
             </div>
           )}
@@ -105,4 +103,4 @@ const NewProfileCard = ({
   )
 }
 
-export default NewProfileCard
+export default ProfileCard

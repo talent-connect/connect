@@ -1,4 +1,4 @@
-import { NewProfileCard } from '@talent-connect/shared-atomic-design-components'
+import { ProfileCard } from '@talent-connect/shared-atomic-design-components'
 import {
   CATEGORIES_MAP,
   REDI_LOCATION_NAMES,
@@ -34,7 +34,7 @@ const ConUserProfileCard = ({
 
   return (
     <div className="profile-card-wrapper">
-      <NewProfileCard
+      <ProfileCard
         profile={{ id, avatar, fullName, location, languages }}
         tags={tags}
         linkTo={linkTo}
