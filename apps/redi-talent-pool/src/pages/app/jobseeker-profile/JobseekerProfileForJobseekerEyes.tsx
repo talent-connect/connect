@@ -145,7 +145,7 @@ export function JobseekerProfileForJobseekerEyes() {
                   companies looking for potential talents.
                 </span>
               }
-              placement="top"
+              placement="top-start"
             >
               <span>Hide my profile from companies</span>
             </Tooltip>
@@ -162,7 +162,7 @@ export function JobseekerProfileForJobseekerEyes() {
                   listings, and reminders to keep your profile updated.
                 </span>
               }
-              placement="bottom"
+              placement="bottom-start"
             >
               <span>Receive jobseeker updates</span>
             </Tooltip>
