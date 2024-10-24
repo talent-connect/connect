@@ -37,7 +37,7 @@ import {
 } from 'use-query-params'
 
 import { paginateItems } from '@talent-connect/shared-utils'
-import { MentorProfileCard } from '../../../components/organisms/MentorProfileCard'
+import { ConUserProfileCard } from '../../../components/organisms'
 import { LoggedIn } from '../../../components/templates'
 import { getAccessTokenFromLocalStorage } from '../../../services/auth/auth'
 import './FindAMentor.scss'
@@ -360,8 +360,8 @@ const FindAMentor = () => {
                 desktop={{ size: 4 }}
                 key={mentor.id}
               >
-                <MentorProfileCard
-                  mentorProfile={mentor}
+                <ConUserProfileCard
+                  profile={mentor}
                   linkTo={`/app/find-a-mentor/profile/${mentor.id}`}
                   toggleFavorite={() => toggleFavorite(mentor.id)}
                   isFavorite={isMentorFavorite(mentor.id)}
