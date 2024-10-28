@@ -65,9 +65,15 @@ interface MSessions {
   sessions: Pick<ConMentoringSession, 'id' | 'date' | 'minuteDuration'>[]
   menteeId: string
   editable?: boolean
+  mentorshipMatchId: string
 }
 
-const MSessions = ({ sessions, menteeId, editable }: MSessions) => {
+const MSessions = ({
+  sessions,
+  menteeId,
+  editable,
+  mentorshipMatchId,
+}: MSessions) => {
   const queryClient = useQueryClient()
   const { matchId } = useParams<MentorshipRouteParams>()
   const createSessionMutation = useCreateMentoringSessionMutation()
@@ -82,6 +88,7 @@ const MSessions = ({ sessions, menteeId, editable }: MSessions) => {
       input: {
         ...values,
         menteeId,
+        mentorshipMatchId,
       },
     })
     // TODO: I don't like this dependency - this mutation has to know which queries
