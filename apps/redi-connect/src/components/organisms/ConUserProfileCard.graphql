@@ -1,4 +1,4 @@
-fragment ProfileCardProfileProp on ConProfile {
+fragment ConUserProfileCardProfileProp on ConProfile {
   id
   fullName
   languages

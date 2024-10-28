@@ -1,9 +1,9 @@
+import { ProfileCard } from '@talent-connect/shared-atomic-design-components'
 import {
   desiredPositionsIdToLabelMap,
   germanFederalStates,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
-import { NewProfileCard } from '../../../../../libs/shared-atomic-design-components/src/lib/molecules/NewProfileCard'
 import placeholderImage from '../../assets/img-placeholder.png'
 import { JobseekerProfileCardJobseekerProfilePropFragment } from './JobseekerProfileCard.generated'
 import './JobseekerProfileCard.scss'
@@ -45,7 +45,7 @@ export function JobseekerProfileCard({
 
   return (
     <div className="jobSeeker-profile-card-wrapper">
-      <NewProfileCard
+      <ProfileCard
         profile={{ id, avatar, fullName, location, languages }}
         subheader={subheader}
         tags={tags}
