@@ -24,6 +24,7 @@ export class ConMentoringSessionMapper
       ]
     props.mentorId = raw.props.Mentor__c
     props.menteeId = raw.props.Mentee__c
+    props.mentorshipMatchId = raw.props.Mentorship_Match__c
     props.createdAt = raw.props.CreatedDate
     props.updatedAt = raw.props.LastModifiedDate
 
@@ -43,6 +44,7 @@ export class ConMentoringSessionMapper
     )
     props.Mentor__c = srcProps.mentorId
     props.Mentee__c = srcProps.menteeId
+    props.Mentorship_Match__c = srcProps.mentorshipMatchId
 
     const record = ConMentoringSessionRecord.create(props)
 

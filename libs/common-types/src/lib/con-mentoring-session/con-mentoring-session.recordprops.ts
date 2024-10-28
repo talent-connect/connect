@@ -10,6 +10,7 @@ export class ConMentoringSessionRecordProps implements RecordProps {
 
   Mentor__c: string
   Mentee__c: string
+  Mentorship_Match__c: string
 
   @Type(() => Date)
   CreatedDate: Date
