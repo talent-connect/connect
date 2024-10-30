@@ -1,17 +1,40 @@
 @import '~bulma/sass/utilities/_all';
+@import '_variables.scss';
 
 .tp-main-nav-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   height: 80px;
+  position: relative;
 
+  /* Active bar for desktop layout */
   &__active-bar {
+    position: absolute;
+    right: 0;
+    top: 0;
     height: 100%;
     width: 5px;
-    background-color: #2cb0c7;
-    @include touch() {
+    background-color: $redi-blue-dark;
+
+    @media screen and (max-width: 1191px) {
       display: none;
+    }
+  }
+
+  /* Active bar for tablet and mobile layouts */
+  &__active-bar--horizontal {
+    display: none;
+
+    @media screen and (max-width: 1191px) {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background-color: $redi-blue-dark;
     }
   }
 
