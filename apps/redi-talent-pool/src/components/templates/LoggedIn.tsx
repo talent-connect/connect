@@ -67,12 +67,24 @@ const LoggedIn = ({ children, hideNavigation }: Props) => {
           {hideNavigation ? null : (
             <>
               <div className="tp-side-menu">
-                <TpMainNavItem
-                  page="profile-page"
-                  pageName="My profile"
-                  to="/app/me"
-                  isActive={location.pathname === '/app/me'}
-                />
+                {tpJobseekerDirectoryEntry ? (
+                  <TpMainNavItem
+                    page="profile-page"
+                    pageName="My profile"
+                    to={`/app/jobseeker-profile/${tpJobseekerDirectoryEntry.id}`}
+                    isActive={
+                      location.pathname ===
+                      `/app/jobseeker-profile/${tpJobseekerDirectoryEntry.id}`
+                    }
+                  />
+                ) : (
+                  <TpMainNavItem
+                    page="profile-page"
+                    pageName="My profile"
+                    to="/app/me"
+                    isActive={location.pathname === '/app/me'}
+                  />
+                )}
                 {companyProfile?.state ===
                   CompanyTalentPoolState.ProfileApproved ||
                 tpJobseekerDirectoryEntry?.state ===
