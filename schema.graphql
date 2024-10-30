@@ -34,6 +34,7 @@ type ConMentoringSession {
   id: ID!
   menteeId: ID!
   mentorId: ID!
+  mentorshipMatchId: ID!
   minuteDuration: MentoringSessionDuration!
   updatedAt: DateTime!
 }
@@ -166,6 +167,7 @@ enum ConnectProfileStatus {
 input CreateConMentoringSessionInput {
   date: DateTime!
   menteeId: ID!
+  mentorshipMatchId: ID!
   minuteDuration: MentoringSessionDuration!
 }
 

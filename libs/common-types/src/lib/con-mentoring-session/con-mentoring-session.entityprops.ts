@@ -15,6 +15,8 @@ export class ConMentoringSessionEntityProps implements EntityProps {
   mentorId: string
   @Field((type) => ID)
   menteeId: string
+  @Field((type) => ID)
+  mentorshipMatchId: string
 
   createdAt: Date
   updatedAt: Date

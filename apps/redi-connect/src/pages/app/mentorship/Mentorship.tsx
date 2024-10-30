@@ -102,6 +102,7 @@ function Mentorship() {
             sessions={viewMatch.mentoringSessions}
             menteeId={viewProfile.userId}
             editable={currentUserIsMentor}
+            mentorshipMatchId={matchId}
           />
           <ReportProblem
             type={myProfile.userType}

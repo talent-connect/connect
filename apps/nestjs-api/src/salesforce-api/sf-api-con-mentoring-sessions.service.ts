@@ -31,6 +31,7 @@ export class SfApiConMentoringSessionsService {
       'Durations_in_Minutes__c',
       'Mentor__c',
       'Mentee__c',
+      'Mentorship_Match__c',
     ])
 
     const createResult = await this.repository.createRecord(
