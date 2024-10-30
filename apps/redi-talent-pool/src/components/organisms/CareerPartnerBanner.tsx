@@ -14,19 +14,32 @@ const CareerPartnerBanner: React.FC<CareerPartnerBannerProps> = ({
   return (
     <div className="career-partner-banner">
       <div className="career-partner-banner-top">
-        <div>
+        <div className="career-partner-banner-top__badge">
           <Icon
             icon="careerPartnerBadge"
             size="large"
-            className="career-partner-badge-icon"
+            className="career-partner-banner-top__badge-icon"
           />
-          <Heading size="smaller">Career Partner</Heading>
+          <Heading
+            size="smaller"
+            className="career-partner-banner-top__badge-text"
+          >
+            Career
+            <br />
+            Partner
+          </Heading>
         </div>
-        <span className="career-partner-since">
-          Since {new Date(partnerSince).getFullYear()}
+        <span className="career-partner-banner-top__separator" />
+        <span className="career-partner-banner-top__since">
+          Since
+          <br />
+          {new Date(partnerSince).getFullYear()}
         </span>
-        <span className="career-partner-jobs-posted">
-          {jobsPosted} Jobs Posted
+        <span className="career-partner-banner-top__separator" />
+        <span className="career-partner-banner-top__jobs-posted">
+          {jobsPosted} Jobs
+          <br />
+          Posted
         </span>
       </div>
       <div className="career-partner-banner-bottom">
