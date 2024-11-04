@@ -54,15 +54,17 @@ export function TpMainNavItem({
       )}
       onClick={onClick}
     >
-      <div></div>
+      {isActive && (
+        <>
+          <div className="tp-main-nav-item__active-bar"></div>
+          <div className="tp-main-nav-item__active-bar--horizontal"></div>
+        </>
+      )}
       <TpMainNavItemIcon
         page={page}
         isDisabled={isDisabled}
         pageName={pageName}
       />
-      <div
-        className={classnames({ 'tp-main-nav-item__active-bar': isActive })}
-      ></div>
     </Link>
   )
 }
