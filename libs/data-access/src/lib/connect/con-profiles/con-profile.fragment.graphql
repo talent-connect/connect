@@ -38,4 +38,5 @@ fragment AllConProfileFields on ConProfile {
   updatedAt
   userActivatedAt
   userType
+  isSubscribedToCONMarketingEmails
 }

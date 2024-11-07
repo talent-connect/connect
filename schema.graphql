@@ -117,6 +117,7 @@ type ConProfile {
   gender: Gender
   githubProfileUrl: String
   id: ID!
+  isSubscribedToCONMarketingEmails: Boolean!
   languages: [Language!]
   lastName: String!
   linkedInProfileUrl: String
@@ -1450,6 +1451,7 @@ input UpdateConProfileInput {
   firstName: String
   gender: Gender
   githubProfileUrl: String
+  isSubscribedToCONMarketingEmails: Boolean
   languages: [Language!]
   lastName: String
   linkedInProfileUrl: String

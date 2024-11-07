@@ -144,6 +144,7 @@ export type ConProfile = {
   gender?: Maybe<Gender>;
   githubProfileUrl?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  isSubscribedToCONMarketingEmails: Scalars['Boolean'];
   languages?: Maybe<Array<Language>>;
   lastName: Scalars['String'];
   linkedInProfileUrl?: Maybe<Scalars['String']>;
@@ -1788,6 +1789,7 @@ export type UpdateConProfileInput = {
   firstName?: InputMaybe<Scalars['String']>;
   gender?: InputMaybe<Gender>;
   githubProfileUrl?: InputMaybe<Scalars['String']>;
+  isSubscribedToCONMarketingEmails?: InputMaybe<Scalars['Boolean']>;
   languages?: InputMaybe<Array<Language>>;
   lastName?: InputMaybe<Scalars['String']>;
   linkedInProfileUrl?: InputMaybe<Scalars['String']>;

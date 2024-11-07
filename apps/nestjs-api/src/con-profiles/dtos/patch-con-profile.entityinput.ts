@@ -33,5 +33,6 @@ export class PatchConProfileInput extends PartialType(
     'categories',
     'optOutOfMenteesFromOtherRediLocation',
     'menteeCountCapacity',
+    'isSubscribedToCONMarketingEmails',
   ] as const)
 ) {}

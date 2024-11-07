@@ -59,6 +59,7 @@ export class ConProfileEntityProps implements EntityProps {
   menteeCountCapacity?: number
   // userActivated?: boolean //! REINSTATE, COMPLEX CASE
   userActivatedAt?: Date
+  isSubscribedToCONMarketingEmails: boolean
 
   // The next ones are computed fields in Salesforce
   age?: number
