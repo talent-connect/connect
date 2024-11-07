@@ -1,6 +1,7 @@
-// import { usePatchMyProfileMutation } from '@talent-connect/data-access'
+import { Tooltip } from '@mui/material'
 import {
   Button,
+  Checkbox,
   Heading,
   Icon,
 } from '@talent-connect/shared-atomic-design-components'
@@ -30,6 +31,7 @@ import {
   UserType,
   useConProfileSubmitForReviewMutation,
   useLoadMyProfileQuery,
+  usePatchMyProfileMutation,
 } from '@talent-connect/data-access'
 import { REDI_LOCATION_NAMES } from '@talent-connect/shared-config'
 import { useLoading } from '../../../hooks/WithLoading'
@@ -41,6 +43,7 @@ import OnboardingSteps from './OnboardingSteps'
 function Me() {
   const queryClient = useQueryClient()
   const submitProfileForReviewMutation = useConProfileSubmitForReviewMutation()
+  const patchMyProfileMutation = usePatchMyProfileMutation()
   const { Loading, isLoading } = useLoading()
   const history = useHistory()
 
@@ -84,6 +87,23 @@ function Me() {
     mentor_workPlace,
     rediLocation,
   } = conProfile
+
+  const loopbackUserId = getAccessTokenFromLocalStorage().userId
+
+  const onSubscribeToMarketingEmailsChange = async () => {
+    const mutationResult = await patchMyProfileMutation.mutateAsync({
+      input: {
+        isSubscribedToCONMarketingEmails:
+          !conProfile?.isSubscribedToCONMarketingEmails,
+      },
+    })
+    queryClient.setQueryData(
+      useLoadMyProfileQuery.getKey({
+        loopbackUserId,
+      }),
+      { conProfile: mutationResult.patchConProfile }
+    )
+  }
 
   const isMentee = userType === UserType.Mentee
   const isMentor = userType === UserType.Mentor
@@ -219,6 +239,49 @@ function Me() {
               <EditableOccupation />
             </Columns.Column>
           </Columns>
+        </Element>
+      )}
+
+      {isMentee && (
+        <Element className="block-separator">
+          <Checkbox
+            checked={conProfile?.isSubscribedToCONMarketingEmails}
+            customOnChange={onSubscribeToMarketingEmailsChange}
+          >
+            <Tooltip
+              title={
+                <span className="tooltip-text">
+                  By selecting this option, you'll receive notifications about
+                  new mentors (if unmatched) and a check-in email for
+                  mentorships lasting over 3 months.
+                </span>
+              }
+              placement="top-start"
+            >
+              <span>Receive mentee updates</span>
+            </Tooltip>
+          </Checkbox>
+        </Element>
+      )}
+
+      {isMentor && (
+        <Element className="block-separator">
+          <Checkbox
+            checked={conProfile?.isSubscribedToCONMarketingEmails}
+            customOnChange={onSubscribeToMarketingEmailsChange}
+          >
+            <Tooltip
+              title={
+                <span className="tooltip-text">
+                  By selecting this option, you'll receive a check-in email for
+                  mentorships lasting over 3 months.
+                </span>
+              }
+              placement="top-start"
+            >
+              <span>Receive mentor updates</span>
+            </Tooltip>
+          </Checkbox>
         </Element>
       )}
 
