@@ -115,6 +115,7 @@ export class ReminderEmailsService {
       Profile_First_Approved_At__c: {
         $eq: jsforce.SfDate.toDateLiteral(approvedDate),
       },
+      Subscribed_to_CON_Marketing_Emails__c: true,
     })
 
     const approvedMenteeIds = menteesApproved45DaysAgo.map(
@@ -187,6 +188,7 @@ export class ReminderEmailsService {
         'Contact__r.Id': {
           $in: [...menteeIds, ...mentorIds],
         },
+        Subscribed_to_CON_Marketing_Emails__c: true,
       })
     }
 
@@ -233,7 +235,7 @@ export class ReminderEmailsService {
     const mentorshipMatchesWithSessionsCount = {} as Record<
       string,
       {
-        mentorshipMatchId: string,
+        mentorshipMatchId: string
         menteeId: string
         mentorId: string
         mentoringSessionsCount: number
@@ -650,7 +652,10 @@ export class ReminderEmailsService {
     )
       .replace(/{{{Recipient.FirstName}}}/g, mentorFirstName)
       .replace(/\${matchMadeActiveOn}/g, matchMadeActiveOn)
-      .replace(/\${logMentoringSessionUrl}/g, `https://connect.redi-school.org/app/mentorships/${mentorshipMatchId}`)
+      .replace(
+        /\${logMentoringSessionUrl}/g,
+        `https://connect.redi-school.org/app/mentorships/${mentorshipMatchId}`
+      )
 
     const menteeParams = {
       Destination: {
