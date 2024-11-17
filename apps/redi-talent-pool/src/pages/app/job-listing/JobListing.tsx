@@ -261,7 +261,7 @@ export function JobListing() {
 
   return (
     <LoggedIn>
-      <div className="jobListing">
+      <div className="jobListing" style={{ position: 'relative' }}>
         {isDesktop ? (
           <>
             <JobListingHeader jobListing={jobListing} />
@@ -282,7 +282,6 @@ export function JobListing() {
                 <JobListingContact jobListing={jobListing} />
               </div>
             </div>
-            {isExpired && <ExpiredJobListingOverlay />}
           </>
         ) : (
           <>
@@ -294,9 +293,9 @@ export function JobListing() {
               <JobListingAboutTheCompany jobListing={jobListing} />
               <JobListingContact jobListing={jobListing} />
             </div>
-            {isExpired && <ExpiredJobListingOverlay />}
           </>
         )}
+        {isExpired && <ExpiredJobListingOverlay />}
       </div>
     </LoggedIn>
   )

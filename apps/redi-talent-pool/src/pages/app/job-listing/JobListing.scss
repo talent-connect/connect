@@ -235,7 +235,7 @@
 }
 
 .expired-job-listing-overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -243,9 +243,10 @@
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(4px);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 1000;
+  padding-top: 200px;
 }
 
 .expired-job-listing-message {
@@ -255,6 +256,7 @@
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 1rem;
 
   p {
     font-size: 1.1rem;
