@@ -241,7 +241,8 @@ const ExpiredJobListingOverlay = () => {
           Hey there! It looks like this job listing has expired. You can save
           this link to check if the job becomes available again, or you can{' '}
           <Link to="/app/browse">browse other job openings</Link>. If you have
-          any questions in the meantime, feel free to check out the FAQ.
+          any questions in the meantime, feel free to check out the{' '}
+          <Link to="/faq">FAQ</Link>.
         </p>
       </div>
     </div>
