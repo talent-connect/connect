@@ -1,17 +1,17 @@
+import { useMediaQuery } from '@mui/material'
+import { TpJobListing, TpJobListingStatus } from '@talent-connect/data-access'
+import { Chip, SVGImage } from '@talent-connect/shared-atomic-design-components'
 import {
   employmentTypesIdToLabelMap,
   topSkillsIdToLabelMap,
 } from '@talent-connect/talent-pool/config'
 import moment from 'moment'
 import { Element } from 'react-bulma-components'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Avatar from '../../../components/organisms/Avatar'
 import { LoggedIn } from '../../../components/templates'
 import { useFindOneJobListingQuery } from './JobListing.generated'
 import './JobListing.scss'
-import { TpJobListing } from '@talent-connect/data-access'
-import { useMediaQuery } from '@mui/material'
-import { Chip, SVGImage } from '@talent-connect/shared-atomic-design-components'
 
 const JobListingLocation = ({
   location,
@@ -233,6 +233,22 @@ const JobListingAboutTheCompany = ({
   )
 }
 
+const ExpiredJobListingOverlay = () => {
+  return (
+    <div className="expired-job-listing-overlay">
+      <div className="expired-job-listing-message">
+        <p>
+          Hey there! It looks like this job listing has expired. You can save
+          this link to check if the job becomes available again, or you can{' '}
+          <Link to="/app/browse">browse other job openings</Link>. If you have
+          any questions in the meantime, feel free to check out the{' '}
+          <Link to="/faq">FAQ</Link>.
+        </p>
+      </div>
+    </div>
+  )
+}
+
 export function JobListing() {
   const { tpJobListingId }: { tpJobListingId: string } = useParams()
 
@@ -241,12 +257,12 @@ export function JobListing() {
   })
 
   const jobListing = jobListingQuery.data?.tpJobListing
-
+  const isExpired = jobListing?.status === TpJobListingStatus.Expired
   const isDesktop = useMediaQuery('(min-width:1024px)')
 
   return (
     <LoggedIn>
-      <div className="jobListing">
+      <div className="jobListing" style={{ position: 'relative' }}>
         {isDesktop ? (
           <>
             <JobListingHeader jobListing={jobListing} />
@@ -280,6 +296,7 @@ export function JobListing() {
             </div>
           </>
         )}
+        {isExpired && <ExpiredJobListingOverlay />}
       </div>
     </LoggedIn>
   )
