@@ -76,6 +76,8 @@ export class ConProfileMapper
     props.createdAt = raw.props.CreatedDate
     props.updatedAt = raw.props.LastModifiedDate
     props.userActivatedAt = raw.props.Profile_First_Approved_At__c
+    props.isSubscribedToCONMarketingEmails =
+      raw.props.Subscribed_to_CON_Marketing_Emails__c
 
     props.categories =
       (raw.props.Mentoring_Topics__c?.split(';') as MentoringTopic[]) ?? []
@@ -128,6 +130,8 @@ export class ConProfileMapper
     props.Main_Occupation_Other__c = srcProps.mentee_occupationOther_description
     props.Education__c = srcProps.mentee_highestEducationLevel
     props.Avatar_Image_URL__c = srcProps.profileAvatarImageS3Key
+    props.Subscribed_to_CON_Marketing_Emails__c =
+      srcProps.isSubscribedToCONMarketingEmails
 
     props.Languages__c = srcProps.languages?.join(';')
     props.Personal_Description__c = srcProps.personalDescription

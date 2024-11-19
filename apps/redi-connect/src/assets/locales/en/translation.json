@@ -85,6 +85,10 @@
           {
             "question": "Is the mentorship service at ReDI School free of charge?",
             "answer": "Yes, mentorship at ReDI School is completely free of charge! Our mentors are wonderful volunteers who generously dedicate their time and passion to support our learners on their journey. Their commitment helps make the mentoring experience impactful and accessible for everyone. <b>Important:</b> If at any point a mentor suggests or refers you to a paid service where they are a direct beneficiary, please report this to us immediately at <a href=‘mailto:career@redi-school.org’>career@redi-school.org</a> <b>(for ReDI Schools in Germany)</b> and at <a href=‘mailto:career.sweden@redi-school.org’>career.sweden@redi-school.org</a> <b>(for ReDI School in Sweden)</b>. We want to ensure that all mentorship remains free and aligned with ReDI's values of volunteer-driven support."
+          },
+          {
+            "question": "Will ReDI School check in with me to see how my long-term mentorship is going?",
+            "answer": "Yes! If your mentorship has continued for over three months, we'll reach out to hear about your experience, including any highlights, milestones, or challenges. Your feedback is optional but invaluable, as it helps us improve the mentorship program to keep it meaningful for everyone involved. You can also unsubscribe from these check-in emails by unchecking a box in your Profile Settings."
           }
         ]
       },
@@ -151,6 +155,10 @@
           {
             "question": "How can I update or improve my profile?",
             "answer": "To update or improve your profile, go to ReDI Connect and work on <a href='https://connect.redi-school.org/app/me'>'My Profile'</a>. Ensure your information is accurate and as complete as possible. The more details you provide, the easier it will be for a mentor to assess how they can assist you. Including a photo can also help build trust and connection. If you have a portfolio, consider adding a link to your GitHub or other portfolio sites to showcase your work."
+          },
+          {
+            "question": "Will ReDI School remind me to apply for a mentor if I remain unmatched?",
+            "answer": "Absolutely! If you're still unmatched 45 days after your profile is approved, we'll send you a reminder email explaining the benefits of having a mentor and the next steps to take. You can unsubscribe from these reminder emails anytime by unchecking a box in your Profile Settings."
           }
         ]
       },
