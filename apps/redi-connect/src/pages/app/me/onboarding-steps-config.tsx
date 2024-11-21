@@ -110,7 +110,7 @@ export const ONBOARDING_STEPS = [
             href={
               rediLocation === RediLocation.Malmo
                 ? 'https://calendar.app.google/zQJr8PJsNF2arm236'
-                : 'https://calendly.com/hadeertalentsucess/consultancy-call?month=2024-02'
+                : 'https://calendar.app.google/TsxN3Bp1PGVnMrx96'
             }
             target="_blank"
             rel="noreferrer"
