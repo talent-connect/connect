@@ -85,10 +85,10 @@ export class TpJobseekerDirectoryEntriesService {
      * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next block when there's an upcoming Job Fair
      * Duplicate if there are multiple Job Fairs coming
      */
-    // if (_filter.filter.joinsMunich24SummerJobFair) {
-    //   filter.Jobseeker_Profiles__r.Joins_Munich_24_Summer_Job_Fair__c =
-    //     _filter.filter.joinsMunich24SummerJobFair
-    // }
+    if (_filter.filter.joins25WinterTalentSummit) {
+      filter.Jobseeker_Profiles__r.ReDI_Joins_25_Winter_Talent_Summit__c =
+        _filter.filter.joins25WinterTalentSummit
+    }
 
     const entities = await this.findAll(filter)
 

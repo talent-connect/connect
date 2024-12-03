@@ -77,7 +77,8 @@ export class TpJobseekerDirectoryEntryMapper
      * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
      * Duplicate if there are multiple Job Fairs coming
      */
-    // props.joinsMunich24SummerJobFair = jobseekerProfileRecord.Joins_Munich_24_Summer_Job_Fair__c
+    props.joins25WinterTalentSummit =
+      jobseekerProfileRecord.ReDI_Joins_25_Winter_Talent_Summit__c
 
     props.isProfileVisibleToCompanies =
       jobseekerProfileRecord.Is_Visible_to_Companies__c

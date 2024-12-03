@@ -95,7 +95,7 @@ export class TpJobseekerDirectoryEntryRecord extends Record<TpJobseekerDirectory
           'About_Yourself__c',
           'Top_Skills__c',
           'Profile_Status__c',
-          'Joins_Munich_24_Summer_Job_Fair__c',
+          'ReDI_Joins_25_Winter_Talent_Summit__c',
           'Is_Visible_to_Companies__c',
           'Federal_State__c',
           'Willing_to_Relocate__c',

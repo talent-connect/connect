@@ -31,4 +31,6 @@ export type TpCompanyProfile = {
   isProfileVisibleToJobseekers: boolean
 
   favouritedTpJobseekerIds: string[]
+
+  joins25WinterTalentSummit?: boolean
 }

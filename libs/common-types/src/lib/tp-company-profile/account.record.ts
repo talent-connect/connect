@@ -32,7 +32,7 @@ export class AccountRecord extends Record<AccountRecordProps> {
       'ReDI_Talent_Pool_State__c',
       'ReDI_Visible_to_Jobseekers__c',
       'ReDI_Career_Partner__c',
-      'ReDI_Joins_Munich_24_Summer_Job_Fair__c',
+      'ReDI_Joins_25_Winter_Talent_Summit__c',
     ],
   }
 }

@@ -246,6 +246,12 @@ export type FindAllVisibleTpJobListingsArgsFilter = {
   employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
   federalStates?: InputMaybe<Array<FederalState>>;
   isRemotePossible?: InputMaybe<Scalars['Boolean']>;
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
+  joins25WinterTalentSummit?: InputMaybe<Scalars['Boolean']>;
   relatesToPositions?: InputMaybe<Array<TpDesiredPosition>>;
   skills?: InputMaybe<Array<TpTechnicalSkill>>;
 };
@@ -255,6 +261,12 @@ export type FindAllVisibleTpJobseekerDirectoryEntriesFilter = {
   desiredPositions?: InputMaybe<Array<TpDesiredPosition>>;
   employmentTypes?: InputMaybe<Array<TpEmploymentType>>;
   federalStates?: InputMaybe<Array<FederalState>>;
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
+  joins25WinterTalentSummit?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   skills?: InputMaybe<Array<TpTechnicalSkill>>;
 };
@@ -974,16 +986,17 @@ export type TpCompanyProfile = {
   about?: Maybe<Scalars['String']>;
   companyName: Scalars['String'];
   companyRepresentatives: Array<UserContact>;
-  /**
-   * Job Fair Boolean Field(s)
-   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
-   * Duplicate if there are multiple Job Fairs coming
-   */
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
   industry?: Maybe<Scalars['String']>;
   isCareerPartner: Scalars['Boolean'];
   isProfileVisibleToJobseekers: Scalars['Boolean'];
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
+  joins25WinterTalentSummit?: Maybe<Scalars['Boolean']>;
   linkedInUrl?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
@@ -999,6 +1012,12 @@ export type TpCompanyProfilePatchInput = {
   companyName?: InputMaybe<Scalars['String']>;
   industry?: InputMaybe<Scalars['String']>;
   isProfileVisibleToJobseekers?: InputMaybe<Scalars['Boolean']>;
+  /**
+   * Job Fair Boolean Field(s)
+   * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
+   * Duplicate if there are multiple Job Fairs coming
+   */
+  joins25WinterTalentSummit?: InputMaybe<Scalars['Boolean']>;
   linkedInUrl?: InputMaybe<Scalars['String']>;
   location?: InputMaybe<Scalars['String']>;
   profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
@@ -1431,13 +1450,14 @@ export type TpJobseekerDirectoryEntry = {
   id: Scalars['ID'];
   ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
   immigrationStatus?: Maybe<ImmigrationStatus>;
+  isProfileVisibleToCompanies: Scalars['Boolean'];
+  isSubscribedToTPMarketingEmails: Scalars['Boolean'];
   /**
    * Job Fair Boolean Field(s)
    * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
    * Duplicate if there are multiple Job Fairs coming
    */
-  isProfileVisibleToCompanies: Scalars['Boolean'];
-  isSubscribedToTPMarketingEmails: Scalars['Boolean'];
+  joins25WinterTalentSummit?: Maybe<Scalars['Boolean']>;
   lastName: Scalars['String'];
   linkedInUrl?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['String']>;
@@ -1495,13 +1515,14 @@ export type TpJobseekerProfile = {
   id: Scalars['ID'];
   ifAvailabilityIsDate_date?: Maybe<Scalars['DateTime']>;
   immigrationStatus?: Maybe<ImmigrationStatus>;
+  isProfileVisibleToCompanies: Scalars['Boolean'];
+  isSubscribedToTPMarketingEmails: Scalars['Boolean'];
   /**
    * Job Fair Boolean Field(s)
    * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
    * Duplicate if there are multiple Job Fairs coming
    */
-  isProfileVisibleToCompanies: Scalars['Boolean'];
-  isSubscribedToTPMarketingEmails: Scalars['Boolean'];
+  joins25WinterTalentSummit?: Maybe<Scalars['Boolean']>;
   location?: Maybe<Scalars['String']>;
   profileAvatarImageS3Key?: Maybe<Scalars['String']>;
   rediLocation?: Maybe<RediLocation>;
@@ -1652,13 +1673,14 @@ export type TpJobseekerProfilePatchInput = {
   federalState?: InputMaybe<FederalState>;
   ifAvailabilityIsDate_date?: InputMaybe<Scalars['DateTime']>;
   immigrationStatus?: InputMaybe<ImmigrationStatus>;
+  isProfileVisibleToCompanies?: InputMaybe<Scalars['Boolean']>;
+  isSubscribedToTPMarketingEmails?: InputMaybe<Scalars['Boolean']>;
   /**
    * Job Fair Boolean Field(s)
    * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next field when there's an upcoming Job Fair
    * Duplicate if there are multiple Job Fairs coming
    */
-  isProfileVisibleToCompanies?: InputMaybe<Scalars['Boolean']>;
-  isSubscribedToTPMarketingEmails?: InputMaybe<Scalars['Boolean']>;
+  joins25WinterTalentSummit?: InputMaybe<Scalars['Boolean']>;
   location?: InputMaybe<Scalars['String']>;
   profileAvatarImageS3Key?: InputMaybe<Scalars['String']>;
   rediLocation?: InputMaybe<RediLocation>;

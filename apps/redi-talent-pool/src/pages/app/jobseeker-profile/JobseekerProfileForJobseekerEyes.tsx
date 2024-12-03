@@ -60,14 +60,14 @@ export function JobseekerProfileForJobseekerEyes() {
    * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next method when there's an upcoming Job Fair
    * Duplicate if there are multiple Job Fairs coming
    */
-  // const onMunich24SummerJobFairParticipateChange = async () => {
-  //   await mutation.mutateAsync({
-  //     input: {
-  //       joinsMunich24SummerJobFair: !profile?.joinsMunich24SummerJobFair,
-  //     },
-  //   })
-  //   queryClient.invalidateQueries()
-  // }
+  const on25WinterTalentSummitParticipateChange = async () => {
+    await mutation.mutateAsync({
+      input: {
+        joins25WinterTalentSummit: !profile?.joins25WinterTalentSummit,
+      },
+    })
+    queryClient.invalidateQueries()
+  }
 
   const isProfileApproved =
     profile?.state === JobseekerProfileStatus.ProfileApproved
@@ -107,15 +107,15 @@ export function JobseekerProfileForJobseekerEyes() {
            * Uncomment & Rename (joins{Location}{Year}{Season}JobFair) the next div when there's an upcoming Job Fair
            * Duplicate if there are multiple Job Fairs coming
            */}
-          {/* <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ marginBottom: '1.5rem' }}>
             <Checkbox
-              checked={profile?.joinsMunich24SummerJobFair}
-              customOnChange={onMunich24SummerJobFairParticipateChange}
+              checked={profile?.joins25WinterTalentSummit}
+              customOnChange={on25WinterTalentSummitParticipateChange}
             >
-              I will attend the <b>ReDI Summer Job Fair in Munich</b> on{' '}
-              <b>01/07/2024</b>.
+              I will attend the <b>ReDI Winter Talent Summit in Berlin</b> on{' '}
+              <b>18/02/2025</b>.
             </Checkbox>
-          </div> */}
+          </div>
           <EditableOverview profile={profile} />
           <EditableSummary profile={profile} />
           <EditableProfessionalExperience profile={profile} />
