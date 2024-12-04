@@ -321,7 +321,7 @@ export function BrowseCompany() {
             checked={joins25WinterTalentSummit || false}
             handleChange={toggle25WinterTalentSummitFilter}
           >
-            Attending ReDI Winter Talent Summit 2025 Berlin
+            Attending ReDI Talent Summit '25 in Berlin
           </Checkbox>
         </div>
         {/* Next Div is to keep three filters sizing for two checkboxes. Remove if necessary */}
@@ -388,7 +388,7 @@ export function BrowseCompany() {
               <FilterTag
                 key="redi-winter-talent-summit-2025-filter"
                 id="redi-winter-talent-summit-2025-filter"
-                label="Attending ReDI Winter Talent Summit 2025 Berlin"
+                label="Attending ReDI Talent Summit '25 in Berlin"
                 onClickHandler={toggle25WinterTalentSummitFilter}
               />
             )}
