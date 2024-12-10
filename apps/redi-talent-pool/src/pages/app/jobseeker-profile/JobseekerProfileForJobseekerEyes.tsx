@@ -112,7 +112,7 @@ export function JobseekerProfileForJobseekerEyes() {
               checked={profile?.joins25WinterTalentSummit}
               customOnChange={on25WinterTalentSummitParticipateChange}
             >
-              I will attend the <b>ReDI Winter Talent Summit in Berlin</b> on{' '}
+              I will attend <b>ReDI Talent Summit '25 in Berlin</b> on{' '}
               <b>18/02/2025</b>.
             </Checkbox>
           </div>
