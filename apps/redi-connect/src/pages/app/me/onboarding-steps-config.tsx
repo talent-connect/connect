@@ -62,7 +62,7 @@ export const ONBOARDING_STEPS = [
             href={
               rediLocation === RediLocation.Malmo
                 ? 'https://calendar.app.google/zQJr8PJsNF2arm236'
-                : 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2B1CHHA9ix2M3ED1d4bvXnyIFE9JJKSIsHzaq2hqqXaiqV0V3jEYATpspiqQ5jlStcJ99nHqCj'
+                : 'https://calendar.app.google/U1q1hfhfC3qdkkpq9'
             }
             target="__blank"
           >
