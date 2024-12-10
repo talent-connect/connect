@@ -419,6 +419,7 @@ export const sendMentorshipRequestReceivedEmail = ({
   menteeFullName,
   menteeRediLocation,
   rediLocation,
+  applicationText,
 }) => {
   const applicationsPageUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
@@ -436,6 +437,7 @@ export const sendMentorshipRequestReceivedEmail = ({
     .replace(/\${mentorName}/g, mentorName)
     .replace(/\${menteeFullName}/g, menteeFullName)
     .replace(/\${applicationsPageUrl}/g, applicationsPageUrl)
+    .replace(/\${menteeApplicationText}/g, applicationText)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: `You have received an application from ${menteeFullName}!`,
