@@ -130,7 +130,7 @@ export function MeCompany() {
               customOnChange={on25WinterTalentSummitParticipateChange}
             >
               My company will attend the <b>ReDI Talent Summit '25 in Berlin</b>{' '}
-              on <b>18/02/2024</b>.
+              on <b>18/02/2025</b>.
             </Checkbox>
           </div>
           {companyProfile.isCareerPartner ? (
