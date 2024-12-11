@@ -421,10 +421,17 @@ export const sendMentorshipRequestReceivedEmail = ({
   rediLocation,
   applicationText,
 }) => {
+  const truncateText = (text, maxLength) => {
+    return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text
+  }
+
+  const truncatedApplicationText = truncateText(applicationText, 250)
+
   const applicationsPageUrl = `${buildFrontendUrl(
     process.env.NODE_ENV,
     rediLocation
   )}/app/applications`
+
   const sendMentorshipRequestReceivedEmailParsed = convertTemplateToHtml(
     rediLocation,
     'mentorship-request-email'
@@ -437,7 +444,7 @@ export const sendMentorshipRequestReceivedEmail = ({
     .replace(/\${mentorName}/g, mentorName)
     .replace(/\${menteeFullName}/g, menteeFullName)
     .replace(/\${applicationsPageUrl}/g, applicationsPageUrl)
-    .replace(/\${menteeApplicationText}/g, applicationText)
+    .replace(/\${menteeApplicationText}/g, truncatedApplicationText)
   return sendMjmlEmailFactory({
     to: recipient,
     subject: `You have received an application from ${menteeFullName}!`,
