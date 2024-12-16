@@ -7,7 +7,7 @@ import {
 } from '@talent-connect/talent-pool/config'
 import moment from 'moment'
 import { Element } from 'react-bulma-components'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useHistory, useParams } from 'react-router-dom'
 import Avatar from '../../../components/organisms/Avatar'
 import { LoggedIn } from '../../../components/templates'
 import { useFindOneJobListingQuery } from './JobListing.generated'
@@ -256,9 +256,18 @@ export function JobListing() {
     filter: { id: tpJobListingId },
   })
 
+  const history = useHistory()
+
   const jobListing = jobListingQuery.data?.tpJobListing
   const isExpired = jobListing?.status === TpJobListingStatus.Expired
   const isDesktop = useMediaQuery('(min-width:1024px)')
+
+  if (
+    jobListingQuery.isError ||
+    jobListing?.companyProfile?.isProfileVisibleToJobseekers === false
+  ) {
+    history.replace('/app/404')
+  }
 
   return (
     <LoggedIn>

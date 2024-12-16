@@ -38,6 +38,9 @@ const JobseekerProfile = lazy(
       /* webpackChunkName: "Browse", webpackPreload: true  */ '../pages/app/jobseeker-profile/JobseekerProfile'
     )
 )
+const FourOFour = lazy(
+  () => import(/* webpackChunkName: "404" */ '../pages/app/404/404')
+)
 
 const routes: RouteDefinition[] = [
   {
@@ -67,6 +70,11 @@ const routes: RouteDefinition[] = [
   {
     path: '/app/jobseeker-profile/:tpJobseekerProfileId',
     component: JobseekerProfile,
+    exact: true,
+  },
+  {
+    path: '/app/404',
+    component: FourOFour,
     exact: true,
   },
 ]
