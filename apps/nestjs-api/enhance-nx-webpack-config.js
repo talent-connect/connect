@@ -31,6 +31,5 @@ module.exports = function (config, context) {
       }
     }
   }
-
   return config
 }
